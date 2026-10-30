@@ -1,0 +1,29 @@
+{
+  "dataset_id": "osm-chennai-schools",
+  "dataset_name": "OpenStreetMap schools, Chennai AOI",
+  "kind": "source",
+  "source_url": "https://overpass-api.de/api/interpreter",
+  "provider": "OpenStreetMap contributors via Overpass API",
+  "license": "ODbL 1.0",
+  "attribution": "(c) OpenStreetMap contributors",
+  "acquisition_timestamp": "2026-10-30T02:55:06.832798Z",
+  "observation_period": "OSM snapshot at 2026-10-30",
+  "spatial_resolution": "vector",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo osm 0.1.0",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+  "processing_status": "processed",
+  "limitations": [
+    "Crowd-sourced; completeness and tagging vary and are not validated",
+    "Hospitals layer includes clinics; no capacity or operating status is known",
+    "Road geometry only; no closure, flooding or passability information",
+    "ODbL: derived databases must be shared alike with attribution"
+  ],
+  "derived_from": [],
+  "checksum_sha256": "b9f31bac7db45e56919a3d3cf11ba80319225e6585c5b3aef85e95aa66f8469a",
+  "feature_count": 683,
+  "file": "data/processed/osm/chennai/schools.geojson",
+  "geometry_types": [
+    "Point"
+  ]
+}

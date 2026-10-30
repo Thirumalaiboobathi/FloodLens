@@ -1,0 +1,228 @@
+{
+  "$defs": {
+    "ScenarioRef": {
+      "additionalProperties": false,
+      "properties": {
+        "accumulation_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "examples": [
+            "24h hypothetical"
+          ],
+          "title": "Accumulation Period"
+        },
+        "rainfall_accumulation_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rainfall accumulation forcing in mm over `accumulation_period`; null for the terrain baseline. NOT a flood depth.",
+          "title": "Rainfall Accumulation Mm"
+        },
+        "rainfall_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dataset id of the rainfall data for observed scenarios; null for hypothetical ones.",
+          "title": "Rainfall Source"
+        },
+        "scenario_id": {
+          "examples": [
+            "baseline",
+            "rain_200mm"
+          ],
+          "pattern": "^[a-z0-9_]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_type": {
+          "$ref": "#/$defs/ScenarioType"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "scenario_type"
+      ],
+      "title": "ScenarioRef",
+      "type": "object"
+    },
+    "ScenarioType": {
+      "description": "What forces a scenario. These three must never be conflated.",
+      "enum": [
+        "terrain_baseline",
+        "hypothetical_rainfall_accumulation",
+        "observed_rainfall"
+      ],
+      "title": "ScenarioType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "area_km2_by_class": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Area Km2 By Class",
+      "type": "object"
+    },
+    "boundary_id": {
+      "examples": [
+        "chennai_core_geoboundaries"
+      ],
+      "title": "Boundary Id",
+      "type": "string"
+    },
+    "class_basis": {
+      "const": "quantiles_of_terrain_baseline_index",
+      "default": "quantiles_of_terrain_baseline_index",
+      "title": "Class Basis",
+      "type": "string"
+    },
+    "disclaimer": {
+      "default": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "facilities_in_top_class": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Facilities In Top Class"
+    },
+    "facilities_total": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Facilities Total"
+    },
+    "mean_completeness": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Mean Completeness",
+      "type": "number"
+    },
+    "mean_index": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Mean Index",
+      "type": "number"
+    },
+    "n_classes": {
+      "maximum": 10,
+      "minimum": 2,
+      "title": "N Classes",
+      "type": "integer"
+    },
+    "region_area_km2": {
+      "minimum": 0,
+      "title": "Region Area Km2",
+      "type": "number"
+    },
+    "region_id": {
+      "examples": [
+        "chennai"
+      ],
+      "title": "Region Id",
+      "type": "string"
+    },
+    "road_length_km_all": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Road Length Km All"
+    },
+    "road_length_km_touching_top_class": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Road Length Km Touching Top Class"
+    },
+    "scenario": {
+      "$ref": "#/$defs/ScenarioRef"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scored_land_area_km2": {
+      "minimum": 0,
+      "title": "Scored Land Area Km2",
+      "type": "number"
+    },
+    "share_by_class": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "Share By Class",
+      "type": "object"
+    }
+  },
+  "required": [
+    "region_id",
+    "boundary_id",
+    "scenario",
+    "n_classes",
+    "region_area_km2",
+    "scored_land_area_km2",
+    "area_km2_by_class",
+    "share_by_class",
+    "mean_index",
+    "mean_completeness"
+  ],
+  "title": "RegionExposureSummary",
+  "type": "object"
+}

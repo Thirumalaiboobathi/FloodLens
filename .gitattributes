@@ -1,0 +1,2 @@
+# Contract files must be byte-stable across platforms: LF in the working tree.
+schemas/** text eol=lf

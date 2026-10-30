@@ -1,0 +1,141 @@
+{
+  "$defs": {
+    "InputLayerStatus": {
+      "additionalProperties": false,
+      "properties": {
+        "dataset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Dataset Ids",
+          "type": "array"
+        },
+        "input": {
+          "title": "Input",
+          "type": "string"
+        },
+        "note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Note"
+        },
+        "status": {
+          "enum": [
+            "present",
+            "pending",
+            "absent"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "weight": {
+          "minimum": 0,
+          "title": "Weight",
+          "type": "number"
+        }
+      },
+      "required": [
+        "input",
+        "weight",
+        "status",
+        "dataset_ids"
+      ],
+      "title": "InputLayerStatus",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "boundary_id": {
+      "title": "Boundary Id",
+      "type": "string"
+    },
+    "confidence_label": {
+      "const": "screening_only",
+      "default": "screening_only",
+      "title": "Confidence Label",
+      "type": "string"
+    },
+    "disclaimer": {
+      "default": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "inputs": {
+      "items": {
+        "$ref": "#/$defs/InputLayerStatus"
+      },
+      "title": "Inputs",
+      "type": "array"
+    },
+    "known_limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Known Limitations",
+      "type": "array"
+    },
+    "mean_completeness": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Mean Completeness",
+      "type": "number"
+    },
+    "min_completeness_to_score": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Min Completeness To Score",
+      "type": "number"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scored_fraction_of_region": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Scored Fraction Of Region",
+      "type": "number"
+    },
+    "validation_evidence": {
+      "description": "Documents describing what validation was attempted; empty list means none",
+      "items": {
+        "type": "string"
+      },
+      "title": "Validation Evidence",
+      "type": "array"
+    },
+    "validation_status": {
+      "const": "not_validated",
+      "default": "not_validated",
+      "title": "Validation Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "region_id",
+    "boundary_id",
+    "mean_completeness",
+    "scored_fraction_of_region",
+    "min_completeness_to_score",
+    "inputs",
+    "validation_evidence",
+    "known_limitations"
+  ],
+  "title": "DataConfidence",
+  "type": "object"
+}

@@ -1,0 +1,205 @@
+{
+  "dataset_id": "exposure-screening-chennai",
+  "dataset_name": "FloodLens exposure screening products, Chennai",
+  "kind": "derived",
+  "source_url": "s3://copernicus-dem-30m/",
+  "provider": "FloodLens (derived from Copernicus DEM, OpenStreetMap, geoBoundaries)",
+  "license": "Mixed: Copernicus DEM licence; ODbL 1.0 (OSM, geoBoundaries ADM2) share-alike applies",
+  "attribution": "Contains modified Copernicus DEM data; (c) OpenStreetMap contributors; geoBoundaries.",
+  "acquisition_timestamp": "2026-10-30T03:55:26.113772Z",
+  "observation_period": "terrain-based; hypothetical rainfall scenarios; observed rainfall pending",
+  "spatial_resolution": "30 m raster; vectors simplified to 45 m",
+  "coordinate_reference_system": "EPSG:32644 (rasters); EPSG:4326 (GeoJSON)",
+  "processing_version": "floodlens-geo exposure 0.1.0",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+  "processing_status": "processed",
+  "limitations": [
+    "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+    "Classes are relative quantiles of the baseline index, not absolute risk levels",
+    "Weights and transform scales are uncalibrated heuristics (see docs/METHODOLOGY.md)",
+    "Surface-model terrain at 30 m cannot represent drains, culverts or embankments",
+    "Rainfall scenarios are hypothetical depths; no hydraulic routing or drainage capacity",
+    "Region boundaries: geoBoundaries core polygon is smaller than the OSM district polygon"
+  ],
+  "derived_from": [
+    "terrain-derivatives-chennai",
+    "osm-chennai-roads",
+    "osm-chennai-hospitals",
+    "osm-chennai-schools",
+    "osm-chennai-water",
+    "chennai-district-boundary",
+    "chennai-district-boundary-osm",
+    "copernicus-dem-chennai"
+  ],
+  "checksum_sha256": "f0abe5697ba60564a84d05aa05acfa2a5d0c6c28a340bf1768764fd48bed5f1e",
+  "file": "data/processed/exposure/chennai/exposure_summary.json",
+  "products": {
+    "baseline_index": {
+      "file": "data/processed/exposure/chennai/baseline_index.tif",
+      "sha256": "a812bb458f34ca8425a99b0dc43325e37107546fb7e139ce8001f0fa94e1a904"
+    },
+    "baseline_class": {
+      "file": "data/processed/exposure/chennai/baseline_class.tif",
+      "sha256": "6c3b72a84f3b5a7225c000d7189a1c30a3ab48192bc36511eebf13966d25b4ec"
+    },
+    "baseline_completeness": {
+      "file": "data/processed/exposure/chennai/baseline_completeness.tif",
+      "sha256": "0de226e3201730ad3560ba151eea121db6efcbdae84fdb2413bec2001ce3f27e"
+    },
+    "baseline_polygons": {
+      "file": "data/processed/exposure/chennai/baseline_polygons.geojson",
+      "sha256": "722eaca8753b6d0e930631abda3d747f501af10681680dada5d7d9d4e5c3eba2"
+    },
+    "baseline_roads_exposed": {
+      "file": "data/processed/exposure/chennai/baseline_roads_exposed.geojson",
+      "sha256": "7d1f94263e5491a693736fb80635818e0592d13ece613443733e64d3f3df5afa"
+    },
+    "baseline_facilities": {
+      "file": "data/processed/exposure/chennai/baseline_facilities.geojson",
+      "sha256": "35c0cda5b7683c16bf5a2d056d1383a3419a0f9db412ae8a3a7b2e28d28818bc"
+    },
+    "rain_50mm_index": {
+      "file": "data/processed/exposure/chennai/rain_50mm_index.tif",
+      "sha256": "b7fa97c3ec5e96afc36872f1cc7f54704f51a93d45b6af6620444844e8cc0816"
+    },
+    "rain_50mm_class": {
+      "file": "data/processed/exposure/chennai/rain_50mm_class.tif",
+      "sha256": "d876e248f9d4c6b0bbd0f3731fc1a36e0132ab059bdff9aafe130540e83194b6"
+    },
+    "rain_50mm_completeness": {
+      "file": "data/processed/exposure/chennai/rain_50mm_completeness.tif",
+      "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+    },
+    "rain_50mm_polygons": {
+      "file": "data/processed/exposure/chennai/rain_50mm_polygons.geojson",
+      "sha256": "a4c5fdff8fe11e3b1dba216b950132f5f64c57ba30309b8f7694fff08a6e48f3"
+    },
+    "rain_50mm_roads_exposed": {
+      "file": "data/processed/exposure/chennai/rain_50mm_roads_exposed.geojson",
+      "sha256": "24548c3a11c245e0215da2929503f12726e237e4e615ac1444a3570850e8ebc3"
+    },
+    "rain_50mm_facilities": {
+      "file": "data/processed/exposure/chennai/rain_50mm_facilities.geojson",
+      "sha256": "fe56bf56db6204266f83aeff8d7562d1994eba53c6f1f00b7f8052161e3d45b4"
+    },
+    "rain_100mm_index": {
+      "file": "data/processed/exposure/chennai/rain_100mm_index.tif",
+      "sha256": "8779341dd2986ccb137c48fd9f4fe5f108f046da1a4b00cb3849844f6cc915a3"
+    },
+    "rain_100mm_class": {
+      "file": "data/processed/exposure/chennai/rain_100mm_class.tif",
+      "sha256": "558bab3d5e9dcf37b36c94b51f0b5de5031d803d8bb18b04ba9d575268d146ed"
+    },
+    "rain_100mm_completeness": {
+      "file": "data/processed/exposure/chennai/rain_100mm_completeness.tif",
+      "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+    },
+    "rain_100mm_polygons": {
+      "file": "data/processed/exposure/chennai/rain_100mm_polygons.geojson",
+      "sha256": "fc38ce8f9500da78e9b6f35ae0ba0dbf9b0f502ead73e393c7387bbb286aa7fa"
+    },
+    "rain_100mm_roads_exposed": {
+      "file": "data/processed/exposure/chennai/rain_100mm_roads_exposed.geojson",
+      "sha256": "c29c6c821dfefdab971e9675d64024a71989920f01b017c9b58f554d79852b9d"
+    },
+    "rain_100mm_facilities": {
+      "file": "data/processed/exposure/chennai/rain_100mm_facilities.geojson",
+      "sha256": "80e8b65eca89c171d51b8e965705942f6786a17308cfcc4c9439eac46c3dd374"
+    },
+    "rain_200mm_index": {
+      "file": "data/processed/exposure/chennai/rain_200mm_index.tif",
+      "sha256": "fad26582578e61c4557052ecf219e1120c09b2b052dcd090976f86ebc5b20f8f"
+    },
+    "rain_200mm_class": {
+      "file": "data/processed/exposure/chennai/rain_200mm_class.tif",
+      "sha256": "4b25bc717aa5c57c9f3d429d8bc2e5359dc8498ecc50764889a3a9541672460b"
+    },
+    "rain_200mm_completeness": {
+      "file": "data/processed/exposure/chennai/rain_200mm_completeness.tif",
+      "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+    },
+    "rain_200mm_polygons": {
+      "file": "data/processed/exposure/chennai/rain_200mm_polygons.geojson",
+      "sha256": "011c3afab72acedbfcc7af81ccd0439fe7d3fd8b94e4a762c3f5021c47a8a048"
+    },
+    "rain_200mm_roads_exposed": {
+      "file": "data/processed/exposure/chennai/rain_200mm_roads_exposed.geojson",
+      "sha256": "0705a4f402eec5f80cf4ac7969ce350d9b04d17b36f29c9662bc5627678fce3c"
+    },
+    "rain_200mm_facilities": {
+      "file": "data/processed/exposure/chennai/rain_200mm_facilities.geojson",
+      "sha256": "b0fbafadebb329f2cae1bdbc68b8a5f923a4c41552f6bb23bbdb57f3ab80832b"
+    },
+    "rain_300mm_index": {
+      "file": "data/processed/exposure/chennai/rain_300mm_index.tif",
+      "sha256": "ce744bdd8e869e39d6f14bb9c1c791c71db1893d36f767c124d6c8937a73b99b"
+    },
+    "rain_300mm_class": {
+      "file": "data/processed/exposure/chennai/rain_300mm_class.tif",
+      "sha256": "bc60a08e5cdef768d7f81fa171628bead5a422eaa2b8379f42ced11255330fc1"
+    },
+    "rain_300mm_completeness": {
+      "file": "data/processed/exposure/chennai/rain_300mm_completeness.tif",
+      "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+    },
+    "rain_300mm_polygons": {
+      "file": "data/processed/exposure/chennai/rain_300mm_polygons.geojson",
+      "sha256": "0f44f659c339d9e1f0b026c23c1299119a9f53d463f99048784d1c0fd02c4476"
+    },
+    "rain_300mm_roads_exposed": {
+      "file": "data/processed/exposure/chennai/rain_300mm_roads_exposed.geojson",
+      "sha256": "4bd82b91ffac4dcd399ce1997cf939a0d5bb31b58eb04661cd93e9f9dacccaaf"
+    },
+    "rain_300mm_facilities": {
+      "file": "data/processed/exposure/chennai/rain_300mm_facilities.geojson",
+      "sha256": "7fb3e402d50321553712c8c69b4c972a4668103e8a205c22d8e8f8d0c080a3d6"
+    },
+    "summary": {
+      "file": "data/processed/exposure/chennai/exposure_summary.json",
+      "sha256": "f0abe5697ba60564a84d05aa05acfa2a5d0c6c28a340bf1768764fd48bed5f1e"
+    },
+    "water_distance": {
+      "file": "data/processed/exposure/chennai/water_distance_m.tif",
+      "sha256": "97baf39913c9d5cbee3718395a9b1c45184b221a4d99be892e9777d48ae03f06"
+    },
+    "permanent_water_mask": {
+      "file": "data/processed/exposure/chennai/permanent_water_mask.tif",
+      "sha256": "8ad2cd7578018f884d1b0dfe0441d024f7ce2774110f34eb5ebba5a67d1caba9"
+    }
+  },
+  "config": {
+    "weights": {
+      "hand": 0.3,
+      "twi": 0.15,
+      "slope": 0.1,
+      "flow_accumulation": 0.1,
+      "elevation": 0.15,
+      "water_distance": 0.1,
+      "rainfall": 0.1
+    },
+    "transforms": {
+      "hand_scale_m": 5.0,
+      "elevation_scale_m": 10.0,
+      "water_distance_scale_m": 500.0,
+      "slope_max_deg": 5.0,
+      "robust_percentiles": [
+        2.0,
+        98.0
+      ],
+      "rainfall_scale_mm": 200.0,
+      "reference_rainfall_mm": 100.0,
+      "reach_exponent": 0.5
+    },
+    "min_completeness": 0.5,
+    "n_classes": 5,
+    "scenario_rainfall_mm": [
+      50.0,
+      100.0,
+      200.0,
+      300.0
+    ],
+    "simplify_tolerance_m": 45.0,
+    "polygon_smooth_cells": 7,
+    "sieve_min_cells": 40
+  }
+}

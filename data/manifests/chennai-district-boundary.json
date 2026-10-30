@@ -1,0 +1,31 @@
+{
+  "dataset_id": "chennai-district-boundary",
+  "dataset_name": "Chennai district polygon (pilot boundary)",
+  "kind": "derived",
+  "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/",
+  "provider": "geoBoundaries (William & Mary geoLab)",
+  "license": "ODbL 1.0 (Pathways Data / lgdirectory.gov.in, via geoBoundaries)",
+  "attribution": "geoBoundaries gbOpen IND ADM2; Pathways Data Pvt. Ltd.",
+  "acquisition_timestamp": "2026-10-30T02:54:31.334601Z",
+  "observation_period": null,
+  "spatial_resolution": "vector",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo 0.1.0 (filter shapeName == 'Chennai')",
+  "geographical_coverage": "Chennai district, Tamil Nadu",
+  "processing_status": "processed",
+  "limitations": [
+    "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+    "Polygon area is 175 km2, smaller than the ~426 km2 usually quoted for Chennai district; treat as the city core and verify before reporting areas"
+  ],
+  "derived_from": [
+    "geoboundaries-ind-adm2"
+  ],
+  "checksum_sha256": "3c831f0c32f12c5c1aa99c6ad5f175fe98639928311bd9da5248ba472a27fc23",
+  "area_km2": 175.3,
+  "bounds": [
+    80.18339,
+    12.96704,
+    80.3101,
+    13.1489
+  ]
+}

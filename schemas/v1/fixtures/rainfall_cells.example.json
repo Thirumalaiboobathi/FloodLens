@@ -1,0 +1,733 @@
+{
+  "type": "FeatureCollection",
+  "schema_version": "1.1.0",
+  "scenario_id": "obs_late_20261022_20261028",
+  "region_id": "chennai",
+  "rainfall_stream": "recent_late",
+  "native_resolution_deg": 0.1,
+  "units": "mm",
+  "resampled": false,
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.0,
+              13.2
+            ],
+            [
+              80.1,
+              13.2
+            ],
+            [
+              80.1,
+              13.3
+            ],
+            [
+              80.0,
+              13.3
+            ],
+            [
+              80.0,
+              13.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 0,
+        "col": 0,
+        "state": "rain",
+        "accumulation_mm": 25.99
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.1,
+              13.2
+            ],
+            [
+              80.2,
+              13.2
+            ],
+            [
+              80.2,
+              13.3
+            ],
+            [
+              80.1,
+              13.3
+            ],
+            [
+              80.1,
+              13.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 0,
+        "col": 1,
+        "state": "rain",
+        "accumulation_mm": 31.315
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.2,
+              13.2
+            ],
+            [
+              80.3,
+              13.2
+            ],
+            [
+              80.3,
+              13.3
+            ],
+            [
+              80.2,
+              13.3
+            ],
+            [
+              80.2,
+              13.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 0,
+        "col": 2,
+        "state": "rain",
+        "accumulation_mm": 31.915
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.3,
+              13.2
+            ],
+            [
+              80.4,
+              13.2
+            ],
+            [
+              80.4,
+              13.3
+            ],
+            [
+              80.3,
+              13.3
+            ],
+            [
+              80.3,
+              13.2
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 0,
+        "col": 3,
+        "state": "rain",
+        "accumulation_mm": 28.98
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.0,
+              13.1
+            ],
+            [
+              80.1,
+              13.1
+            ],
+            [
+              80.1,
+              13.2
+            ],
+            [
+              80.0,
+              13.2
+            ],
+            [
+              80.0,
+              13.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 1,
+        "col": 0,
+        "state": "rain",
+        "accumulation_mm": 27.265
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.1,
+              13.1
+            ],
+            [
+              80.2,
+              13.1
+            ],
+            [
+              80.2,
+              13.2
+            ],
+            [
+              80.1,
+              13.2
+            ],
+            [
+              80.1,
+              13.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 1,
+        "col": 1,
+        "state": "rain",
+        "accumulation_mm": 28.58
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.2,
+              13.1
+            ],
+            [
+              80.3,
+              13.1
+            ],
+            [
+              80.3,
+              13.2
+            ],
+            [
+              80.2,
+              13.2
+            ],
+            [
+              80.2,
+              13.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 1,
+        "col": 2,
+        "state": "rain",
+        "accumulation_mm": 28.09
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.3,
+              13.1
+            ],
+            [
+              80.4,
+              13.1
+            ],
+            [
+              80.4,
+              13.2
+            ],
+            [
+              80.3,
+              13.2
+            ],
+            [
+              80.3,
+              13.1
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 1,
+        "col": 3,
+        "state": "rain",
+        "accumulation_mm": 25.88
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.0,
+              13.0
+            ],
+            [
+              80.1,
+              13.0
+            ],
+            [
+              80.1,
+              13.1
+            ],
+            [
+              80.0,
+              13.1
+            ],
+            [
+              80.0,
+              13.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 2,
+        "col": 0,
+        "state": "rain",
+        "accumulation_mm": 23.64
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.1,
+              13.0
+            ],
+            [
+              80.2,
+              13.0
+            ],
+            [
+              80.2,
+              13.1
+            ],
+            [
+              80.1,
+              13.1
+            ],
+            [
+              80.1,
+              13.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 2,
+        "col": 1,
+        "state": "rain",
+        "accumulation_mm": 23.14
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.2,
+              13.0
+            ],
+            [
+              80.3,
+              13.0
+            ],
+            [
+              80.3,
+              13.1
+            ],
+            [
+              80.2,
+              13.1
+            ],
+            [
+              80.2,
+              13.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 2,
+        "col": 2,
+        "state": "rain",
+        "accumulation_mm": 27.04
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.3,
+              13.0
+            ],
+            [
+              80.4,
+              13.0
+            ],
+            [
+              80.4,
+              13.1
+            ],
+            [
+              80.3,
+              13.1
+            ],
+            [
+              80.3,
+              13.0
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 2,
+        "col": 3,
+        "state": "rain",
+        "accumulation_mm": 25.23
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.0,
+              12.9
+            ],
+            [
+              80.1,
+              12.9
+            ],
+            [
+              80.1,
+              13.0
+            ],
+            [
+              80.0,
+              13.0
+            ],
+            [
+              80.0,
+              12.9
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 3,
+        "col": 0,
+        "state": "rain",
+        "accumulation_mm": 31.36
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.1,
+              12.9
+            ],
+            [
+              80.2,
+              12.9
+            ],
+            [
+              80.2,
+              13.0
+            ],
+            [
+              80.1,
+              13.0
+            ],
+            [
+              80.1,
+              12.9
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 3,
+        "col": 1,
+        "state": "rain",
+        "accumulation_mm": 34.82
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.2,
+              12.9
+            ],
+            [
+              80.3,
+              12.9
+            ],
+            [
+              80.3,
+              13.0
+            ],
+            [
+              80.2,
+              13.0
+            ],
+            [
+              80.2,
+              12.9
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 3,
+        "col": 2,
+        "state": "rain",
+        "accumulation_mm": 34.31
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.3,
+              12.9
+            ],
+            [
+              80.4,
+              12.9
+            ],
+            [
+              80.4,
+              13.0
+            ],
+            [
+              80.3,
+              13.0
+            ],
+            [
+              80.3,
+              12.9
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 3,
+        "col": 3,
+        "state": "rain",
+        "accumulation_mm": 43.73
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.0,
+              12.8
+            ],
+            [
+              80.1,
+              12.8
+            ],
+            [
+              80.1,
+              12.9
+            ],
+            [
+              80.0,
+              12.9
+            ],
+            [
+              80.0,
+              12.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 4,
+        "col": 0,
+        "state": "rain",
+        "accumulation_mm": 44.5
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.1,
+              12.8
+            ],
+            [
+              80.2,
+              12.8
+            ],
+            [
+              80.2,
+              12.9
+            ],
+            [
+              80.1,
+              12.9
+            ],
+            [
+              80.1,
+              12.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 4,
+        "col": 1,
+        "state": "rain",
+        "accumulation_mm": 44.13
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.2,
+              12.8
+            ],
+            [
+              80.3,
+              12.8
+            ],
+            [
+              80.3,
+              12.9
+            ],
+            [
+              80.2,
+              12.9
+            ],
+            [
+              80.2,
+              12.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 4,
+        "col": 2,
+        "state": "rain",
+        "accumulation_mm": 57.935
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              80.3,
+              12.8
+            ],
+            [
+              80.4,
+              12.8
+            ],
+            [
+              80.4,
+              12.9
+            ],
+            [
+              80.3,
+              12.9
+            ],
+            [
+              80.3,
+              12.8
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "row": 4,
+        "col": 3,
+        "state": "rain",
+        "accumulation_mm": 82.035
+      }
+    }
+  ],
+  "disclaimer": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index."
+}

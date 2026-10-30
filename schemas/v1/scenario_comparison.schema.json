@@ -1,0 +1,209 @@
+{
+  "$defs": {
+    "ScenarioRef": {
+      "additionalProperties": false,
+      "properties": {
+        "accumulation_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "examples": [
+            "24h hypothetical"
+          ],
+          "title": "Accumulation Period"
+        },
+        "rainfall_accumulation_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rainfall accumulation forcing in mm over `accumulation_period`; null for the terrain baseline. NOT a flood depth.",
+          "title": "Rainfall Accumulation Mm"
+        },
+        "rainfall_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dataset id of the rainfall data for observed scenarios; null for hypothetical ones.",
+          "title": "Rainfall Source"
+        },
+        "scenario_id": {
+          "examples": [
+            "baseline",
+            "rain_200mm"
+          ],
+          "pattern": "^[a-z0-9_]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_type": {
+          "$ref": "#/$defs/ScenarioType"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "scenario_type"
+      ],
+      "title": "ScenarioRef",
+      "type": "object"
+    },
+    "ScenarioStats": {
+      "additionalProperties": false,
+      "properties": {
+        "delta_vs_baseline_share_top_class": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Top-class share minus baseline; null for the baseline itself",
+          "title": "Delta Vs Baseline Share Top Class"
+        },
+        "facilities_in_top_class": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Facilities In Top Class",
+          "type": "object"
+        },
+        "mean_index": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Mean Index",
+          "type": "number"
+        },
+        "road_length_km_touching_top_class": {
+          "minimum": 0,
+          "title": "Road Length Km Touching Top Class",
+          "type": "number"
+        },
+        "scenario": {
+          "$ref": "#/$defs/ScenarioRef"
+        },
+        "share_by_class": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "title": "Share By Class",
+          "type": "object"
+        },
+        "share_top_class": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Share Top Class",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scenario",
+        "share_by_class",
+        "share_top_class",
+        "mean_index",
+        "road_length_km_touching_top_class",
+        "facilities_in_top_class",
+        "delta_vs_baseline_share_top_class"
+      ],
+      "title": "ScenarioStats",
+      "type": "object"
+    },
+    "ScenarioType": {
+      "description": "What forces a scenario. These three must never be conflated.",
+      "enum": [
+        "terrain_baseline",
+        "hypothetical_rainfall_accumulation",
+        "observed_rainfall"
+      ],
+      "title": "ScenarioType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "baseline_scenario_id": {
+      "title": "Baseline Scenario Id",
+      "type": "string"
+    },
+    "boundary_id": {
+      "title": "Boundary Id",
+      "type": "string"
+    },
+    "class_thresholds_baseline_index": {
+      "items": {
+        "type": "number"
+      },
+      "title": "Class Thresholds Baseline Index",
+      "type": "array"
+    },
+    "disclaimer": {
+      "default": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes",
+      "type": "array"
+    },
+    "observed_rainfall_status": {
+      "description": "'pending' when no real rainfall product has been processed; no observed scenario is then listed and none is synthesised.",
+      "enum": [
+        "available",
+        "pending"
+      ],
+      "title": "Observed Rainfall Status",
+      "type": "string"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "scenarios": {
+      "items": {
+        "$ref": "#/$defs/ScenarioStats"
+      },
+      "minItems": 1,
+      "title": "Scenarios",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "region_id",
+    "boundary_id",
+    "baseline_scenario_id",
+    "class_thresholds_baseline_index",
+    "scenarios",
+    "observed_rainfall_status",
+    "notes"
+  ],
+  "title": "ScenarioComparison",
+  "type": "object"
+}

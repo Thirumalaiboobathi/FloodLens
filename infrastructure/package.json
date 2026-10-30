@@ -1,0 +1,23 @@
+{
+  "name": "floodlens-infrastructure",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FloodLens AWS CDK app (ap-south-1). Synth and test only until a deployment is explicitly approved.",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "synth": "cdk synth --quiet",
+    "diff": "cdk diff"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "2.275.0",
+    "constructs": "10.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "aws-cdk": "2.1146.1",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^2.1.8"
+  }
+}

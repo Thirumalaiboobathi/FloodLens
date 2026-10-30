@@ -1,0 +1,25 @@
+{
+  "dataset_id": "chennai-district-boundary-osm",
+  "dataset_name": "Chennai district polygon from OpenStreetMap (comparison boundary)",
+  "kind": "source",
+  "source_url": "https://www.openstreetmap.org/relation/7910817",
+  "provider": "OpenStreetMap contributors via Overpass API",
+  "license": "ODbL 1.0",
+  "attribution": "(c) OpenStreetMap contributors",
+  "acquisition_timestamp": "2026-10-30T03:43:58.667555Z",
+  "observation_period": null,
+  "spatial_resolution": "vector",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo osm 0.1.0 (relation 7910817, admin_level 5)",
+  "geographical_coverage": "Chennai district, Tamil Nadu",
+  "processing_status": "processed",
+  "limitations": [
+    "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+    "325 km2; contains 172 km2 of the 175 km2 geoBoundaries polygon. May include coastal waters; crowd-sourced, not authoritative"
+  ],
+  "derived_from": [],
+  "checksum_sha256": "7b015e8ae827bb9616c9c6fbeb4452dc83b6b6c1564ad3706bfc1edeb06afb9d",
+  "area_km2": 325.0,
+  "overlap_with_geoboundaries_km2": 171.9,
+  "file": "data/processed/boundaries/chennai-district-osm.geojson"
+}

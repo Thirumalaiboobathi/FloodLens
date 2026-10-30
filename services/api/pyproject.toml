@@ -1,0 +1,21 @@
+[project]
+name = "floodlens-api"
+version = "1.0.0"
+description = "FloodLens read-only exposure API"
+requires-python = ">=3.12"
+dependencies = ["fastapi>=0.115", "pydantic>=2.7"]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx", "jsonschema", "uvicorn", "ruff"]
+lambda = ["mangum"]
+
+[tool.setuptools.packages.find]
+include = ["floodlens_api*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

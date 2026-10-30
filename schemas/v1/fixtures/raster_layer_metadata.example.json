@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "layer_id": "baseline_class",
+  "region_id": "chennai",
+  "kind": "exposure_class",
+  "scenario": {
+    "scenario_id": "baseline",
+    "scenario_type": "terrain_baseline",
+    "rainfall_accumulation_mm": null,
+    "accumulation_period": null,
+    "rainfall_source": null
+  },
+  "file": "processed/exposure/chennai/baseline_class.tif",
+  "crs": "EPSG:32644",
+  "width": 1235,
+  "height": 1626,
+  "resolution_m": 30.0,
+  "bounds_native": [
+    394736.1805860574,
+    1418418.4998781008,
+    431786.1805860574,
+    1467198.4998781008
+  ],
+  "bounds_wgs84": {
+    "west": 80.0282827036505,
+    "south": 12.828955136052489,
+    "east": 80.37139781560586,
+    "north": 13.271068181715666
+  },
+  "dtype": "uint8",
+  "nodata": 0.0,
+  "value_min": 1.0,
+  "value_max": 5.0,
+  "units": "class 1..5",
+  "sha256": "6c3b72a84f3b5a7225c000d7189a1c30a3ab48192bc36511eebf13966d25b4ec",
+  "derived_from": [
+    "terrain-derivatives-chennai",
+    "dem-chennai"
+  ],
+  "description": "Relative exposure class (baseline)"
+}

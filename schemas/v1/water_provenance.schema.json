@@ -1,0 +1,132 @@
+{
+  "$defs": {
+    "WaterSource": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition_timestamp": {
+          "format": "date-time",
+          "title": "Acquisition Timestamp",
+          "type": "string"
+        },
+        "attribution": {
+          "title": "Attribution",
+          "type": "string"
+        },
+        "checksum_sha256": {
+          "description": "SHA-256 of the processed OSM file this was built from",
+          "title": "Checksum Sha256",
+          "type": "string"
+        },
+        "dataset_id": {
+          "title": "Dataset Id",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "license_note": {
+          "default": "ODbL: derived databases must be shared alike with attribution to OpenStreetMap contributors.",
+          "title": "License Note",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "snapshot": {
+          "description": "Stated OSM snapshot period",
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset_id",
+        "provider",
+        "source_url",
+        "license",
+        "attribution",
+        "acquisition_timestamp",
+        "snapshot",
+        "checksum_sha256"
+      ],
+      "title": "WaterSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "coordinate_reference_system": {
+      "title": "Coordinate Reference System",
+      "type": "string"
+    },
+    "counts_by_class": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Counts By Class",
+      "type": "object"
+    },
+    "counts_by_type": {
+      "additionalProperties": {
+        "type": "integer"
+      },
+      "title": "Counts By Type",
+      "type": "object"
+    },
+    "disclaimer": {
+      "default": "Mapped water features from OpenStreetMap contributors (ODbL 1.0). Crowd-sourced and not validated for completeness. Not a flood extent or depth; a mapped water body is not a statement about current water levels.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "feature_count": {
+      "title": "Feature Count",
+      "type": "integer"
+    },
+    "geographical_coverage": {
+      "title": "Geographical Coverage",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "processing_version": {
+      "title": "Processing Version",
+      "type": "string"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/WaterSource"
+    }
+  },
+  "required": [
+    "region_id",
+    "source",
+    "geographical_coverage",
+    "coordinate_reference_system",
+    "processing_version",
+    "feature_count",
+    "counts_by_type",
+    "counts_by_class",
+    "limitations"
+  ],
+  "title": "WaterProvenance",
+  "type": "object"
+}

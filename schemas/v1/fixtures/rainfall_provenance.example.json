@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.1.0",
+  "scenario_id": "obs_late_20261022_20261028",
+  "region_id": "chennai",
+  "rainfall_stream": "recent_late",
+  "product_identifier": "GPM_3IMERGDL",
+  "product_versions": [
+    "V07C"
+  ],
+  "derived_dataset_id": "imerg-v07-late-total-chennai-2026-10-22_2026-10-28",
+  "raw_dataset_id": "nasa-gpm-imerg-v07-late-daily-raw-chennai-2026-10-22_2026-10-28",
+  "raw_verification": "verified",
+  "processed_sha256": "75a87ceb12366815be12c8b72e24b26c6e3046390d43e2b64b37b056fc709c22",
+  "retrieval_timestamp": "2026-10-30T04:51:54.476717Z",
+  "source": {
+    "provider": "NASA GES DISC / GPM",
+    "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/",
+    "attribution": "Huffman, G.J., E.F. Stocker, D.T. Bolvin, E.J. Nelkin, Jackson Tan (2023), GPM IMERG Late Precipitation L3 1 day 0.1 degree x 0.1 degree V07, Greenbelt, MD, Goddard Earth Sciences Data and Information Services Center (GES DISC).",
+    "license": "NASA open data (free, attribution requested); see GES DISC data policy"
+  },
+  "granules": [
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4",
+      "date": "2026-10-22",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4",
+      "date": "2026-10-23",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4",
+      "date": "2026-10-24",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4",
+      "date": "2026-10-25",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4",
+      "date": "2026-10-26",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4",
+      "date": "2026-10-27",
+      "product_version": "V07C"
+    },
+    {
+      "file": "3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4",
+      "date": "2026-10-28",
+      "product_version": "V07C"
+    }
+  ],
+  "processing": [
+    "Accumulation: sum of consecutive UTC daily totals; a cell missing on any day stays missing",
+    "Missing data: fill value -9999.9 -> NaN; zero rainfall is a valid observation, not missing",
+    "Spatial window: whole 0.1 degree cells intersecting the bbox; no resampling or interpolation",
+    "Grid validation: check_axis: dtype-aware tolerance, monotonic, regular, bounded"
+  ],
+  "limitations": [
+    "Satellite-based estimate on a ~10 km (0.1 degree) grid; not a rain-gauge measurement",
+    "Daily totals cover 00:00-23:59:59 UTC (05:30 IST to 05:29 IST next day)",
+    "Rainfall accumulation, not flood depth; not a forecast and not an official warning",
+    "Late Run is a near-real-time provisional estimate (~14 h latency) without the monthly gauge adjustment of Final Run; it can differ materially from Final for the same day and is not interchangeable with it",
+    "Recent satellite rainfall: may be revised or replaced by Final Run later",
+    "Clipped to the AOI bounding box, not the official Chennai boundary (boundary dataset pending, ADR-0003)"
+  ],
+  "warnings": [],
+  "disclaimer": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index."
+}

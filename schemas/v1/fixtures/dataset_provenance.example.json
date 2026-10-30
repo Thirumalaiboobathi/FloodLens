@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0.0",
+  "datasets": [
+    {
+      "schema_version": "1.0.0",
+      "dataset_id": "chennai-district-boundary-osm",
+      "dataset_name": "Chennai district polygon from OpenStreetMap (comparison boundary)",
+      "kind": "source",
+      "provider": "OpenStreetMap contributors via Overpass API",
+      "source_url": "https://www.openstreetmap.org/relation/7910817",
+      "license": "ODbL 1.0",
+      "attribution": "(c) OpenStreetMap contributors",
+      "acquisition_timestamp": "2026-10-30T03:43:58.667555Z",
+      "observation_period": null,
+      "spatial_resolution": "vector",
+      "coordinate_reference_system": "EPSG:4326",
+      "processing_version": "floodlens-geo osm 0.1.0 (relation 7910817, admin_level 5)",
+      "geographical_coverage": "Chennai district, Tamil Nadu",
+      "processing_status": "processed",
+      "limitations": [
+        "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+        "325 km2; contains 172 km2 of the 175 km2 geoBoundaries polygon. May include coastal waters; crowd-sourced, not authoritative"
+      ],
+      "derived_from": [],
+      "checksum_sha256": "7b015e8ae827bb9616c9c6fbeb4452dc83b6b6c1564ad3706bfc1edeb06afb9d"
+    },
+    {
+      "schema_version": "1.0.0",
+      "dataset_id": "chennai-district-boundary",
+      "dataset_name": "Chennai district polygon (pilot boundary)",
+      "kind": "derived",
+      "provider": "geoBoundaries (William & Mary geoLab)",
+      "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/",
+      "license": "ODbL 1.0 (Pathways Data / lgdirectory.gov.in, via geoBoundaries)",
+      "attribution": "geoBoundaries gbOpen IND ADM2; Pathways Data Pvt. Ltd.",
+      "acquisition_timestamp": "2026-10-30T02:54:31.334601Z",
+      "observation_period": null,
+      "spatial_resolution": "vector",
+      "coordinate_reference_system": "EPSG:4326",
+      "processing_version": "floodlens-geo 0.1.0 (filter shapeName == 'Chennai')",
+      "geographical_coverage": "Chennai district, Tamil Nadu",
+      "processing_status": "processed",
+      "limitations": [
+        "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+        "Polygon area is 175 km2, smaller than the ~426 km2 usually quoted for Chennai district; treat as the city core and verify before reporting areas"
+      ],
+      "derived_from": [
+        "geoboundaries-ind-adm2"
+      ],
+      "checksum_sha256": "3c831f0c32f12c5c1aa99c6ad5f175fe98639928311bd9da5248ba472a27fc23"
+    },
+    {
+      "schema_version": "1.0.0",
+      "dataset_id": "copernicus-dem-chennai",
+      "dataset_name": "Copernicus DEM (GLO-30) tiles for Chennai",
+      "kind": "source",
+      "provider": "European Space Agency / Copernicus (AWS Open Data Registry)",
+      "source_url": "s3://copernicus-dem-30m/ , s3://copernicus-dem-90m/",
+      "license": "Copernicus DEM licence (free, attribution required)",
+      "attribution": "Contains modified Copernicus DEM data (c) DLR e.V. 2010-2014 and (c) Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+      "acquisition_timestamp": "2026-10-30T02:33:18.720895Z",
+      "observation_period": null,
+      "spatial_resolution": "GLO-30 30 m (Copernicus_DSM_COG_10_N12_00_E080_00_DEM), GLO-30 30 m (Copernicus_DSM_COG_10_N13_00_E080_00_DEM)",
+      "coordinate_reference_system": "EPSG:4326",
+      "processing_version": "raw-0.1.0",
+      "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+      "processing_status": "downloaded",
+      "limitations": [
+        "Digital Surface Model (includes buildings/vegetation), not bare-earth terrain",
+        "Not suitable for flood depth estimation",
+        "Vertical datum EGM2008 heights"
+      ],
+      "derived_from": [],
+      "checksum_sha256": null
+    }
+  ]
+}

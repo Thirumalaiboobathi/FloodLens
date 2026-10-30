@@ -1,0 +1,314 @@
+{
+  "$defs": {
+    "Bbox": {
+      "additionalProperties": false,
+      "properties": {
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "Bbox",
+      "type": "object"
+    },
+    "WaterClass": {
+      "enum": [
+        "water",
+        "river",
+        "canal",
+        "stream",
+        "drain"
+      ],
+      "title": "WaterClass",
+      "type": "string"
+    },
+    "WaterFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry": {
+          "$ref": "#/$defs/WaterGeometry"
+        },
+        "properties": {
+          "$ref": "#/$defs/WaterProperties"
+        },
+        "type": {
+          "const": "Feature",
+          "default": "Feature",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties"
+      ],
+      "title": "WaterFeature",
+      "type": "object"
+    },
+    "WaterFeatureType": {
+      "enum": [
+        "water_body",
+        "waterway"
+      ],
+      "title": "WaterFeatureType",
+      "type": "string"
+    },
+    "WaterGeometry": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinates": {
+          "items": {},
+          "title": "Coordinates",
+          "type": "array"
+        },
+        "type": {
+          "enum": [
+            "Polygon",
+            "LineString"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "title": "WaterGeometry",
+      "type": "object"
+    },
+    "WaterProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "feature_type": {
+          "$ref": "#/$defs/WaterFeatureType"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "osm_id": {
+          "title": "Osm Id",
+          "type": "integer"
+        },
+        "osm_type": {
+          "enum": [
+            "way",
+            "relation",
+            "node"
+          ],
+          "title": "Osm Type",
+          "type": "string"
+        },
+        "water_class": {
+          "$ref": "#/$defs/WaterClass"
+        }
+      },
+      "required": [
+        "osm_type",
+        "osm_id",
+        "name",
+        "feature_type",
+        "water_class"
+      ],
+      "title": "WaterProperties",
+      "type": "object"
+    },
+    "WaterSource": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition_timestamp": {
+          "format": "date-time",
+          "title": "Acquisition Timestamp",
+          "type": "string"
+        },
+        "attribution": {
+          "title": "Attribution",
+          "type": "string"
+        },
+        "checksum_sha256": {
+          "description": "SHA-256 of the processed OSM file this was built from",
+          "title": "Checksum Sha256",
+          "type": "string"
+        },
+        "dataset_id": {
+          "title": "Dataset Id",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "license_note": {
+          "default": "ODbL: derived databases must be shared alike with attribution to OpenStreetMap contributors.",
+          "title": "License Note",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "snapshot": {
+          "description": "Stated OSM snapshot period",
+          "title": "Snapshot",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset_id",
+        "provider",
+        "source_url",
+        "license",
+        "attribution",
+        "acquisition_timestamp",
+        "snapshot",
+        "checksum_sha256"
+      ],
+      "title": "WaterSource",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "bbox": {
+      "$ref": "#/$defs/Bbox"
+    },
+    "disclaimer": {
+      "default": "Mapped water features from OpenStreetMap contributors (ODbL 1.0). Crowd-sourced and not validated for completeness. Not a flood extent or depth; a mapped water body is not a statement about current water levels.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "feature_type": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WaterFeatureType"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "features": {
+      "items": {
+        "$ref": "#/$defs/WaterFeature"
+      },
+      "title": "Features",
+      "type": "array"
+    },
+    "limit": {
+      "title": "Limit",
+      "type": "integer"
+    },
+    "matched": {
+      "description": "Features intersecting the bbox that match the filters",
+      "title": "Matched",
+      "type": "integer"
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Offset of the next page, or null when complete",
+      "title": "Next Offset"
+    },
+    "offset": {
+      "title": "Offset",
+      "type": "integer"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "returned": {
+      "title": "Returned",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/WaterSource"
+    },
+    "truncated": {
+      "title": "Truncated",
+      "type": "boolean"
+    },
+    "type": {
+      "const": "FeatureCollection",
+      "default": "FeatureCollection",
+      "title": "Type",
+      "type": "string"
+    },
+    "water_class": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WaterClass"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "region_id",
+    "bbox",
+    "feature_type",
+    "water_class",
+    "limit",
+    "offset",
+    "matched",
+    "returned",
+    "truncated",
+    "next_offset",
+    "source",
+    "features"
+  ],
+  "title": "WaterFeatures",
+  "type": "object"
+}

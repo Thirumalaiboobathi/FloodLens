@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.1.0",
+  "region_id": "chennai",
+  "as_of_utc": "2026-10-30T12:00:00Z",
+  "datasets": [
+    {
+      "scenario_id": "obs_final_20231203_20231205",
+      "rainfall_stream": "historical_final",
+      "retrieval_timestamp": "2026-10-30T04:30:24.857333Z",
+      "data_freshness": {
+        "status": "historical_archive",
+        "as_of_utc": "2026-10-30T12:00:00Z",
+        "observation_end": "2023-12-05",
+        "age_days": 1060,
+        "is_live": false,
+        "note": "Historical observation period; not live or real-time."
+      }
+    },
+    {
+      "scenario_id": "obs_late_20261022_20261028",
+      "rainfall_stream": "recent_late",
+      "retrieval_timestamp": "2026-10-30T04:51:54.476717Z",
+      "data_freshness": {
+        "status": "recent_provisional",
+        "as_of_utc": "2026-10-30T12:00:00Z",
+        "observation_end": "2026-10-28",
+        "age_days": 2,
+        "is_live": false,
+        "note": "Observation ended 2 day(s) before this request. Provisional Late Run estimate; not live or real-time and not a forecast."
+      }
+    }
+  ]
+}

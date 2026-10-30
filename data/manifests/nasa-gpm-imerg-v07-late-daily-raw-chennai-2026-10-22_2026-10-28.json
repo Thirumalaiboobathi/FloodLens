@@ -1,0 +1,842 @@
+{
+  "dataset_id": "nasa-gpm-imerg-v07-late-daily-raw-chennai-2026-10-22_2026-10-28",
+  "dataset_name": "GPM IMERG V07 Late daily granules, Chennai, 2026-10-22/2026-10-28 (UTC days)",
+  "kind": "source",
+  "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/",
+  "provider": "NASA GES DISC / GPM",
+  "license": "NASA open data (free, attribution requested); see GES DISC data policy",
+  "attribution": "Huffman, G.J., E.F. Stocker, D.T. Bolvin, E.J. Nelkin, Jackson Tan (2023), GPM IMERG Late Precipitation L3 1 day 0.1 degree x 0.1 degree V07, Greenbelt, MD, Goddard Earth Sciences Data and Information Services Center (GES DISC).",
+  "acquisition_timestamp": "2026-10-30T04:51:54.476717Z",
+  "observation_period": "2026-10-22/2026-10-28 (UTC days)",
+  "spatial_resolution": "0.1 degree (~10 km), global granules, mm/day",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "GPM_3IMERGDL.07 (V07C)",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25) (whole 0.1 degree cells)",
+  "processing_status": "downloaded",
+  "limitations": [
+    "Satellite-based estimate on a ~10 km (0.1 degree) grid; not a rain-gauge measurement",
+    "Daily totals cover 00:00-23:59:59 UTC (05:30 IST to 05:29 IST next day)",
+    "Rainfall accumulation, not flood depth; not a forecast and not an official warning",
+    "Late Run is a near-real-time provisional estimate (~14 h latency) without the monthly gauge adjustment of Final Run; it can differ materially from Final for the same day and is not interchangeable with it",
+    "Recent satellite rainfall: may be revised or replaced by Final Run later",
+    "Clipped to the AOI bounding box, not the official Chennai boundary (boundary dataset pending, ADR-0003)"
+  ],
+  "derived_from": [],
+  "checksum_sha256": null,
+  "granule_checksums_sha256": {
+    "3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4": "6d062a90b250380e0707bf1653a18852acc9e7b57aa47709bbffaed6ffcc8f94",
+    "3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4": "86009438260c59c2242ecfec21b97e3bbaab0be19c7766c6c3262f54f8c8dec3",
+    "3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4": "70fc0365bc2abbfa4c0556f68e27b25445ffa14e3dbf3142b18a7ef14f994e64",
+    "3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4": "f6f6e0cd4d610395698e5c09c45ec5319db398c0acc3af47cb9fcdca78853ef3",
+    "3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4": "cd813280c6a8cc2c4c8991c99cc92c37ff12f85abed277379e74d29341c08c7c",
+    "3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4": "edb21179e185120bce87b80d7da760bea37d04204e0d3dd93b4cafcacac7cb3c",
+    "3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4": "f57716e4818b9887d03583f832f128a340bf33f4d65c029e82e42267fa1664c6"
+  },
+  "granule_files": {
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4": "6d062a90b250380e0707bf1653a18852acc9e7b57aa47709bbffaed6ffcc8f94",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4": "86009438260c59c2242ecfec21b97e3bbaab0be19c7766c6c3262f54f8c8dec3",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4": "70fc0365bc2abbfa4c0556f68e27b25445ffa14e3dbf3142b18a7ef14f994e64",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4": "f6f6e0cd4d610395698e5c09c45ec5319db398c0acc3af47cb9fcdca78853ef3",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4": "cd813280c6a8cc2c4c8991c99cc92c37ff12f85abed277379e74d29341c08c7c",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4": "edb21179e185120bce87b80d7da760bea37d04204e0d3dd93b4cafcacac7cb3c",
+    "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4": "f57716e4818b9887d03583f832f128a340bf33f4d65c029e82e42267fa1664c6"
+  },
+  "run_type": "late",
+  "product_versions": [
+    "V07C"
+  ],
+  "daily_provenance": [
+    {
+      "observation_date": "2026-10-22",
+      "utc_coverage": {
+        "start": "2026-10-22T00:00:00+00:00",
+        "stop": "2026-10-22T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-23T14:29:38.000Z",
+      "retrieved_at": "2026-10-30T04:50:01.902433+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28207450,
+      "sha256": "6d062a90b250380e0707bf1653a18852acc9e7b57aa47709bbffaed6ffcc8f94",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6479924,
+      "global_missing_percent": 0.0012,
+      "aoi_mm_per_day": {
+        "min": 2.06,
+        "mean": 7.46,
+        "median": 4.75,
+        "max": 31.31
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 2.06,
+          "mean": 7.458,
+          "max": 31.31,
+          "zero_rain_cells": 0,
+          "wet_cells": 20,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 15.0,
+          "mean": 19.55,
+          "max": 25.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 80.179,
+          "mean": 639.576,
+          "max": 3944.688,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 6.332,
+            "mean": 15.276,
+            "max": 44.411
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.85,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-23",
+      "utc_coverage": {
+        "start": "2026-10-23T00:00:00+00:00",
+        "stop": "2026-10-23T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-24T14:30:13.000Z",
+      "retrieved_at": "2026-10-30T04:50:12.679093+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28611218,
+      "sha256": "86009438260c59c2242ecfec21b97e3bbaab0be19c7766c6c3262f54f8c8dec3",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6480000,
+      "global_missing_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 2.43,
+        "mean": 5.39,
+        "median": 4.92,
+        "max": 11.85
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 2.425,
+          "mean": 5.385,
+          "max": 11.855,
+          "zero_rain_cells": 0,
+          "wet_cells": 20,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 13.0,
+          "mean": 22.95,
+          "max": 32.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 102.417,
+          "mean": 336.788,
+          "max": 1127.886,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 7.156,
+            "mean": 12.27,
+            "max": 23.747
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.7,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-24",
+      "utc_coverage": {
+        "start": "2026-10-24T00:00:00+00:00",
+        "stop": "2026-10-24T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-25T14:30:35.000Z",
+      "retrieved_at": "2026-10-30T04:50:30.611762+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28711386,
+      "sha256": "70fc0365bc2abbfa4c0556f68e27b25445ffa14e3dbf3142b18a7ef14f994e64",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6476922,
+      "global_missing_percent": 0.0475,
+      "aoi_mm_per_day": {
+        "min": 3.49,
+        "mean": 8.94,
+        "median": 8.11,
+        "max": 17.18
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 3.495,
+          "mean": 8.943,
+          "max": 17.18,
+          "zero_rain_cells": 0,
+          "wet_cells": 20,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 12.0,
+          "mean": 18.55,
+          "max": 27.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 174.021,
+          "mean": 716.707,
+          "max": 2001.809,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 9.328,
+            "mean": 17.838,
+            "max": 31.637
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.95,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-25",
+      "utc_coverage": {
+        "start": "2026-10-25T00:00:00+00:00",
+        "stop": "2026-10-25T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-26T14:31:03.000Z",
+      "retrieved_at": "2026-10-30T04:50:45.189692+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28093666,
+      "sha256": "f6f6e0cd4d610395698e5c09c45ec5319db398c0acc3af47cb9fcdca78853ef3",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6480000,
+      "global_missing_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 5.78,
+        "mean": 12.76,
+        "median": 13.12,
+        "max": 21.64
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 5.78,
+          "mean": 12.764,
+          "max": 21.64,
+          "zero_rain_cells": 0,
+          "wet_cells": 20,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 25.0,
+          "mean": 32.75,
+          "max": 39.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 322.932,
+          "mean": 961.734,
+          "max": 2034.065,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 12.707,
+            "mean": 21.514,
+            "max": 31.891
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.75,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-26",
+      "utc_coverage": {
+        "start": "2026-10-26T00:00:00+00:00",
+        "stop": "2026-10-26T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-27T14:31:52.000Z",
+      "retrieved_at": "2026-10-30T04:50:59.496131+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 27228457,
+      "sha256": "cd813280c6a8cc2c4c8991c99cc92c37ff12f85abed277379e74d29341c08c7c",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6480000,
+      "global_missing_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 0.0,
+        "mean": 0.19,
+        "median": 0.18,
+        "max": 0.44
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 0.189,
+          "max": 0.44,
+          "zero_rain_cells": 1,
+          "wet_cells": 19,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 3.35,
+          "max": 7.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 2.863,
+          "mean": 9.422,
+          "max": 23.321,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 1.196,
+            "mean": 2.065,
+            "max": 3.415
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.95,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-27",
+      "utc_coverage": {
+        "start": "2026-10-27T00:00:00+00:00",
+        "stop": "2026-10-27T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-28T14:26:27.000Z",
+      "retrieved_at": "2026-10-30T04:51:23.902087+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28038622,
+      "sha256": "edb21179e185120bce87b80d7da760bea37d04204e0d3dd93b4cafcacac7cb3c",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6480000,
+      "global_missing_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 0.0,
+        "mean": 0.25,
+        "median": 0.19,
+        "max": 0.71
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 0.254,
+          "max": 0.715,
+          "zero_rain_cells": 2,
+          "wet_cells": 18,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 3.6,
+          "max": 6.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 2.765,
+          "mean": 12.227,
+          "max": 38.59,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 1.176,
+            "mean": 2.272,
+            "max": 4.393
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 99.0,
+          "mean": 99.95,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    },
+    {
+      "observation_date": "2026-10-28",
+      "utc_coverage": {
+        "start": "2026-10-28T00:00:00+00:00",
+        "stop": "2026-10-28T23:59:59.999000+00:00"
+      },
+      "dataset_id": "GPM_3IMERGDL.07",
+      "collection_concept_id": "C2723754859-GES_DISC",
+      "doi": "10.5067/GPM/IMERGDL/DAY/07",
+      "run_type": "late",
+      "product_version": "V07C",
+      "granule_id": "3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C",
+      "granule_file": "3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4",
+      "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDL.07/2026/10/3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4",
+      "cmr_updated": "2026-10-29T14:29:05.000Z",
+      "retrieved_at": "2026-10-30T04:51:34.913656+00:00",
+      "retrieval_basis": "download",
+      "size_bytes": 28522757,
+      "sha256": "f57716e4818b9887d03583f832f128a340bf33f4d65c029e82e42267fa1664c6",
+      "native_resolution_deg": 0.1,
+      "crs": "EPSG:4326",
+      "variable": "precipitation",
+      "units": "mm/day",
+      "global_valid_cells": 6480000,
+      "global_missing_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 0.0,
+        "mean": 0.0,
+        "median": 0.0,
+        "max": 0.0
+      },
+      "quality": {
+        "precipitation": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 0.0,
+          "max": 0.0,
+          "zero_rain_cells": 20,
+          "wet_cells": 0,
+          "zero_rain_with_no_retrievals": 0
+        },
+        "precipitation_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        },
+        "precipitation_cnt_cond": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 0.0,
+          "mean": 0.0,
+          "max": 0.0
+        },
+        "randomError": {
+          "units": "mm/day",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 2.765,
+          "mean": 2.765,
+          "max": 2.765,
+          "status": "as_delivered_unverified",
+          "note": "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence.",
+          "excluded_cells": 0,
+          "hypothesis": {
+            "status": "unverified_research_hypothesis",
+            "formula": "sqrt(24 * V / N), V = stored randomError, N = randomError_cnt",
+            "assumption": "stored value is the sum over valid half-hours of squared half-hourly error (mm^2/hr^2); not confirmed by NASA or by half-hourly reconstruction",
+            "units_if_true": "mm/day",
+            "units": "mm/day (if hypothesis holds)",
+            "aoi_cells": 20,
+            "valid_cells": 20,
+            "missing_cells": 0,
+            "min": 1.176,
+            "mean": 1.176,
+            "max": 1.176
+          }
+        },
+        "probabilityLiquidPrecipitation": {
+          "units": "percent",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 100.0,
+          "mean": 100.0,
+          "max": 100.0
+        },
+        "randomError_cnt": {
+          "units": "count",
+          "aoi_cells": 20,
+          "valid_cells": 20,
+          "missing_cells": 0,
+          "min": 48.0,
+          "mean": 48.0,
+          "max": 48.0
+        }
+      }
+    }
+  ],
+  "data_quality_notes": [
+    "Stored as delivered by NASA, unchanged. Its magnitude (hundreds to thousands of mm/day where the mean rainfall is a few mm/day) and its linear growth with randomError_cnt are inconsistent with the documented daily root-mean-square error (mm/day). It is not a validated uncertainty measure: do not display it, accumulate it across days, or use it in scores or confidence."
+  ],
+  "randomError_investigation": {
+    "status": "as_delivered_unverified",
+    "summary": "One-day half-hourly reconstruction; not an official uncertainty estimate and not NASA-confirmed.",
+    "date_investigated": "2026-10-30",
+    "day_examined": "2026-10-22",
+    "confirmed_reconstruction_result": {
+      "scope": "one day (2026-10-22), product V07C Late, global grid",
+      "daily_product": "GPM_3IMERGDL 07, variable randomError (labelled mm/day), randomError_cnt",
+      "half_hourly_product": "GPM_3IMERGHHL 07, variable randomError (mm/hr), Grid group",
+      "half_hourly_granules": "48/48, 00:00:00-23:30:00 UTC at 30 min steps, no gaps",
+      "half_hourly_total_bytes": 357080310,
+      "valid_global_cells": 6479924,
+      "reconstruction": "sum over valid half-hours of (half-hourly randomError)^2, no scaling",
+      "correlation_with_stored_daily": 1.0,
+      "max_absolute_difference": 0.107,
+      "max_absolute_difference_note": "float32 rounding, at stored values up to about 1.3e5",
+      "chennai_aoi_cells": 16,
+      "chennai_aoi_max_absolute_difference": 0.0001,
+      "count_check": "randomError_cnt equals the valid half-hour count in every daily-valid cell",
+      "raw_files": "data/raw/investigations/imerg-late-halfhourly-20261022/ (SHA256SUMS.txt, download_log.json)"
+    },
+    "conflict_with_published_formula": {
+      "published_daily_definition": "Perr_daily = sqrt(sum(Perr_i^2 * valid) / N_err * 24), RMS, mm/day",
+      "published_formula_reproduces_stored_values": false,
+      "global_mean_stored": 258.78,
+      "global_mean_published_formula": 5.2,
+      "global_relative_difference_median": -0.5747,
+      "global_correlation_published_formula": 0.839,
+      "chennai_mean_stored": 750.33,
+      "chennai_mean_published_formula": 16.72,
+      "dimensional_note": "with half-hourly inputs in mm/hr the published expression has units mm/hr x sqrt(24), not mm/day; unresolved and not scaled here"
+    },
+    "pending_nasa_confirmation": [
+      "whether the stored daily value is intended to be the unnormalised sum of squares or is a processing defect or a documentation error",
+      "whether the same holds on other days, versions (V07B/V07C) and runs (Late/Final)",
+      "the intended unit of the daily randomError"
+    ],
+    "restrictions": "Do not label the reconstructed quantity an official or validated uncertainty estimate. Not exposed in the API or frontend, not used in exposure scores or confidence, never summed across days.",
+    "separate_discrepancy": "half-hourly file header ProductVersion=07B while file names say V07C"
+  }
+}

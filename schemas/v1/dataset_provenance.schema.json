@@ -1,0 +1,164 @@
+{
+  "$defs": {
+    "DatasetProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "acquisition_timestamp": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Acquisition Timestamp"
+        },
+        "attribution": {
+          "title": "Attribution",
+          "type": "string"
+        },
+        "checksum_sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Checksum Sha256"
+        },
+        "coordinate_reference_system": {
+          "title": "Coordinate Reference System",
+          "type": "string"
+        },
+        "dataset_id": {
+          "title": "Dataset Id",
+          "type": "string"
+        },
+        "dataset_name": {
+          "title": "Dataset Name",
+          "type": "string"
+        },
+        "derived_from": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Derived From",
+          "type": "array"
+        },
+        "geographical_coverage": {
+          "title": "Geographical Coverage",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "source",
+            "derived",
+            "fixture"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "license": {
+          "title": "License",
+          "type": "string"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Limitations",
+          "type": "array"
+        },
+        "observation_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observation Period"
+        },
+        "processing_status": {
+          "enum": [
+            "planned",
+            "downloaded",
+            "processed",
+            "failed"
+          ],
+          "title": "Processing Status",
+          "type": "string"
+        },
+        "processing_version": {
+          "title": "Processing Version",
+          "type": "string"
+        },
+        "provider": {
+          "title": "Provider",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0.0",
+          "default": "1.0.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source_url": {
+          "title": "Source Url",
+          "type": "string"
+        },
+        "spatial_resolution": {
+          "title": "Spatial Resolution",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dataset_id",
+        "dataset_name",
+        "kind",
+        "provider",
+        "source_url",
+        "license",
+        "attribution",
+        "acquisition_timestamp",
+        "observation_period",
+        "spatial_resolution",
+        "coordinate_reference_system",
+        "processing_version",
+        "geographical_coverage",
+        "processing_status",
+        "limitations",
+        "derived_from",
+        "checksum_sha256"
+      ],
+      "title": "DatasetProvenance",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "datasets": {
+      "items": {
+        "$ref": "#/$defs/DatasetProvenance"
+      },
+      "title": "Datasets",
+      "type": "array"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "datasets"
+  ],
+  "title": "ProvenanceList",
+  "type": "object"
+}

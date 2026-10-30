@@ -1,0 +1,124 @@
+{
+  "type": "FeatureCollection",
+  "schema_version": "1.0.0",
+  "region_id": "chennai",
+  "scenario": {
+    "scenario_id": "rain_200mm",
+    "scenario_type": "hypothetical_rainfall_accumulation",
+    "rainfall_accumulation_mm": 200.0,
+    "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+    "rainfall_source": null
+  },
+  "disclaimer": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+  "bbox": {
+    "west": 80.205,
+    "south": 12.965,
+    "east": 80.24,
+    "north": 13.0
+  },
+  "detail": null,
+  "truncated": false,
+  "matched": 5,
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.206773,
+          12.965385
+        ]
+      },
+      "properties": {
+        "osm_id": 442508332,
+        "name": "Sarswathi Hospital",
+        "osm_class": "hospital",
+        "facility_type": "hospital_or_clinic",
+        "exp_index": 0.7108,
+        "exp_class": 5,
+        "hand_m": 1.4,
+        "water_dist_m": 510.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.228659,
+          12.980046
+        ]
+      },
+      "properties": {
+        "osm_id": 1993266486,
+        "name": "Ortho clinic",
+        "osm_class": "hospital",
+        "facility_type": "hospital_or_clinic",
+        "exp_index": 0.4586,
+        "exp_class": 3,
+        "hand_m": 4.2,
+        "water_dist_m": 494.8
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.208296,
+          12.971029
+        ]
+      },
+      "properties": {
+        "osm_id": 2669702938,
+        "name": "Sukrthi Nursing Home",
+        "osm_class": "hospital",
+        "facility_type": "hospital_or_clinic",
+        "exp_index": 0.6152,
+        "exp_class": 4,
+        "hand_m": 0.6,
+        "water_dist_m": 240.0
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.229892,
+          12.986273
+        ]
+      },
+      "properties": {
+        "osm_id": 3372786283,
+        "name": "Velachery SABA Hospital",
+        "osm_class": "hospital",
+        "facility_type": "hospital_or_clinic",
+        "exp_index": 0.4889,
+        "exp_class": 3,
+        "hand_m": 1.0,
+        "water_dist_m": 674.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          80.222351,
+          12.976778
+        ]
+      },
+      "properties": {
+        "osm_id": 3687711447,
+        "name": "Kaya Skin clinic",
+        "osm_class": "hospital",
+        "facility_type": "hospital_or_clinic",
+        "exp_index": 0.6014,
+        "exp_class": 4,
+        "hand_m": 1.5,
+        "water_dist_m": 180.0
+      }
+    }
+  ]
+}

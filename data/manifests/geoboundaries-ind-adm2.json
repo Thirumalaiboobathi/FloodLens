@@ -1,0 +1,25 @@
+{
+  "dataset_id": "geoboundaries-ind-adm2",
+  "dataset_name": "India District boundaries (geoBoundaries gbOpen, year 2021)",
+  "kind": "source",
+  "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM2/",
+  "provider": "geoBoundaries (William & Mary geoLab)",
+  "license": "ODbL 1.0 (Pathways Data / lgdirectory.gov.in, via geoBoundaries)",
+  "attribution": "geoBoundaries gbOpen IND ADM2; underlying source see licence field",
+  "acquisition_timestamp": "2026-10-30T02:54:31.334601Z",
+  "observation_period": "boundary year 2021",
+  "spatial_resolution": "vector; full and simplified geometries",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "geoBoundaries commit 9469f09",
+  "geographical_coverage": "India",
+  "processing_status": "downloaded",
+  "limitations": [
+    "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+    "735 units (geoBoundaries metadata states 736); names/codes may differ from LGD",
+    "ODbL share-alike applies to derived databases"
+  ],
+  "derived_from": [],
+  "checksum_sha256": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40",
+  "feature_count": 735,
+  "file": "data/raw/boundaries/IND-ADM2.geojson"
+}

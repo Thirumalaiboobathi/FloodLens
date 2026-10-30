@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.1.0",
+  "scenario_id": "obs_late_20261022_20261028",
+  "region_id": "chennai",
+  "rainfall_stream": "recent_late",
+  "observation_start": "2026-10-22",
+  "observation_end": "2026-10-28",
+  "n_days": 7,
+  "accumulation_mm": {
+    "min_mm": 23.14,
+    "mean_mm": 34.994,
+    "median_mm": 30.148,
+    "max_mm": 82.035,
+    "valid_cell_count": 20,
+    "missing_cell_count": 0,
+    "missing_percentage": 0.0
+  },
+  "mean_daily_rate_mm_per_day": 4.999,
+  "daily": [
+    {
+      "date": "2026-10-22",
+      "product_version": "V07C",
+      "min_mm": 2.06,
+      "mean_mm": 7.46,
+      "median_mm": 4.75,
+      "max_mm": 31.31,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0012
+    },
+    {
+      "date": "2026-10-23",
+      "product_version": "V07C",
+      "min_mm": 2.43,
+      "mean_mm": 5.39,
+      "median_mm": 4.92,
+      "max_mm": 11.85,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0
+    },
+    {
+      "date": "2026-10-24",
+      "product_version": "V07C",
+      "min_mm": 3.49,
+      "mean_mm": 8.94,
+      "median_mm": 8.11,
+      "max_mm": 17.18,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0475
+    },
+    {
+      "date": "2026-10-25",
+      "product_version": "V07C",
+      "min_mm": 5.78,
+      "mean_mm": 12.76,
+      "median_mm": 13.12,
+      "max_mm": 21.64,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0
+    },
+    {
+      "date": "2026-10-26",
+      "product_version": "V07C",
+      "min_mm": 0.0,
+      "mean_mm": 0.19,
+      "median_mm": 0.18,
+      "max_mm": 0.44,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0
+    },
+    {
+      "date": "2026-10-27",
+      "product_version": "V07C",
+      "min_mm": 0.0,
+      "mean_mm": 0.25,
+      "median_mm": 0.19,
+      "max_mm": 0.71,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0
+    },
+    {
+      "date": "2026-10-28",
+      "product_version": "V07C",
+      "min_mm": 0.0,
+      "mean_mm": 0.0,
+      "median_mm": 0.0,
+      "max_mm": 0.0,
+      "aoi_missing_cells": 0,
+      "global_missing_percent": 0.0
+    }
+  ],
+  "statistic_scope": "Statistics are over the valid 0.1 degree IMERG cells covering the analysis box, for the stated UTC observation period, at native resolution. They are not point or neighbourhood values.",
+  "coverage_caveat": "A small sample of coarse satellite grid cells over the analysis box. It describes those cells, not neighbourhood-level rainfall, and says nothing about a point inside a cell.",
+  "disclaimer": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index."
+}

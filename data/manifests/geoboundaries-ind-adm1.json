@@ -1,0 +1,25 @@
+{
+  "dataset_id": "geoboundaries-ind-adm1",
+  "dataset_name": "India State / Union Territory boundaries (geoBoundaries gbOpen, year 2011)",
+  "kind": "source",
+  "source_url": "https://github.com/wmgeolab/geoBoundaries/raw/9469f09/releaseData/gbOpen/IND/ADM1/",
+  "provider": "geoBoundaries (William & Mary geoLab)",
+  "license": "CC BY 2.5 India (DataMeet maps, via geoBoundaries)",
+  "attribution": "geoBoundaries gbOpen IND ADM1; underlying source see licence field",
+  "acquisition_timestamp": "2026-10-30T02:54:31.334601Z",
+  "observation_period": "boundary year 2011",
+  "spatial_resolution": "vector; full and simplified geometries",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "geoBoundaries commit 9469f09",
+  "geographical_coverage": "India",
+  "processing_status": "downloaded",
+  "limitations": [
+    "Administrative boundaries are for screening visualisation only. They are not an authoritative survey and do not represent the official external boundary of India as notified by the Survey of India; do not use them to depict international boundaries.",
+    "36 units (geoBoundaries metadata states 36); names/codes may differ from LGD",
+    "CC BY 2.5 IN requires attribution"
+  ],
+  "derived_from": [],
+  "checksum_sha256": "47aa0acb6f69868daee49143276f3ce323f18905ba7d38d0a86816b405028736",
+  "feature_count": 36,
+  "file": "data/raw/boundaries/IND-ADM1.geojson"
+}

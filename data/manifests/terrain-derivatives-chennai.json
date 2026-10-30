@@ -1,0 +1,165 @@
+{
+  "dataset_id": "terrain-derivatives-chennai",
+  "dataset_name": "Terrain derivatives from Copernicus DEM, Chennai",
+  "kind": "derived",
+  "source_url": "s3://copernicus-dem-30m/",
+  "provider": "FloodLens processing of Copernicus DEM (ESA/Copernicus)",
+  "license": "Copernicus DEM licence (free, attribution required)",
+  "attribution": "Contains modified Copernicus DEM data (c) DLR e.V. 2010-2014 and (c) Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA.",
+  "acquisition_timestamp": "2026-10-30T03:19:17.192188Z",
+  "observation_period": null,
+  "spatial_resolution": "30 m (bilinear resampled from GLO-30), UTM",
+  "coordinate_reference_system": "EPSG:32644",
+  "processing_version": "floodlens-geo terrain 0.1.0; WhiteboxTools (breach, D-inf, TWI, HAND)",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25) plus 0.02 degree buffer",
+  "processing_status": "processed",
+  "limitations": [
+    "Surface model: buildings, vegetation and bridges distort slope, flow paths and HAND",
+    "30 m cells cannot represent drains, culverts, canals or embankments in urban areas",
+    "Chennai is very flat; small vertical errors dominate slope and TWI",
+    "Streams are extracted by a drainage-area threshold, not mapped channels",
+    "Sea (flat 0 m in the source) is masked as no-data. 597 land-grid cells are < 0 m (247 below -5 m); all lie on Copernicus water-body-mask pixels (lakes, rivers, tidal water), are kept unchanged in the terrain products and are excluded from exposure scoring (docs/analysis/TERRAIN_QUALITY.md)",
+    "Indicators of terrain position only; not flood depth or extent"
+  ],
+  "derived_from": [
+    "copernicus-dem-chennai"
+  ],
+  "checksum_sha256": "85bdafc6593d7d8c4b1c3f49005c7c52f08d5b975099adf196880e81b9b430d1",
+  "products": {
+    "dem_land_utm": {
+      "file": "data/processed/terrain/chennai/dem_land_utm.tif",
+      "sha256": "85bdafc6593d7d8c4b1c3f49005c7c52f08d5b975099adf196880e81b9b430d1"
+    },
+    "slope_deg": {
+      "file": "data/processed/terrain/chennai/slope_deg.tif",
+      "sha256": "c17ff89a5d1c397c3c36b224b1d2dfff1bf1941a0ceed59d4f18f4ce00e5ec43"
+    },
+    "local_relief_m": {
+      "file": "data/processed/terrain/chennai/local_relief_m.tif",
+      "sha256": "76907e9c09bb884f679bd5e4b7688674dfcd559ff391d77cc55aa6d0328e6983"
+    },
+    "twi": {
+      "file": "data/processed/terrain/chennai/whitebox/twi.tif",
+      "sha256": "9e6bde2936864b581283f31d66a272841da4f178386ff187cf9c8a61ac782040"
+    },
+    "sca_m": {
+      "file": "data/processed/terrain/chennai/whitebox/sca.tif",
+      "sha256": "a6b263d51a261973b6e6f6786034072d1cf57bcebc535a76c3233f37393398ee"
+    },
+    "hand_m": {
+      "file": "data/processed/terrain/chennai/whitebox/hand.tif",
+      "sha256": "7ebf01813fa3c45605fd9ef4420de3b76331e9603383584903f42ae2e010b27f"
+    },
+    "streams": {
+      "file": "data/processed/terrain/chennai/whitebox/streams.tif",
+      "sha256": "e68fa39eda6349cf4b629802d7671762cd04c211097e6ec149a59f0d0db37fe5"
+    }
+  },
+  "validation": {
+    "dem_land_utm": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\dem_land_utm.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7489878542510121,
+      "minimum": -64.82374572753906,
+      "maximum": 170.64349365234375,
+      "warnings": []
+    },
+    "slope_deg": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\slope_deg.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7453062830223444,
+      "minimum": 0.0,
+      "maximum": 53.491241455078125,
+      "warnings": []
+    },
+    "local_relief_m": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\local_relief_m.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7489878542510121,
+      "minimum": 0.0,
+      "maximum": 155.7799530029297,
+      "warnings": []
+    },
+    "twi": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\whitebox\\twi.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7489873562703239,
+      "minimum": 3.7990145683288574,
+      "maximum": 26.573768615722656,
+      "warnings": []
+    },
+    "sca_m": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\whitebox\\sca.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7489878542510121,
+      "minimum": 30.0,
+      "maximum": 11879089.297340062,
+      "warnings": []
+    },
+    "hand_m": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\whitebox\\hand.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.7303300118021423,
+      "minimum": 0.0,
+      "maximum": 139.72616004943848,
+      "warnings": []
+    },
+    "streams": {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\processed\\terrain\\chennai\\whitebox\\streams.tif",
+      "crs": "EPSG:32644",
+      "width": 1235,
+      "height": 1626,
+      "resolution": [
+        30.0,
+        30.0
+      ],
+      "nodata": -9999.0,
+      "valid_fraction": 0.03028618950157113,
+      "minimum": 1.0,
+      "maximum": 1.0,
+      "warnings": []
+    }
+  }
+}

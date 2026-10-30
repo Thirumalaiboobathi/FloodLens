@@ -1,0 +1,63 @@
+{
+  "dataset_id": "copernicus-dem-chennai",
+  "dataset_name": "Copernicus DEM (GLO-30) tiles for Chennai",
+  "kind": "source",
+  "source_url": "s3://copernicus-dem-30m/ , s3://copernicus-dem-90m/",
+  "provider": "European Space Agency / Copernicus (AWS Open Data Registry)",
+  "license": "Copernicus DEM licence (free, attribution required)",
+  "attribution": "Contains modified Copernicus DEM data (c) DLR e.V. 2010-2014 and (c) Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA; all rights reserved.",
+  "acquisition_timestamp": "2026-10-30T02:33:18.720895Z",
+  "observation_period": null,
+  "spatial_resolution": "GLO-30 30 m (Copernicus_DSM_COG_10_N12_00_E080_00_DEM), GLO-30 30 m (Copernicus_DSM_COG_10_N13_00_E080_00_DEM)",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "raw-0.1.0",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+  "processing_status": "downloaded",
+  "limitations": [
+    "Digital Surface Model (includes buildings/vegetation), not bare-earth terrain",
+    "Not suitable for flood depth estimation",
+    "Vertical datum EGM2008 heights"
+  ],
+  "derived_from": [],
+  "checksum_sha256": null,
+  "tile_checksums_sha256": {
+    "Copernicus_DSM_COG_10_N12_00_E080_00_DEM.tif": "1a01ef3e05aa76aa4d47908cf2d29d300859b6b1777bf8a9222ac052f9bd3111",
+    "Copernicus_DSM_COG_10_N13_00_E080_00_DEM.tif": "93a01adb7be880f39fb500487d89e2b089bdac3772fdfff4e4ef055e04111e2d"
+  },
+  "validation": [
+    {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\raw\\dem\\chennai\\Copernicus_DSM_COG_10_N12_00_E080_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "nodata": null,
+      "valid_fraction": 1.0,
+      "minimum": -64.00603485107422,
+      "maximum": 211.64437866210938,
+      "warnings": [
+        "no nodata value declared"
+      ]
+    },
+    {
+      "path": "D:\\AWS user grp mad\\Weekend challenge\\oct 30\\data\\raw\\dem\\chennai\\Copernicus_DSM_COG_10_N13_00_E080_00_DEM.tif",
+      "crs": "EPSG:4326",
+      "width": 3600,
+      "height": 3600,
+      "resolution": [
+        0.0002777777777777778,
+        0.0002777777777777778
+      ],
+      "nodata": null,
+      "valid_fraction": 1.0,
+      "minimum": -14.920099258422852,
+      "maximum": 76.08509826660156,
+      "warnings": [
+        "no nodata value declared"
+      ]
+    }
+  ]
+}

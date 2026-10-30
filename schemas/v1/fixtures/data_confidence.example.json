@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0.0",
+  "region_id": "chennai",
+  "boundary_id": "chennai_core_geoboundaries",
+  "mean_completeness": 0.8898,
+  "scored_fraction_of_region": 0.9724,
+  "min_completeness_to_score": 0.5,
+  "inputs": [
+    {
+      "input": "hand",
+      "weight": 0.3,
+      "status": "present",
+      "dataset_ids": [
+        "terrain-derivatives-chennai"
+      ],
+      "note": null
+    },
+    {
+      "input": "twi",
+      "weight": 0.15,
+      "status": "present",
+      "dataset_ids": [
+        "terrain-derivatives-chennai"
+      ],
+      "note": null
+    },
+    {
+      "input": "slope",
+      "weight": 0.1,
+      "status": "present",
+      "dataset_ids": [
+        "terrain-derivatives-chennai"
+      ],
+      "note": null
+    },
+    {
+      "input": "flow_accumulation",
+      "weight": 0.1,
+      "status": "present",
+      "dataset_ids": [
+        "terrain-derivatives-chennai"
+      ],
+      "note": null
+    },
+    {
+      "input": "elevation",
+      "weight": 0.15,
+      "status": "present",
+      "dataset_ids": [
+        "dem-chennai"
+      ],
+      "note": null
+    },
+    {
+      "input": "water_distance",
+      "weight": 0.1,
+      "status": "present",
+      "dataset_ids": [
+        "dem-chennai",
+        "osm-chennai-water"
+      ],
+      "note": null
+    },
+    {
+      "input": "rainfall",
+      "weight": 0.1,
+      "status": "pending",
+      "dataset_ids": [],
+      "note": "Observed IMERG rainfall pending; hypothetical scenarios use analyst-chosen values"
+    }
+  ],
+  "validation_status": "not_validated",
+  "validation_evidence": [
+    "docs/VALIDATION.md"
+  ],
+  "confidence_label": "screening_only",
+  "known_limitations": [
+    "Surface model (DSM): buildings and vegetation distort HAND, slope and flow paths",
+    "30 m cells; urban drains, culverts and embankments are not represented",
+    "Weights and scales are uncalibrated heuristics; classes are relative ranks, not risk levels",
+    "Not validated against observed flood extents (no suitable open dataset confirmed; docs/VALIDATION.md)",
+    "Rainfall scenarios are hypothetical accumulations, not forecasts or flood depths"
+  ],
+  "disclaimer": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods."
+}

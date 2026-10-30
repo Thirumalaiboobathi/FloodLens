@@ -1,0 +1,472 @@
+{
+  "$defs": {
+    "Bbox": {
+      "additionalProperties": false,
+      "properties": {
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "Bbox",
+      "type": "object"
+    },
+    "Freshness": {
+      "additionalProperties": false,
+      "properties": {
+        "age_days": {
+          "description": "Whole UTC days between observation end and as_of_utc",
+          "title": "Age Days",
+          "type": "integer"
+        },
+        "as_of_utc": {
+          "format": "date-time",
+          "title": "As Of Utc",
+          "type": "string"
+        },
+        "is_live": {
+          "const": false,
+          "default": false,
+          "title": "Is Live",
+          "type": "boolean"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        },
+        "observation_end": {
+          "format": "date",
+          "title": "Observation End",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "historical_archive",
+            "recent_provisional",
+            "aged_provisional"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "as_of_utc",
+        "observation_end",
+        "age_days",
+        "note"
+      ],
+      "title": "Freshness",
+      "type": "object"
+    },
+    "ProvenanceRef": {
+      "additionalProperties": false,
+      "properties": {
+        "derived_dataset_id": {
+          "title": "Derived Dataset Id",
+          "type": "string"
+        },
+        "raw_dataset_id": {
+          "title": "Raw Dataset Id",
+          "type": "string"
+        },
+        "raw_verification": {
+          "enum": [
+            "verified",
+            "partial",
+            "not_present"
+          ],
+          "title": "Raw Verification",
+          "type": "string"
+        }
+      },
+      "required": [
+        "derived_dataset_id",
+        "raw_dataset_id",
+        "raw_verification"
+      ],
+      "title": "ProvenanceRef",
+      "type": "object"
+    },
+    "RainfallStream": {
+      "enum": [
+        "historical_final",
+        "recent_late"
+      ],
+      "title": "RainfallStream",
+      "type": "string"
+    },
+    "RasterRef": {
+      "additionalProperties": false,
+      "properties": {
+        "cell_size_deg": {
+          "exclusiveMinimum": 0,
+          "title": "Cell Size Deg",
+          "type": "number"
+        },
+        "height": {
+          "exclusiveMinimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "href": {
+          "description": "API path of the raster download",
+          "title": "Href",
+          "type": "string"
+        },
+        "kind": {
+          "const": "geotiff",
+          "default": "geotiff",
+          "title": "Kind",
+          "type": "string"
+        },
+        "nodata": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Nodata"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "width": {
+          "exclusiveMinimum": 0,
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "width",
+        "height",
+        "cell_size_deg",
+        "nodata",
+        "sha256",
+        "href"
+      ],
+      "title": "RasterRef",
+      "type": "object"
+    },
+    "SourceInfo": {
+      "additionalProperties": false,
+      "properties": {
+        "attribution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Attribution"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "License"
+        },
+        "provider": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Provider"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Url"
+        }
+      },
+      "required": [
+        "provider",
+        "source_url",
+        "attribution",
+        "license"
+      ],
+      "title": "SourceInfo",
+      "type": "object"
+    },
+    "SpatialCoverage": {
+      "additionalProperties": false,
+      "properties": {
+        "bbox": {
+          "$ref": "#/$defs/Bbox"
+        },
+        "cells_x": {
+          "exclusiveMinimum": 0,
+          "title": "Cells X",
+          "type": "integer"
+        },
+        "cells_y": {
+          "exclusiveMinimum": 0,
+          "title": "Cells Y",
+          "type": "integer"
+        },
+        "description": {
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "bbox",
+        "description",
+        "cells_x",
+        "cells_y"
+      ],
+      "title": "SpatialCoverage",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "data_freshness": {
+      "$ref": "#/$defs/Freshness"
+    },
+    "disclaimer": {
+      "default": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "in_exposure_index": {
+      "const": false,
+      "default": false,
+      "title": "In Exposure Index",
+      "type": "boolean"
+    },
+    "is_forecast": {
+      "const": false,
+      "default": false,
+      "title": "Is Forecast",
+      "type": "boolean"
+    },
+    "label": {
+      "title": "Label",
+      "type": "string"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Limitations",
+      "type": "array"
+    },
+    "missing_cell_count": {
+      "minimum": 0,
+      "title": "Missing Cell Count",
+      "type": "integer"
+    },
+    "missing_percentage": {
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Missing Percentage",
+      "type": "number"
+    },
+    "n_days": {
+      "minimum": 1,
+      "title": "N Days",
+      "type": "integer"
+    },
+    "native_resolution": {
+      "title": "Native Resolution",
+      "type": "string"
+    },
+    "native_resolution_deg": {
+      "title": "Native Resolution Deg",
+      "type": "number"
+    },
+    "observation_end": {
+      "format": "date",
+      "title": "Observation End",
+      "type": "string"
+    },
+    "observation_end_utc": {
+      "format": "date-time",
+      "title": "Observation End Utc",
+      "type": "string"
+    },
+    "observation_start": {
+      "format": "date",
+      "title": "Observation Start",
+      "type": "string"
+    },
+    "observation_start_utc": {
+      "format": "date-time",
+      "title": "Observation Start Utc",
+      "type": "string"
+    },
+    "processing_status": {
+      "const": "published",
+      "default": "published",
+      "title": "Processing Status",
+      "type": "string"
+    },
+    "product_identifier": {
+      "examples": [
+        "GPM_3IMERGDL"
+      ],
+      "title": "Product Identifier",
+      "type": "string"
+    },
+    "product_version": {
+      "description": "Single version, or 'mixed: V07B, V07C'",
+      "title": "Product Version",
+      "type": "string"
+    },
+    "product_versions": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Product Versions",
+      "type": "array"
+    },
+    "provenance_reference": {
+      "$ref": "#/$defs/ProvenanceRef"
+    },
+    "rainfall_stream": {
+      "$ref": "#/$defs/RainfallStream"
+    },
+    "raster": {
+      "$ref": "#/$defs/RasterRef"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "retrieval_timestamp": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Retrieval Timestamp"
+    },
+    "run_type": {
+      "enum": [
+        "final",
+        "late"
+      ],
+      "title": "Run Type",
+      "type": "string"
+    },
+    "scenario_id": {
+      "examples": [
+        "obs_late_20261022_20261028"
+      ],
+      "pattern": "^obs_(final|late)_\\d{8}_\\d{8}$",
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "scenario_type": {
+      "const": "observed_rainfall",
+      "default": "observed_rainfall",
+      "title": "Scenario Type",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source": {
+      "$ref": "#/$defs/SourceInfo"
+    },
+    "spatial_coverage": {
+      "$ref": "#/$defs/SpatialCoverage"
+    },
+    "units": {
+      "title": "Units",
+      "type": "string"
+    },
+    "valid_cell_count": {
+      "minimum": 0,
+      "title": "Valid Cell Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "scenario_id",
+    "region_id",
+    "label",
+    "rainfall_stream",
+    "run_type",
+    "product_identifier",
+    "product_version",
+    "product_versions",
+    "observation_start",
+    "observation_end",
+    "observation_start_utc",
+    "observation_end_utc",
+    "n_days",
+    "retrieval_timestamp",
+    "native_resolution",
+    "native_resolution_deg",
+    "units",
+    "spatial_coverage",
+    "valid_cell_count",
+    "missing_cell_count",
+    "missing_percentage",
+    "source",
+    "provenance_reference",
+    "data_freshness",
+    "raster",
+    "limitations"
+  ],
+  "title": "ObservedRainfallMetadata",
+  "type": "object"
+}

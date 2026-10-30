@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "region_id": "chennai",
+  "scenario": {
+    "scenario_id": "rain_200mm",
+    "scenario_type": "hypothetical_rainfall_accumulation",
+    "rainfall_accumulation_mm": 200.0,
+    "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+    "rainfall_source": null
+  },
+  "disclaimer": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+  "detail": "full",
+  "matched": 1,
+  "selection": "ways_touching_top_class",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            80.05329,
+            12.84984
+          ],
+          [
+            80.05281,
+            12.84995
+          ],
+          [
+            80.04681,
+            12.85096
+          ],
+          [
+            80.0466,
+            12.85103
+          ],
+          [
+            80.04637,
+            12.85132
+          ],
+          [
+            80.04611,
+            12.85141
+          ],
+          [
+            80.04589,
+            12.85142
+          ]
+        ]
+      },
+      "properties": {
+        "osm_id": 32067475,
+        "name": "Guduvancheri - Madambakkam Road",
+        "osm_class": "tertiary",
+        "exp_mean": 0.5478,
+        "exp_max": 0.8207,
+        "exp_class_max": 5,
+        "top_class_share": 0.297,
+        "length_m": 832.7
+      }
+    }
+  ]
+}

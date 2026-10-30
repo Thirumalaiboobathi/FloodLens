@@ -1,0 +1,374 @@
+{
+  "additive_water": {
+    "v1_schemas_referencing_1_1_0_models": [],
+    "water_routes": [
+      "/v1/regions/{region}/water",
+      "/v1/regions/{region}/water/provenance"
+    ],
+    "water_schema_files": [
+      "water_features",
+      "water_provenance"
+    ]
+  },
+  "findings": [
+    {
+      "message": "No Git commit exists (git log is empty), so frozen v1 byte-identity CANNOT be verified against history. Commit the current tree, then re-run with --baseline pointing at a commit that predates Phase 3 if one exists.",
+      "severity": "HIGH"
+    },
+    {
+      "message": "schemas/ on disk use CRLF (Windows autocrlf); hashes are compared after LF normalisation. ",
+      "severity": "LOW"
+    }
+  ],
+  "generated_utc": "2026-10-30T09:28:12Z",
+  "git_comparison": {
+    "baseline": null,
+    "status": "baseline_unavailable",
+    "v1_files": {}
+  },
+  "notes": [
+    "Hashes of the CURRENT behaviour; they prove nothing about earlier versions until compared with a committed earlier snapshot."
+  ],
+  "response_snapshot": {
+    "/v1/health": {
+      "response_sha256": "7006ceb02d81312534c734f56f85c60793ce6439309e90495d00a46513f975a7",
+      "status": 200
+    },
+    "/v1/regions": {
+      "response_sha256": "1af7c4736cd39c200eea212f5b4ed605efdaee5a1231927c6f675d30d9e1e807",
+      "status": 200
+    },
+    "/v1/regions/chennai/provenance": {
+      "response_sha256": "969030eceb7a4eee98ce8c389f734d3d3efa4ba8169e83751c6d954d8b27e81d",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall": {
+      "response_sha256": "9dc25b2ab2bf19d7efcdae750ab2858e1fa866e2d286ed0c5d7b3ec737a4c69c",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/coverage": {
+      "response_sha256": "664493fd0ffd6947b1090a76c81b55d839da20546ec934c277217a5e223f47fb",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205": {
+      "response_sha256": "e3a562c97e9480933196f21ed05f7545b70c23e6849af076f4c34704d5baac2a",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/cells": {
+      "response_sha256": "b2ca6d6702b4ff1932097b2a4f514e54a6f01f05885a92654ad8930708e88eed",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/provenance": {
+      "response_sha256": "04121d1a743f33ae43d3a541474f66dcc210c26a5823e5c33b43ef25aee8eaec",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/summary": {
+      "response_sha256": "fa7ee9ef9be7846969aec46c800a3d27df91cd663c8fa60c5e7f3bbe0d772d04",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028": {
+      "response_sha256": "49889239f1c22945393f580812663edf195163031e4e2172a536a3aba4e95b45",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/cells": {
+      "response_sha256": "d3081ce76eae921e13b49973034bc665043004ced2e8b1bda615618b2f038ff8",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/provenance": {
+      "response_sha256": "3b926b8722e71406ebd9e8e45ef95505bf5205d6c5f3383dd0ca8068c6314bd7",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/summary": {
+      "response_sha256": "ccf9242be598e0b57f2ce6b6c7379eac03663ba807ea34275c9d9bbd8471a85f",
+      "status": 200
+    },
+    "/v1/regions/chennai/scenario-catalog": {
+      "response_sha256": "eff108ede5e2d34b3dc62191df3b01af05c805bb72d56092dc11d0ac9dbe7271",
+      "status": 200
+    },
+    "/v1/regions/chennai/scenarios": {
+      "response_sha256": "096fc79880080e6579a145ee18c623506fecfe01ea533085b286c9d23dee2917",
+      "status": 200
+    },
+    "/v1/regions/chennai/water/provenance": {
+      "response_sha256": "0b21627638e04648c67d88751dc1fe0955837d67366003c88ee801f8a9000809",
+      "status": 200
+    }
+  },
+  "routes": {
+    "/v1/health": {
+      "group": "v1.0.0",
+      "operation_sha256": "f6ec94d9841d361f1fe0c926daba59b6eac0d4209ab66d248f34f0cc54ad0b5f"
+    },
+    "/v1/regions": {
+      "group": "v1.0.0",
+      "operation_sha256": "07959be10e4982b13ae2898253255e25de738215c448f150c4981f7f076d1292"
+    },
+    "/v1/regions/{region}/comparison": {
+      "group": "v1.0.0",
+      "operation_sha256": "a609c1ee4478c1fa22aa80f4bb449b0e015ae3f7eec08e008aca58de7de1f52d"
+    },
+    "/v1/regions/{region}/confidence": {
+      "group": "v1.0.0",
+      "operation_sha256": "185320ae37bd4b2db657b5633ee48c53d3a5af1b6e7fc4c3a720effa2ef1a346"
+    },
+    "/v1/regions/{region}/layers": {
+      "group": "v1.0.0",
+      "operation_sha256": "61f309e8b6820bcdb2b5f1e3c4ff4a88e1967ecd416eff6f16b26fdbaf385544"
+    },
+    "/v1/regions/{region}/layers/{layer_id}": {
+      "group": "v1.0.0",
+      "operation_sha256": "21da7611daf39e995885ce86cf7ea60284447d2b2a1b39b75e67e290d7176a59"
+    },
+    "/v1/regions/{region}/provenance": {
+      "group": "v1.0.0",
+      "operation_sha256": "2ae4606b8da729cb0812e99fe7bdc8fb5d5e5ada5a223fbab0407b63439d2a41"
+    },
+    "/v1/regions/{region}/rainfall": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "2d6bf3ad67b08097a50167e8653635d7b00a94b1fb55dce750742eeb931486fa"
+    },
+    "/v1/regions/{region}/rainfall/comparison": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "3baed164389e9b6215faf06fe7cd1d927fec9cb7794d34382d5c983c11348927"
+    },
+    "/v1/regions/{region}/rainfall/coverage": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "6e91cb0503b289a043fb2671152fd8cec80543431e56dde2757754026ab9ee35"
+    },
+    "/v1/regions/{region}/rainfall/freshness": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "45b2947aec2fafa5cbc8f8418c7a771a3aa67bfeb1f2bd1d1f9f3b4b1512ae1b"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "412926dfa2705160944781b667ef66d3980edc84101c8ab6ad9c633864603cb4"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/cells": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "f9fb13f36f93c0cbdf406d352e05101b17ed937a6bc6a1eee142a0555f7e428a"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/provenance": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "72270fc405536853d6a2fc3e15df4504be047da5780637aa6b3e3f598bdd1ea7"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/raster": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "e04b1236e93a6cefb7e12599d2f473332ef85bf7a1cb7741acea8ab4d9f43df1"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/summary": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "2747279fabd35b22b09a8f3eab77eeec4cb85dfee5ac4dbc1cd7b1432b8acc23"
+    },
+    "/v1/regions/{region}/scenario-catalog": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "bad17079316fceaae553fb76df6e335ec95b1fc90f318a01df04bdfb125bd02c"
+    },
+    "/v1/regions/{region}/scenarios": {
+      "group": "v1.0.0",
+      "operation_sha256": "f9ee28b6c0e3d5d2e89b65d61bd5cd75aef4e1ade8cd408d6e44654a0a32d804"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/facilities": {
+      "group": "v1.0.0",
+      "operation_sha256": "573ed025caef58a6758a548e89a0b3aa43ee2fc2ac812ff65ba0702a29737dde"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/polygons": {
+      "group": "v1.0.0",
+      "operation_sha256": "1706da7a19d6a16b95ddb8d7588d2554e6649eaae836c7ce05d03528bce3a697"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/roads": {
+      "group": "v1.0.0",
+      "operation_sha256": "9228eae850b75a0b0d65c85cf28d31777e9a660710df652c79708182342b1199"
+    },
+    "/v1/regions/{region}/summary": {
+      "group": "v1.0.0",
+      "operation_sha256": "c00213e03d8ca66af1858719b637612deefeb0d43dd19fb7b84f475a09b10c9e"
+    },
+    "/v1/regions/{region}/water": {
+      "group": "water_1.1.0",
+      "operation_sha256": "956fa2cb76d72289a818ac3c4ae172d11edb0c80943d6317d64c79cb119c3866"
+    },
+    "/v1/regions/{region}/water/provenance": {
+      "group": "water_1.1.0",
+      "operation_sha256": "b375b74f152fee68fcf0b09c00838afe72c8cac3817ee64b3c422e9e0aabea82"
+    }
+  },
+  "schema_files": {
+    "data_confidence": {
+      "fixture_sha256_lf": "eab3b71dc8b8923d1c271cd1ae069bfd1d3eb7fb27a1935ebb67e35f6be75ebd",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "4e5978c44ebe52cee5d58ed3eeb00544d202f05ef41299bb59ed0d89659b95b9",
+      "schema_sha256_raw": "239e8f7fc01148eec2e9cebcd345ddc5452d584a6c81eeb5ee0839da54c37e7d"
+    },
+    "dataset_provenance": {
+      "fixture_sha256_lf": "b616e9cd1368b2915cea31fc841fba5bae1ea3f181bd4f1eda012678ed9791fb",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "56d8133d3de8042d7968187f2d5658f4df77fbe49b6fe988467e777af7b18b6e",
+      "schema_sha256_raw": "4766e0e92e77b4bed58c60887c8db29056c0d9f5f428433d9bf519fc1cbbd905"
+    },
+    "exposure_polygons": {
+      "fixture_sha256_lf": "d36f2e871cb51acbc3070460e1dead79dc36634e24e815beb5e15adc1547675a",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "26c06f660487a1c036f2de9c1fc1b3ae12cead2ca2bb475829c4b0772a5777e8",
+      "schema_sha256_raw": "7b9c862729ff5a9316d789c94c3c4d8b0ee40ea47ef2737197ba972005562707"
+    },
+    "facility_proximity": {
+      "fixture_sha256_lf": "f19cc2996984991fc139864fb7f19449be4ebdc3fb78fc4ea7c6d75fcbca3126",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "540338edc8eafd9c7858db533cf52e7590295ee23f5e5a5f5b87f5c4d048c82d",
+      "schema_sha256_raw": "4f1e2d565b9bd84cec5ce842f7cd945ff23d581ee1ff87af2919baf5476383ec"
+    },
+    "observed_rainfall_metadata": {
+      "fixture_sha256_lf": "0354f8d6ac58f0f68bd152a19674939e1078f7441315950c03affb1f80f0c289",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "a53c3df0aeadace7615e92a723b811ec9997e10bf2a9037e03ff0dea2467a61e",
+      "schema_sha256_raw": "a2906ebd97b775b7e595401d94bd38c5121e86122d335cf39644a1a1232e5132"
+    },
+    "rainfall_catalog": {
+      "fixture_sha256_lf": "25e05e2fd0da3b076dac6f83bcc878cb9256b2bbf51e4d113aa606ab5eedb468",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "66f2ac27da76806caa9008695097b64bb068097f5f08f13e332334755c83641f",
+      "schema_sha256_raw": "afb9aee95c3bf2868d96af3bed85723c4c78d04eae113bb4ec9ceb0677eff0cc"
+    },
+    "rainfall_cells": {
+      "fixture_sha256_lf": "516545c10914ee7e0bce25b0eebfc9f6bcd042eef095c688f9bbdac5dfad9f1a",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "654822f0fdfbad52291266f1737734c4bfe1440b92d85729778dadc99e75f2ef",
+      "schema_sha256_raw": "7aa6d5e65f8fa2e5ff5f627cb57080efad1421f83825870b204fcf61f92f8d40"
+    },
+    "rainfall_comparison": {
+      "fixture_sha256_lf": "6874d0fe60c8a90222724827d982c1188ddbeecc9455bbe9a3c31665a0f0147d",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "4bde029a8cbc0afbc1eb56d2bd801609053b43526580b105f70c2f3f787e1d5b",
+      "schema_sha256_raw": "94edb2a724f68898806e0199345b6846a5860548e41b2b142ccbbed52df93501"
+    },
+    "rainfall_coverage": {
+      "fixture_sha256_lf": "83caccbaf48ee0bbb21598a80cad829dd921ec7247444d8ce8222fea917a9e8a",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "990be2cabe5762ccf42117b2bc8d006d4b89de86ce2ea5f5e088d6572aaf3e81",
+      "schema_sha256_raw": "1f52c5426a3d9def3a181c32e4d7a2962f6c27522a4ee390c03ce8cd7d5519cd"
+    },
+    "rainfall_freshness": {
+      "fixture_sha256_lf": "7ca7b02d9361d08f18f7c1ded34d18696e70514caa688d641c3aef77325797b6",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "be790d3f1e69c8a4b4a5cdeb06076d90c689570a3e1e557219cdd244ead688ab",
+      "schema_sha256_raw": "2972c374e6e58f458faf634841ebc4d8a8f0bc42273e2f409377df775e95c90b"
+    },
+    "rainfall_provenance": {
+      "fixture_sha256_lf": "34a94f7d6b1cedac29648c2cef4b46f55d58ac2d40cbfce5915d95f4a2c7f2ee",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "c0bd0e77f1d2c39a2bfb187401663ce9c0b3ade3c049b815198ca8ecb4e5e2eb",
+      "schema_sha256_raw": "a59419e3766204a795f9aa97910f92a90e1feb7b2c5d142c850ba120d962ba2f"
+    },
+    "rainfall_summary": {
+      "fixture_sha256_lf": "94688ce55f5c3cc56cd1f3d6534fac4b302e3c4b619e5f90270ce675a551fd81",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "c2889fa662a68cddc4d6f2833134bbc1bfda20d16c689b3f15a89141da76d160",
+      "schema_sha256_raw": "c6d229d73669ae3c93f7f9122a23f57ae68517979692fa477fa528fe2ec959d2"
+    },
+    "raster_layer_metadata": {
+      "fixture_sha256_lf": "caefb2bac0ad2b69eb758a9afff40e25bb57da8e969cf49cecd93b10131b79e8",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "fbd6653bd42aa976e05181a583dc303e5e2d730f9e6e0bfb6d71bb7c6e6dec8a",
+      "schema_sha256_raw": "a9bbb1f71d7505bc93ad9279551cc08fa095d7ba6c0347413a5806d490c68edf"
+    },
+    "regional_exposure_summary": {
+      "fixture_sha256_lf": "a6ecf58c63989a6616fb90a69df48d61aff99f2c55946bc713bbe37c4bb3da00",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "f700fa20f5ff89e28a804250229b4be8d96719997a7e5adb5a4d7fbf70f941b7",
+      "schema_sha256_raw": "390fa18b22d36b98e4f48b0a49fbda30178f0c2afc01809341f05d912c7a0aec"
+    },
+    "road_exposure": {
+      "fixture_sha256_lf": "b7b2522e8e2efaa5dec0475e343145125397f35e4ae1b48518cfa9217e19bab9",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "d4f6dfad6af28d2df420738c8ef977d049bb05b4d23d32f3a4316cc5b9e8edc9",
+      "schema_sha256_raw": "3f31082b5454dcca010727ac2535d45e359be2a48af62750b3988412fb3cd0f9"
+    },
+    "scenario_catalog": {
+      "fixture_sha256_lf": "6fcc3b2f4c935065546acc0b60e31543ab02c5c0ae2440214b04ef63e3d2fd99",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "261778c8c0843cf1e853ab8f77bb5e6267d0738b7850154d6c32023be7bed919",
+      "schema_sha256_raw": "06972a93cc81c59d59764ebcd6a0184226748b6ef44630301c202eef018aec8a"
+    },
+    "scenario_comparison": {
+      "fixture_sha256_lf": "c98deaccf0edc3f282dffb5faa3d342b781d9f3047620442b9978c49ce69623e",
+      "fixture_valid_against_schema": true,
+      "group": "v1.0.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "1620dbb3330b1d8fe6b2c9ec545710617b427070d8433b86e5ff2c5a6ddcb9b4",
+      "schema_sha256_raw": "fded9136f05009dac4332c53d18ce0cf5d1eeaf37ccd5e3ee0aa597ccb39b503"
+    },
+    "water_features": {
+      "fixture_sha256_lf": "5412a3c61b3cda81c613617d8a8b71fdfc9a2ce952d3734083e0cb4830949cff",
+      "fixture_valid_against_schema": true,
+      "group": "water_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "4e52a48669d1654437c3529719362bc207303eba5dfdd3de4d75b906bb4f0e96",
+      "schema_sha256_raw": "048d97c3a27f4ff752acb57ceb83208240bb93061e922b90176e38de9c9eb297"
+    },
+    "water_provenance": {
+      "fixture_sha256_lf": "bde628175c344f03253fa98b089bc4e2bd5faadcaf05499e476eb37b2aa07ce5",
+      "fixture_valid_against_schema": true,
+      "group": "water_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "1a106914d1ba4750c895315b2769492508c9caeae4c604aa761012181ece0ceb",
+      "schema_sha256_raw": "417907e7988038533fd881d01546f7a58ab0e63c68ac36cd50a12f736da56c41"
+    }
+  },
+  "schema_versions": {
+    "rainfall": "1.1.0",
+    "v1": "1.0.0",
+    "water": "1.1.0"
+  }
+}

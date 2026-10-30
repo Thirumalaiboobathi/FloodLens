@@ -1,0 +1,210 @@
+{
+  "schema_version": "1.1.0",
+  "region_id": "chennai",
+  "observed": [
+    {
+      "scenario_id": "obs_final_20231203_20231205",
+      "rainfall_stream": "historical_final",
+      "label": "Historical Final Run: 2023-12-03 to 2023-12-05 (V07B)",
+      "observation_start": "2023-12-03",
+      "observation_end": "2023-12-05",
+      "n_days": 3,
+      "product_version": "V07B",
+      "mean_accumulation_mm": 262.782,
+      "max_accumulation_mm": 298.765,
+      "mean_daily_rate_mm_per_day": 87.594
+    },
+    {
+      "scenario_id": "obs_late_20261022_20261028",
+      "rainfall_stream": "recent_late",
+      "label": "Recent Late Run: 2026-10-22 to 2026-10-28 (V07C)",
+      "observation_start": "2026-10-22",
+      "observation_end": "2026-10-28",
+      "n_days": 7,
+      "product_version": "V07C",
+      "mean_accumulation_mm": 34.994,
+      "max_accumulation_mm": 82.035,
+      "mean_daily_rate_mm_per_day": 4.999
+    }
+  ],
+  "hypothetical_reference": [
+    {
+      "scenario_id": "rain_50mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "rainfall_accumulation_mm": 50.0,
+      "accumulation_period": "24h hypothetical (analyst-chosen, not data)"
+    },
+    {
+      "scenario_id": "rain_100mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "rainfall_accumulation_mm": 100.0,
+      "accumulation_period": "24h hypothetical (analyst-chosen, not data)"
+    },
+    {
+      "scenario_id": "rain_200mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "rainfall_accumulation_mm": 200.0,
+      "accumulation_period": "24h hypothetical (analyst-chosen, not data)"
+    },
+    {
+      "scenario_id": "rain_300mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "rainfall_accumulation_mm": 300.0,
+      "accumulation_period": "24h hypothetical (analyst-chosen, not data)"
+    }
+  ],
+  "pairwise": {
+    "a": "obs_final_20231203_20231205",
+    "b": "obs_late_20261022_20261028",
+    "same_grid": true,
+    "same_duration": false,
+    "mean_difference_mm": -227.788,
+    "mean_daily_rate_difference_mm_per_day": -82.595,
+    "cells": [
+      {
+        "row": 0,
+        "col": 0,
+        "a_mm": 251.58,
+        "b_mm": 25.99,
+        "b_minus_a_mm": -225.59
+      },
+      {
+        "row": 0,
+        "col": 1,
+        "a_mm": 256.095,
+        "b_mm": 31.315,
+        "b_minus_a_mm": -224.78
+      },
+      {
+        "row": 0,
+        "col": 2,
+        "a_mm": 253.2899,
+        "b_mm": 31.915,
+        "b_minus_a_mm": -221.3749
+      },
+      {
+        "row": 0,
+        "col": 3,
+        "a_mm": 274.27,
+        "b_mm": 28.98,
+        "b_minus_a_mm": -245.29
+      },
+      {
+        "row": 1,
+        "col": 0,
+        "a_mm": 256.355,
+        "b_mm": 27.265,
+        "b_minus_a_mm": -229.09
+      },
+      {
+        "row": 1,
+        "col": 1,
+        "a_mm": 280.38,
+        "b_mm": 28.58,
+        "b_minus_a_mm": -251.8
+      },
+      {
+        "row": 1,
+        "col": 2,
+        "a_mm": 280.52,
+        "b_mm": 28.09,
+        "b_minus_a_mm": -252.43
+      },
+      {
+        "row": 1,
+        "col": 3,
+        "a_mm": 294.245,
+        "b_mm": 25.88,
+        "b_minus_a_mm": -268.365
+      },
+      {
+        "row": 2,
+        "col": 0,
+        "a_mm": 250.46,
+        "b_mm": 23.64,
+        "b_minus_a_mm": -226.82
+      },
+      {
+        "row": 2,
+        "col": 1,
+        "a_mm": 267.565,
+        "b_mm": 23.14,
+        "b_minus_a_mm": -244.425
+      },
+      {
+        "row": 2,
+        "col": 2,
+        "a_mm": 278.395,
+        "b_mm": 27.04,
+        "b_minus_a_mm": -251.355
+      },
+      {
+        "row": 2,
+        "col": 3,
+        "a_mm": 298.765,
+        "b_mm": 25.23,
+        "b_minus_a_mm": -273.535
+      },
+      {
+        "row": 3,
+        "col": 0,
+        "a_mm": 229.075,
+        "b_mm": 31.36,
+        "b_minus_a_mm": -197.715
+      },
+      {
+        "row": 3,
+        "col": 1,
+        "a_mm": 249.94,
+        "b_mm": 34.82,
+        "b_minus_a_mm": -215.12
+      },
+      {
+        "row": 3,
+        "col": 2,
+        "a_mm": 269.325,
+        "b_mm": 34.31,
+        "b_minus_a_mm": -235.015
+      },
+      {
+        "row": 3,
+        "col": 3,
+        "a_mm": 280.1,
+        "b_mm": 43.73,
+        "b_minus_a_mm": -236.37
+      },
+      {
+        "row": 4,
+        "col": 0,
+        "a_mm": 214.795,
+        "b_mm": 44.5,
+        "b_minus_a_mm": -170.295
+      },
+      {
+        "row": 4,
+        "col": 1,
+        "a_mm": 241.28,
+        "b_mm": 44.13,
+        "b_minus_a_mm": -197.15
+      },
+      {
+        "row": 4,
+        "col": 2,
+        "a_mm": 260.92,
+        "b_mm": 57.935,
+        "b_minus_a_mm": -202.985
+      },
+      {
+        "row": 4,
+        "col": 3,
+        "a_mm": 268.285,
+        "b_mm": 82.035,
+        "b_minus_a_mm": -186.25
+      }
+    ],
+    "caution": "Differences are b minus a. The periods differ in length (3 vs 7 days), so accumulations are not like-for-like; compare the mean daily rates. Different streams are different estimates (Final vs provisional Late). This is not a validation of anything."
+  },
+  "exposure_note": "Observed rainfall is not an input of the exposure index. Exposure results exist only for the terrain baseline and hypothetical scenarios.",
+  "caution": "Comparing accumulations shows how the satellite estimates differ; it does not validate the exposure screening or predict flooding.",
+  "disclaimer": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index."
+}

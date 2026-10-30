@@ -1,0 +1,29 @@
+{
+  "dataset_id": "osm-chennai-roads",
+  "dataset_name": "OpenStreetMap roads, Chennai AOI",
+  "kind": "source",
+  "source_url": "https://overpass-api.de/api/interpreter",
+  "provider": "OpenStreetMap contributors via Overpass API",
+  "license": "ODbL 1.0",
+  "attribution": "(c) OpenStreetMap contributors",
+  "acquisition_timestamp": "2026-10-30T02:55:06.832798Z",
+  "observation_period": "OSM snapshot at 2026-10-30",
+  "spatial_resolution": "vector",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo osm 0.1.0",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+  "processing_status": "processed",
+  "limitations": [
+    "Crowd-sourced; completeness and tagging vary and are not validated",
+    "Hospitals layer includes clinics; no capacity or operating status is known",
+    "Road geometry only; no closure, flooding or passability information",
+    "ODbL: derived databases must be shared alike with attribution"
+  ],
+  "derived_from": [],
+  "checksum_sha256": "725f9ebad3f6da2ae3f17bd8ab0e2f3a8d5c6c0337e8be433911f4dde1b9cc99",
+  "feature_count": 93614,
+  "file": "data/processed/osm/chennai/roads.geojson",
+  "geometry_types": [
+    "LineString"
+  ]
+}

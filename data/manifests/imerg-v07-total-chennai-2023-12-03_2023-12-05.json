@@ -1,0 +1,117 @@
+{
+  "dataset_id": "imerg-v07-total-chennai-2023-12-03_2023-12-05",
+  "dataset_name": "Accumulated IMERG rainfall (mm), Chennai, 2023-12-03/2023-12-05 (UTC days)",
+  "kind": "derived",
+  "source_url": "https://data.gesdisc.earthdata.nasa.gov/data/GPM_L3/GPM_3IMERGDF.07/",
+  "provider": "NASA GES DISC / GPM",
+  "license": "NASA open data (free, attribution requested); see GES DISC data policy",
+  "attribution": "Huffman, G.J., E.F. Stocker, D.T. Bolvin, E.J. Nelkin, Jackson Tan (2023), GPM IMERG Final Precipitation L3 1 day 0.1 degree x 0.1 degree V07, Greenbelt, MD, Goddard Earth Sciences Data and Information Services Center (GES DISC).",
+  "acquisition_timestamp": "2026-10-30T04:30:24.857333Z",
+  "observation_period": "2023-12-03/2023-12-05 (UTC days)",
+  "spatial_resolution": "0.1 degree (~10 km), units: mm accumulated; nodata -9999",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo imerg 0.1.0",
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25) (whole 0.1 degree cells)",
+  "processing_status": "processed",
+  "limitations": [
+    "Satellite-based estimate on a ~10 km (0.1 degree) grid; not a rain-gauge measurement",
+    "Final Run is gauge-adjusted at monthly scale; daily values carry substantial error in intense convective/cyclonic rain",
+    "Daily totals cover 00:00-23:59:59 UTC (05:30 IST to 05:29 IST next day)",
+    "Historical observations only; not a forecast and not an official warning",
+    "Clipped to the AOI bounding box, not the official Chennai boundary (boundary dataset pending, ADR-0003)"
+  ],
+  "derived_from": [
+    "nasa-gpm-imerg-v07-daily-raw-chennai-2023-12-03_2023-12-05"
+  ],
+  "checksum_sha256": "a3ed89f3fcbdeb1d3ad145b4d39b1215bc6ef84e4c5e81624d5200f2a89fe295",
+  "validation": {
+    "path": "data/processed/rainfall/imerg-v07-total-chennai-2023-12-03_2023-12-05.tif",
+    "crs": "EPSG:4326",
+    "width": 4,
+    "height": 5,
+    "resolution": [
+      0.1,
+      0.1
+    ],
+    "nodata": -9999.0,
+    "valid_fraction": 1.0,
+    "minimum": 214.7949981689453,
+    "maximum": 298.76495361328125,
+    "warnings": []
+  },
+  "daily_statistics": [
+    {
+      "date": "2023-12-03",
+      "granule": "3B-DAY.MS.MRG.3IMERG.20231203-S000000-E235959.V07B.nc4",
+      "global_grid": [
+        1800,
+        3600
+      ],
+      "global_missing_percent": 0.1267,
+      "aoi_cells": 20,
+      "aoi_missing_cells": 0,
+      "aoi_nodata_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 77.89,
+        "mean": 114.4,
+        "median": 114.35,
+        "max": 145.04
+      }
+    },
+    {
+      "date": "2023-12-04",
+      "granule": "3B-DAY.MS.MRG.3IMERG.20231204-S000000-E235959.V07B.nc4",
+      "global_grid": [
+        1800,
+        3600
+      ],
+      "global_missing_percent": 0.0,
+      "aoi_cells": 20,
+      "aoi_missing_cells": 0,
+      "aoi_nodata_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 109.05,
+        "mean": 143.25,
+        "median": 145.31,
+        "max": 163.2
+      }
+    },
+    {
+      "date": "2023-12-05",
+      "granule": "3B-DAY.MS.MRG.3IMERG.20231205-S000000-E235959.V07B.nc4",
+      "global_grid": [
+        1800,
+        3600
+      ],
+      "global_missing_percent": 0.0,
+      "aoi_cells": 20,
+      "aoi_missing_cells": 0,
+      "aoi_nodata_percent": 0.0,
+      "aoi_mm_per_day": {
+        "min": 1.01,
+        "mean": 5.13,
+        "median": 3.83,
+        "max": 19.29
+      }
+    }
+  ],
+  "granules": [
+    "3B-DAY.MS.MRG.3IMERG.20231203-S000000-E235959.V07B.nc4",
+    "3B-DAY.MS.MRG.3IMERG.20231204-S000000-E235959.V07B.nc4",
+    "3B-DAY.MS.MRG.3IMERG.20231205-S000000-E235959.V07B.nc4"
+  ],
+  "processing_configuration": {
+    "product": "GPM_3IMERGDF.07 (V07B), variable 'precipitation', units mm/day",
+    "accumulation": "sum of consecutive UTC daily totals; a cell missing on any day stays missing",
+    "aoi_bbox_wgs84": [
+      80.05,
+      12.85,
+      80.35,
+      13.25
+    ],
+    "window": "whole 0.1 degree cells intersecting the bbox; no resampling or interpolation",
+    "grid_validation": "check_axis: dtype-aware tolerance, monotonic, regular, bounded"
+  },
+  "data_kind": "satellite precipitation estimate (not gauge observations); rainfall accumulation, not flood depth",
+  "output_file": "data/processed/rainfall/imerg-v07-total-chennai-2023-12-03_2023-12-05.tif"
+}

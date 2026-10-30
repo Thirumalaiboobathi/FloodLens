@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.1.0",
+  "region_id": "chennai",
+  "source": {
+    "dataset_id": "osm-chennai-water",
+    "provider": "OpenStreetMap contributors via Overpass API",
+    "source_url": "https://overpass-api.de/api/interpreter",
+    "license": "ODbL 1.0",
+    "attribution": "(c) OpenStreetMap contributors",
+    "acquisition_timestamp": "2026-10-30T02:55:06.832798Z",
+    "snapshot": "OSM snapshot at 2026-10-30",
+    "checksum_sha256": "d25f4838368f26cc37fa46facbd9e5b26a51df2e190811495e23528bba5b9cdd",
+    "license_note": "ODbL: derived databases must be shared alike with attribution to OpenStreetMap contributors."
+  },
+  "geographical_coverage": "Chennai AOI bbox (80.05, 12.85, 80.35, 13.25)",
+  "coordinate_reference_system": "EPSG:4326",
+  "processing_version": "floodlens-geo osm 0.1.0",
+  "feature_count": 1650,
+  "counts_by_type": {
+    "waterway": 606,
+    "water_body": 1044
+  },
+  "counts_by_class": {
+    "river": 27,
+    "canal": 79,
+    "water": 1044,
+    "drain": 443,
+    "stream": 57
+  },
+  "limitations": [
+    "Crowd-sourced; completeness and tagging vary and are not validated",
+    "Hospitals layer includes clinics; no capacity or operating status is known",
+    "Road geometry only; no closure, flooding or passability information",
+    "ODbL: derived databases must be shared alike with attribution"
+  ],
+  "disclaimer": "Mapped water features from OpenStreetMap contributors (ODbL 1.0). Crowd-sourced and not validated for completeness. Not a flood extent or depth; a mapped water body is not a statement about current water levels."
+}

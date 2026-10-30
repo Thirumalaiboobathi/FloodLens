@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0.0",
+  "region_id": "chennai",
+  "boundary_id": "chennai_core_geoboundaries",
+  "scenario": {
+    "scenario_id": "rain_200mm",
+    "scenario_type": "hypothetical_rainfall_accumulation",
+    "rainfall_accumulation_mm": 200.0,
+    "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+    "rainfall_source": null
+  },
+  "n_classes": 5,
+  "class_basis": "quantiles_of_terrain_baseline_index",
+  "region_area_km2": 175.29,
+  "scored_land_area_km2": 170.46,
+  "area_km2_by_class": {
+    "1": 7.789,
+    "2": 29.37,
+    "3": 44.986,
+    "4": 46.411,
+    "5": 41.901
+  },
+  "share_by_class": {
+    "1": 0.0457,
+    "2": 0.1723,
+    "3": 0.2639,
+    "4": 0.2723,
+    "5": 0.2458
+  },
+  "mean_index": 0.539,
+  "mean_completeness": 0.9898,
+  "road_length_km_touching_top_class": 8402.8,
+  "road_length_km_all": 14247.9,
+  "facilities_in_top_class": {
+    "hospital_or_clinic": 159,
+    "school": 108
+  },
+  "facilities_total": {
+    "hospital_or_clinic": 1450,
+    "school": 683
+  },
+  "disclaimer": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods."
+}

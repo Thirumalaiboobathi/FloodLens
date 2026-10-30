@@ -1,0 +1,325 @@
+{
+  "$defs": {
+    "Bbox": {
+      "additionalProperties": false,
+      "properties": {
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "Bbox",
+      "type": "object"
+    },
+    "Geometry": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinates": {
+          "items": {},
+          "title": "Coordinates",
+          "type": "array"
+        },
+        "type": {
+          "enum": [
+            "Point",
+            "LineString",
+            "MultiLineString",
+            "Polygon",
+            "MultiPolygon"
+          ],
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "title": "Geometry",
+      "type": "object"
+    },
+    "RoadFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry": {
+          "$ref": "#/$defs/Geometry"
+        },
+        "properties": {
+          "$ref": "#/$defs/RoadProperties"
+        },
+        "type": {
+          "const": "Feature",
+          "default": "Feature",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties"
+      ],
+      "title": "RoadFeature",
+      "type": "object"
+    },
+    "RoadProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "exp_class_max": {
+          "maximum": 10,
+          "minimum": 1,
+          "title": "Exp Class Max",
+          "type": "integer"
+        },
+        "exp_max": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Exp Max",
+          "type": "number"
+        },
+        "exp_mean": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Exp Mean",
+          "type": "number"
+        },
+        "length_m": {
+          "minimum": 0,
+          "title": "Length M",
+          "type": "number"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Name"
+        },
+        "osm_class": {
+          "description": "OSM highway class",
+          "title": "Osm Class",
+          "type": "string"
+        },
+        "osm_id": {
+          "title": "Osm Id",
+          "type": "integer"
+        },
+        "top_class_share": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Top Class Share",
+          "type": "number"
+        }
+      },
+      "required": [
+        "osm_id",
+        "name",
+        "osm_class",
+        "exp_mean",
+        "exp_max",
+        "exp_class_max",
+        "top_class_share",
+        "length_m"
+      ],
+      "title": "RoadProperties",
+      "type": "object"
+    },
+    "ScenarioRef": {
+      "additionalProperties": false,
+      "properties": {
+        "accumulation_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "examples": [
+            "24h hypothetical"
+          ],
+          "title": "Accumulation Period"
+        },
+        "rainfall_accumulation_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rainfall accumulation forcing in mm over `accumulation_period`; null for the terrain baseline. NOT a flood depth.",
+          "title": "Rainfall Accumulation Mm"
+        },
+        "rainfall_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dataset id of the rainfall data for observed scenarios; null for hypothetical ones.",
+          "title": "Rainfall Source"
+        },
+        "scenario_id": {
+          "examples": [
+            "baseline",
+            "rain_200mm"
+          ],
+          "pattern": "^[a-z0-9_]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_type": {
+          "$ref": "#/$defs/ScenarioType"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "scenario_type"
+      ],
+      "title": "ScenarioRef",
+      "type": "object"
+    },
+    "ScenarioType": {
+      "description": "What forces a scenario. These three must never be conflated.",
+      "enum": [
+        "terrain_baseline",
+        "hypothetical_rainfall_accumulation",
+        "observed_rainfall"
+      ],
+      "title": "ScenarioType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "bbox": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Bbox"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "detail": {
+      "anyOf": [
+        {
+          "enum": [
+            "full",
+            "overview"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Detail"
+    },
+    "disclaimer": {
+      "default": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "features": {
+      "items": {
+        "$ref": "#/$defs/RoadFeature"
+      },
+      "title": "Features",
+      "type": "array"
+    },
+    "matched": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Features matched before any limit",
+      "title": "Matched"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "scenario": {
+      "$ref": "#/$defs/ScenarioRef"
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "selection": {
+      "const": "ways_touching_top_class",
+      "default": "ways_touching_top_class",
+      "title": "Selection",
+      "type": "string"
+    },
+    "truncated": {
+      "default": false,
+      "title": "Truncated",
+      "type": "boolean"
+    },
+    "type": {
+      "const": "FeatureCollection",
+      "default": "FeatureCollection",
+      "title": "Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "region_id",
+    "scenario",
+    "features"
+  ],
+  "title": "RoadExposureCollection",
+  "type": "object"
+}

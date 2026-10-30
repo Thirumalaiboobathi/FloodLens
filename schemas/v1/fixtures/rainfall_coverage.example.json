@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.1.0",
+  "region_id": "chennai",
+  "streams": [
+    {
+      "stream": "historical_final",
+      "status": "available",
+      "periods": [
+        {
+          "scenario_id": "obs_final_20231203_20231205",
+          "observation_start": "2023-12-03",
+          "observation_end": "2023-12-05",
+          "n_days": 3,
+          "product_version": "V07B"
+        }
+      ],
+      "earliest": "2023-12-03",
+      "latest": "2023-12-05"
+    },
+    {
+      "stream": "recent_late",
+      "status": "available",
+      "periods": [
+        {
+          "scenario_id": "obs_late_20261022_20261028",
+          "observation_start": "2026-10-22",
+          "observation_end": "2026-10-28",
+          "n_days": 7,
+          "product_version": "V07C"
+        }
+      ],
+      "earliest": "2026-10-22",
+      "latest": "2026-10-28"
+    }
+  ],
+  "note": "Streams are never merged. The same calendar dates may appear in both, as different estimates; Late Run is provisional and not interchangeable with Final."
+}

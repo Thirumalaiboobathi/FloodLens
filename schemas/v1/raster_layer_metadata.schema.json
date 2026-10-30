@@ -1,0 +1,286 @@
+{
+  "$defs": {
+    "Bbox": {
+      "additionalProperties": false,
+      "properties": {
+        "east": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "East",
+          "type": "number"
+        },
+        "north": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "North",
+          "type": "number"
+        },
+        "south": {
+          "maximum": 90,
+          "minimum": -90,
+          "title": "South",
+          "type": "number"
+        },
+        "west": {
+          "maximum": 180,
+          "minimum": -180,
+          "title": "West",
+          "type": "number"
+        }
+      },
+      "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+      ],
+      "title": "Bbox",
+      "type": "object"
+    },
+    "LayerKind": {
+      "enum": [
+        "exposure_index",
+        "exposure_class",
+        "completeness",
+        "water_distance",
+        "permanent_water_mask"
+      ],
+      "title": "LayerKind",
+      "type": "string"
+    },
+    "ScenarioRef": {
+      "additionalProperties": false,
+      "properties": {
+        "accumulation_period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "examples": [
+            "24h hypothetical"
+          ],
+          "title": "Accumulation Period"
+        },
+        "rainfall_accumulation_mm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Rainfall accumulation forcing in mm over `accumulation_period`; null for the terrain baseline. NOT a flood depth.",
+          "title": "Rainfall Accumulation Mm"
+        },
+        "rainfall_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Dataset id of the rainfall data for observed scenarios; null for hypothetical ones.",
+          "title": "Rainfall Source"
+        },
+        "scenario_id": {
+          "examples": [
+            "baseline",
+            "rain_200mm"
+          ],
+          "pattern": "^[a-z0-9_]+$",
+          "title": "Scenario Id",
+          "type": "string"
+        },
+        "scenario_type": {
+          "$ref": "#/$defs/ScenarioType"
+        }
+      },
+      "required": [
+        "scenario_id",
+        "scenario_type"
+      ],
+      "title": "ScenarioRef",
+      "type": "object"
+    },
+    "ScenarioType": {
+      "description": "What forces a scenario. These three must never be conflated.",
+      "enum": [
+        "terrain_baseline",
+        "hypothetical_rainfall_accumulation",
+        "observed_rainfall"
+      ],
+      "title": "ScenarioType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "bounds_native": {
+      "maxItems": 4,
+      "minItems": 4,
+      "prefixItems": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "title": "Bounds Native",
+      "type": "array"
+    },
+    "bounds_wgs84": {
+      "$ref": "#/$defs/Bbox"
+    },
+    "crs": {
+      "title": "Crs",
+      "type": "string"
+    },
+    "derived_from": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Derived From",
+      "type": "array"
+    },
+    "description": {
+      "title": "Description",
+      "type": "string"
+    },
+    "dtype": {
+      "title": "Dtype",
+      "type": "string"
+    },
+    "file": {
+      "description": "Path relative to the artifact root",
+      "title": "File",
+      "type": "string"
+    },
+    "height": {
+      "exclusiveMinimum": 0,
+      "title": "Height",
+      "type": "integer"
+    },
+    "kind": {
+      "$ref": "#/$defs/LayerKind"
+    },
+    "layer_id": {
+      "title": "Layer Id",
+      "type": "string"
+    },
+    "nodata": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Nodata"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "resolution_m": {
+      "exclusiveMinimum": 0,
+      "title": "Resolution M",
+      "type": "number"
+    },
+    "scenario": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ScenarioRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "schema_version": {
+      "const": "1.0.0",
+      "default": "1.0.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Sha256",
+      "type": "string"
+    },
+    "units": {
+      "description": "e.g. 'unitless 0..1', 'class 1..5', 'm'",
+      "title": "Units",
+      "type": "string"
+    },
+    "value_max": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Value Max"
+    },
+    "value_min": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Value Min"
+    },
+    "width": {
+      "exclusiveMinimum": 0,
+      "title": "Width",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "layer_id",
+    "region_id",
+    "kind",
+    "file",
+    "crs",
+    "width",
+    "height",
+    "resolution_m",
+    "bounds_native",
+    "bounds_wgs84",
+    "dtype",
+    "nodata",
+    "value_min",
+    "value_max",
+    "units",
+    "sha256",
+    "derived_from",
+    "description"
+  ],
+  "title": "RasterLayerMetadata",
+  "type": "object"
+}

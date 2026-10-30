@@ -1,0 +1,84 @@
+{
+  "schema_version": "1.1.0",
+  "region_id": "chennai",
+  "scenarios": [
+    {
+      "scenario_id": "baseline",
+      "scenario_type": "terrain_baseline",
+      "group": "terrain_baseline",
+      "label": "Terrain baseline (no rainfall)",
+      "has_exposure_outputs": true,
+      "rainfall_stream": null,
+      "observation_start": null,
+      "observation_end": null,
+      "rainfall_accumulation_mm": null
+    },
+    {
+      "scenario_id": "rain_50mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "group": "hypothetical_rainfall",
+      "label": "Hypothetical 50 mm accumulation (not data)",
+      "has_exposure_outputs": true,
+      "rainfall_stream": null,
+      "observation_start": null,
+      "observation_end": null,
+      "rainfall_accumulation_mm": 50.0
+    },
+    {
+      "scenario_id": "rain_100mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "group": "hypothetical_rainfall",
+      "label": "Hypothetical 100 mm accumulation (not data)",
+      "has_exposure_outputs": true,
+      "rainfall_stream": null,
+      "observation_start": null,
+      "observation_end": null,
+      "rainfall_accumulation_mm": 100.0
+    },
+    {
+      "scenario_id": "rain_200mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "group": "hypothetical_rainfall",
+      "label": "Hypothetical 200 mm accumulation (not data)",
+      "has_exposure_outputs": true,
+      "rainfall_stream": null,
+      "observation_start": null,
+      "observation_end": null,
+      "rainfall_accumulation_mm": 200.0
+    },
+    {
+      "scenario_id": "rain_300mm",
+      "scenario_type": "hypothetical_rainfall_accumulation",
+      "group": "hypothetical_rainfall",
+      "label": "Hypothetical 300 mm accumulation (not data)",
+      "has_exposure_outputs": true,
+      "rainfall_stream": null,
+      "observation_start": null,
+      "observation_end": null,
+      "rainfall_accumulation_mm": 300.0
+    },
+    {
+      "scenario_id": "obs_final_20231203_20231205",
+      "scenario_type": "observed_rainfall",
+      "group": "historical_observed",
+      "label": "Historical Final Run: 2023-12-03 to 2023-12-05 (V07B)",
+      "has_exposure_outputs": false,
+      "rainfall_stream": "historical_final",
+      "observation_start": "2023-12-03",
+      "observation_end": "2023-12-05",
+      "rainfall_accumulation_mm": null
+    },
+    {
+      "scenario_id": "obs_late_20261022_20261028",
+      "scenario_type": "observed_rainfall",
+      "group": "recent_observed",
+      "label": "Recent Late Run: 2026-10-22 to 2026-10-28 (V07C)",
+      "has_exposure_outputs": false,
+      "rainfall_stream": "recent_late",
+      "observation_start": "2026-10-22",
+      "observation_end": "2026-10-28",
+      "rainfall_accumulation_mm": null
+    }
+  ],
+  "note": "Observed rainfall scenarios are context layers: they have no exposure outputs and do not enter the exposure index."
+}

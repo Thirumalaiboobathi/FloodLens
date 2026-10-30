@@ -1,0 +1,163 @@
+{
+  "$defs": {
+    "CellFeature": {
+      "additionalProperties": false,
+      "properties": {
+        "geometry": {
+          "$ref": "#/$defs/CellGeometry"
+        },
+        "properties": {
+          "$ref": "#/$defs/CellProperties"
+        },
+        "type": {
+          "const": "Feature",
+          "default": "Feature",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "geometry",
+        "properties"
+      ],
+      "title": "CellFeature",
+      "type": "object"
+    },
+    "CellGeometry": {
+      "additionalProperties": false,
+      "properties": {
+        "coordinates": {
+          "items": {},
+          "title": "Coordinates",
+          "type": "array"
+        },
+        "type": {
+          "const": "Polygon",
+          "default": "Polygon",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "coordinates"
+      ],
+      "title": "CellGeometry",
+      "type": "object"
+    },
+    "CellProperties": {
+      "additionalProperties": false,
+      "properties": {
+        "accumulation_mm": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "null only when state is 'nodata'",
+          "title": "Accumulation Mm"
+        },
+        "col": {
+          "title": "Col",
+          "type": "integer"
+        },
+        "row": {
+          "title": "Row",
+          "type": "integer"
+        },
+        "state": {
+          "$ref": "#/$defs/CellState"
+        }
+      },
+      "required": [
+        "row",
+        "col",
+        "state",
+        "accumulation_mm"
+      ],
+      "title": "CellProperties",
+      "type": "object"
+    },
+    "CellState": {
+      "enum": [
+        "rain",
+        "zero",
+        "nodata"
+      ],
+      "title": "CellState",
+      "type": "string"
+    },
+    "RainfallStream": {
+      "enum": [
+        "historical_final",
+        "recent_late"
+      ],
+      "title": "RainfallStream",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "disclaimer": {
+      "default": "Satellite-estimated rainfall accumulation (NASA GPM IMERG) on a ~10 km grid over a stated UTC period. Not flood depth, not a forecast, not an official warning, not a rain-gauge measurement, and not part of the exposure index.",
+      "title": "Disclaimer",
+      "type": "string"
+    },
+    "features": {
+      "items": {
+        "$ref": "#/$defs/CellFeature"
+      },
+      "title": "Features",
+      "type": "array"
+    },
+    "native_resolution_deg": {
+      "title": "Native Resolution Deg",
+      "type": "number"
+    },
+    "rainfall_stream": {
+      "$ref": "#/$defs/RainfallStream"
+    },
+    "region_id": {
+      "title": "Region Id",
+      "type": "string"
+    },
+    "resampled": {
+      "const": false,
+      "default": false,
+      "title": "Resampled",
+      "type": "boolean"
+    },
+    "scenario_id": {
+      "title": "Scenario Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.1.0",
+      "default": "1.1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "type": {
+      "const": "FeatureCollection",
+      "default": "FeatureCollection",
+      "title": "Type",
+      "type": "string"
+    },
+    "units": {
+      "title": "Units",
+      "type": "string"
+    }
+  },
+  "required": [
+    "scenario_id",
+    "region_id",
+    "rainfall_stream",
+    "native_resolution_deg",
+    "units",
+    "features"
+  ],
+  "title": "RainfallCells",
+  "type": "object"
+}

@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0.0",
+  "region_id": "chennai",
+  "boundary_id": "chennai_core_geoboundaries",
+  "baseline_scenario_id": "baseline",
+  "class_thresholds_baseline_index": [
+    0.33059988617897035,
+    0.4352581322193147,
+    0.5247851610183716,
+    0.6243607759475708
+  ],
+  "scenarios": [
+    {
+      "scenario": {
+        "scenario_id": "baseline",
+        "scenario_type": "terrain_baseline",
+        "rainfall_accumulation_mm": null,
+        "accumulation_period": null,
+        "rainfall_source": null
+      },
+      "share_by_class": {
+        "1": 0.1751,
+        "2": 0.2446,
+        "3": 0.2224,
+        "4": 0.1838,
+        "5": 0.174
+      },
+      "share_top_class": 0.174,
+      "mean_index": 0.4773,
+      "road_length_km_touching_top_class": 6735.0,
+      "facilities_in_top_class": {
+        "hospital_or_clinic": 93,
+        "school": 69
+      },
+      "delta_vs_baseline_share_top_class": null
+    },
+    {
+      "scenario": {
+        "scenario_id": "rain_50mm",
+        "scenario_type": "hypothetical_rainfall_accumulation",
+        "rainfall_accumulation_mm": 50.0,
+        "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+        "rainfall_source": null
+      },
+      "share_by_class": {
+        "1": 0.2439,
+        "2": 0.2436,
+        "3": 0.1881,
+        "4": 0.1603,
+        "5": 0.1641
+      },
+      "share_top_class": 0.1641,
+      "mean_index": 0.4562,
+      "road_length_km_touching_top_class": 6338.7,
+      "facilities_in_top_class": {
+        "hospital_or_clinic": 80,
+        "school": 67
+      },
+      "delta_vs_baseline_share_top_class": -0.0099
+    },
+    {
+      "scenario": {
+        "scenario_id": "rain_100mm",
+        "scenario_type": "hypothetical_rainfall_accumulation",
+        "rainfall_accumulation_mm": 100.0,
+        "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+        "rainfall_source": null
+      },
+      "share_by_class": {
+        "1": 0.1272,
+        "2": 0.2326,
+        "3": 0.2382,
+        "4": 0.2042,
+        "5": 0.1977
+      },
+      "share_top_class": 0.1977,
+      "mean_index": 0.4979,
+      "road_length_km_touching_top_class": 7228.2,
+      "facilities_in_top_class": {
+        "hospital_or_clinic": 111,
+        "school": 83
+      },
+      "delta_vs_baseline_share_top_class": 0.0237
+    },
+    {
+      "scenario": {
+        "scenario_id": "rain_200mm",
+        "scenario_type": "hypothetical_rainfall_accumulation",
+        "rainfall_accumulation_mm": 200.0,
+        "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+        "rainfall_source": null
+      },
+      "share_by_class": {
+        "1": 0.0457,
+        "2": 0.1723,
+        "3": 0.2639,
+        "4": 0.2723,
+        "5": 0.2458
+      },
+      "share_top_class": 0.2458,
+      "mean_index": 0.539,
+      "road_length_km_touching_top_class": 8402.8,
+      "facilities_in_top_class": {
+        "hospital_or_clinic": 159,
+        "school": 108
+      },
+      "delta_vs_baseline_share_top_class": 0.0718
+    },
+    {
+      "scenario": {
+        "scenario_id": "rain_300mm",
+        "scenario_type": "hypothetical_rainfall_accumulation",
+        "rainfall_accumulation_mm": 300.0,
+        "accumulation_period": "24h hypothetical (analyst-chosen, not data)",
+        "rainfall_source": null
+      },
+      "share_by_class": {
+        "1": 0.0206,
+        "2": 0.1263,
+        "3": 0.2559,
+        "4": 0.3174,
+        "5": 0.2798
+      },
+      "share_top_class": 0.2798,
+      "mean_index": 0.5609,
+      "road_length_km_touching_top_class": 9116.3,
+      "facilities_in_top_class": {
+        "hospital_or_clinic": 209,
+        "school": 133
+      },
+      "delta_vs_baseline_share_top_class": 0.1058
+    }
+  ],
+  "observed_rainfall_status": "pending",
+  "notes": [
+    "Classes are fixed to baseline quantiles, so scenario shares show relative change.",
+    "Hypothetical scenarios use analyst-chosen rainfall accumulation, not data.",
+    "Rainfall accumulation is not flood depth.",
+    "Scenarios under ~100 mm can score below baseline because the heuristic 'reach' narrows; compare with caution."
+  ],
+  "disclaimer": "Relative screening index from terrain, hydrology and mapped water. Not a flood probability, depth, extent, forecast or official warning; not validated against observed floods."
+}

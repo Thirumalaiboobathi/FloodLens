@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+node_modules/
+dist/
+cdk.out/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# large data: raw and processed artifacts are published to S3, not committed
+data/raw/
+data/processed/
+*.tif
+*.tiff
+*.pbf
+.DS_Store
+
+# generated API artifact tree (rebuild with scripts/build_api_artifacts.py)
+data/api/
+
+# CDK build output (Lambda package, never committed)
+infrastructure/build/
+infrastructure/cdk.out/
