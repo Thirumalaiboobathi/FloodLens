@@ -1,5 +1,12 @@
 # Deployment approval package
 
+> **Superseded in part by Phase 13 (2026-10-30).** The deployment target changed from CloudFront + S3 + Lambda Function URL to
+> **AWS Amplify Hosting + API Gateway HTTP API + Lambda** (stack `FloodLensAmplify`), after the first CloudFront deployment failed on the
+> account's cache-policy query-string quota (see `reports/releases/2026-10-30-rc2/ROLLBACK-INVESTIGATION.md`). Statements below about
+> CloudFront, the Function URL, OAC, `config.json`, the 4-alarm set, reserved concurrency and the `FloodLens` stack describe the old design.
+> Current procedure: [AMPLIFY_MIGRATION.md](AMPLIFY_MIGRATION.md). Kept for the audit trail; its commands were never run against AWS.
+
+
 Written for: the project owner. 2026-10-30. **Not executed. This package does not request approval yet:** section 2 lists prerequisites that are not met. Bootstrap is separate and not required ([BOOTSTRAP_APPROVAL_PACKAGE.md](BOOTSTRAP_APPROVAL_PACKAGE.md)).
 
 ## 1. What would be deployed

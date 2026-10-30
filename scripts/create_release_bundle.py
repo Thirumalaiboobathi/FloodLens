@@ -321,7 +321,7 @@ def create(a: argparse.Namespace) -> int:
     head = git("rev-parse", "HEAD").strip()
     src = source_files()
     manifests = sorted((ROOT / "data" / "manifests").rglob("*.json"))
-    cdk_t = ROOT / "infrastructure" / "cdk.out" / "FloodLens.template.json"
+    cdk_t = ROOT / "infrastructure" / "cdk.out" / "FloodLensAmplify.template.json"
     man = {
         "schema": SCHEMA, "release_id": a.release_id, "created_utc": datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "deployed": False, "uploaded": False,
@@ -343,7 +343,7 @@ def create(a: argparse.Namespace) -> int:
             "infrastructure_package_lock_sha256": sha_file(ROOT / "infrastructure/package-lock.json", True),
             "api_version": re.search(r'API_VERSION\s*=\s*"([^"]+)"', (ROOT / "services/api/floodlens_api/__init__.py").read_text(encoding="utf-8")).group(1),
             "cdk_template_sha256": sha_file(cdk_t) if cdk_t.exists() else None,
-            "cdk_template_note": "Depends on the -c alarmEmail / locationKeyExpireTime used for the synth; recorded for reference only.",
+            "cdk_template_note": "Depends on the -c alarmEmail / locationKeyExpireTime / frontendOrigins used for the synth; recorded for reference only.",
         },
         "data_baseline": {"report": BASELINE.relative_to(ROOT).as_posix(), "sha256": sha_file(BASELINE, True),
                           "note": "Per-file hashes of data/raw and data/processed live in this report; verify with scripts/data_baseline.py --verify."},
@@ -356,8 +356,8 @@ def create(a: argparse.Namespace) -> int:
     failed = [c for c in checks if c["status"] == "FAIL"]
     validation = {"release_id": a.release_id, "created_utc": man["created_utc"], "checks": checks, "tests": tests,
                   "verdict": "PASS" if not failed else "FAIL", "failed": [c["name"] for c in failed],
-                  "not_verified_here": ["Lambda ARM64 runtime execution (host is not ARM64)", "CloudFront origin request signing / OAC acceptance",
-                                        "direct Function URL rejection", "production CSP in a browser", "Amazon Location tile rendering", "cost and alarm behaviour"]}
+                  "not_verified_here": ["Lambda ARM64 runtime execution (host is not ARM64)", "API Gateway CORS, throttling and route behaviour in AWS",
+                                        "Amplify build, rewrites and response headers", "production CSP in a browser", "Amazon Location tile rendering", "cost and alarm behaviour"]}
     if failed and not a.keep_failed:
         raise BundleError("validation failed, bundle not written: " + json.dumps([(c["name"], c["detail"]) for c in failed], indent=1))
     out.mkdir(parents=True)

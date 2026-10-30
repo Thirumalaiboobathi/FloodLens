@@ -1,6 +1,6 @@
 # FloodLens — Project Status
 
-_Last updated: 2026-10-30_
+_Last updated: 2026-10-30 (Phase 13)_
 
 ## Phase 0 — Repository and architecture: DONE (this commit)
 
@@ -194,3 +194,8 @@ Preparation and local checks only. No bootstrap, deploy, upload, commit, push or
 - Fixed a trap: untracked `reports/releases/*` would have made the tree dirty and blocked the clean bundle; `reports/releases/` is now git-ignored.
 - Regression (offline): geospatial 174, API 189 (1 skipped, 2 warnings), frontend 83, infrastructure 32; Ruff, tsc, build, schema drift, 15/15 manifests, data baseline UNCHANGED, release integrity exit 0, secret scan 0 hits, synth 37 resources.
 - Recommendation: READY FOR OWNER ACTIONS; NOT READY FOR DEPLOYMENT APPROVAL. Bootstrap not required.
+
+## Phase 13 — Amplify migration: IMPLEMENTED LOCALLY (2026-10-30), NOT DEPLOYED
+The CloudFront deployment failed at creation (cache policy lists 15 query strings; account limit 10) and `FloodLens` is `ROLLBACK_COMPLETE`.
+The target is now AWS Amplify Hosting + API Gateway HTTP API + Lambda (CDK stack `FloodLensAmplify`, 21 resources). See
+`docs/deployment/AMPLIFY_MIGRATION.md` and `reports/releases/AMPLIFY_MIGRATION_REVIEW.md`. No commit, push or AWS change was made; owner approval is needed for each.

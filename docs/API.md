@@ -102,7 +102,9 @@ Every `GET` route under `/v1` also answers `HEAD`: same status code, same parame
 the length of the corresponding `GET` body. JSON routes run exactly as for `GET` and drop the body; the GeoTIFF route sends headers
 only and never opens the file. `GET` behaviour, response schemas and error codes are unchanged (all 24 `GET` operations in
 `/openapi.json` are byte-identical to before; 24 `head` operations were added). Other methods, including `OPTIONS`, still return
-`405 method_not_allowed`; no CORS headers are sent because the browser calls the API same-origin through CloudFront.
+`405 method_not_allowed` if they ever reach the application. In production API Gateway routes only `GET` and `HEAD` on `/v1/{proxy+}` and answers `OPTIONS` itself
+(CORS for the Amplify origin); the application sends no CORS headers.
 
-Behind CloudFront the API is reached through a Lambda Function URL (see `docs/architecture/ARCHITECTURE.md`). The URL is not a public
-endpoint: unsigned requests are rejected by the Lambda service (`AWS_IAM`). Clients always use `https://<site>/v1/...`.
+In production the API is an API Gateway HTTP API (payload format 2.0) in front of the Lambda (see `docs/deployment/AMPLIFY_MIGRATION.md`). Clients use
+`<VITE_API_BASE_URL>/v1/...`. Every query parameter reaches the application unchanged; responses are neither cached nor compressed by the gateway.
+`/docs` and `/openapi.json` exist in the application but are not routed by the gateway.

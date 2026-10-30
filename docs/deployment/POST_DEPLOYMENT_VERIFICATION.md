@@ -1,5 +1,12 @@
 # Post-deployment verification plan
 
+> **Superseded in part by Phase 13 (2026-10-30).** The deployment target changed from CloudFront + S3 + Lambda Function URL to
+> **AWS Amplify Hosting + API Gateway HTTP API + Lambda** (stack `FloodLensAmplify`), after the first CloudFront deployment failed on the
+> account's cache-policy query-string quota (see `reports/releases/2026-10-30-rc2/ROLLBACK-INVESTIGATION.md`). Statements below about
+> CloudFront, the Function URL, OAC, `config.json`, the 4-alarm set, reserved concurrency and the `FloodLens` stack describe the old design.
+> Current procedure: [AMPLIFY_MIGRATION.md](AMPLIFY_MIGRATION.md). Kept for the audit trail; its commands were never run against AWS.
+
+
 Written for: the person running the first deployment checks. 2026-10-30. **Nothing in this plan has been run against AWS.** It complements `POST_DEPLOYMENT_CHECKLIST.md` (detailed commands) with an ordered gate list and status labels.
 
 Labels: **LOCAL** = verified on this machine before deployment · **SYNTH** = true of the synthesized template only · **AWS** = requires the deployed stack · **MON** = requires monitoring over time.

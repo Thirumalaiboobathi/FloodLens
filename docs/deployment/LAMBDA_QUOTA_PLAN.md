@@ -1,5 +1,12 @@
 # Lambda concurrency quota plan
 
+> **Superseded in part by Phase 13 (2026-10-30).** The deployment target changed from CloudFront + S3 + Lambda Function URL to
+> **AWS Amplify Hosting + API Gateway HTTP API + Lambda** (stack `FloodLensAmplify`), after the first CloudFront deployment failed on the
+> account's cache-policy query-string quota (see `reports/releases/2026-10-30-rc2/ROLLBACK-INVESTIGATION.md`). Statements below about
+> CloudFront, the Function URL, OAC, `config.json`, the 4-alarm set, reserved concurrency and the `FloodLens` stack describe the old design.
+> Current procedure: [AMPLIFY_MIGRATION.md](AMPLIFY_MIGRATION.md). Kept for the audit trail; its commands were never run against AWS.
+
+
 Written for: the project owner. 2026-10-30. **Nothing in this document has been submitted or changed.** No quota request was made and no reserved concurrency is assigned. Labels: **[V]** verified by a read-only call or local test · **[A]** assumption · **[U]** unknown · **[AWS]** needs the deployed stack.
 
 ## 1. Current state [V, read-only, 2026-10-30]

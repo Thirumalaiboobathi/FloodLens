@@ -1,0 +1,28 @@
+# AWS Amplify Hosting build for the FloodLens web app (monorepo: the app lives in apps/web).
+# In the Amplify console set the environment variable AMPLIFY_MONOREPO_APP_ROOT=apps/web for this app.
+# Build-time variables (set in the console, never in this file; all VITE_* values end up in the public JS bundle):
+#   VITE_API_BASE_URL            the API Gateway HTTP API origin (stack output ApiBaseUrl)
+#   VITE_LOCATION_API_KEY        the restricted Amazon Location browser key (public by design, map actions only)
+#   VITE_LOCATION_REGION         ap-south-1
+#   VITE_LOCATION_STYLE          Monochrome
+#   VITE_LOCATION_POLITICAL_VIEW IND
+# No tokens or secrets belong here. See docs/deployment/AMPLIFY_MIGRATION.md.
+version: 1
+applications:
+  - appRoot: apps/web
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - nvm install 20 && nvm use 20
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*

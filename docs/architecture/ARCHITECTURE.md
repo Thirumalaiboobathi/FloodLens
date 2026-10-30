@@ -19,8 +19,8 @@ Heavy raster work never runs in an API request. The system has two halves:
                                   rainfall,            │ read-only
                                   exposure, export)    │
                                                   Lambda (FastAPI+Mangum)
- CloudFront ─► S3 (frontend, OAC)                      ▲
- CloudFront ─► Lambda Function URL (AWS_IAM, OAC) ──────┘
+ Amplify Hosting (static React app)                     ▲
+ API Gateway HTTP API (GET/HEAD /v1/*, CORS, throttle) ──┘  (Phase 13; the Phase 7 CloudFront design was superseded)
 ```
 
 ## 2. Hierarchical data strategy
@@ -42,8 +42,8 @@ Each region has a coverage status (`available | partial | processing | unavailab
   from S3 (local filesystem in dev) through a `repositories/` abstraction.
 - **`apps/web`** – React 19 + Vite + MapLibre GL. Map style/tiles from Amazon Location (API key
   restricted by referrer + action); data from our API.
-- **`infrastructure/`** – CDK (TypeScript): S3 (frontend, data), CloudFront + OAC, Lambda
-  Function URL (AWS_IAM, CloudFront OAC), Location API key, log retention, alarms.
+- **`infrastructure/`** – CDK (TypeScript), stack `FloodLensAmplify`: API Gateway HTTP API, Lambda,
+  Location API key, log retention, alarms. The frontend is built and hosted by AWS Amplify from GitHub (`amplify.yml`).
 
 ## 4. Artifact formats
 
@@ -55,13 +55,13 @@ Each region has a coverage status (`available | partial | processing | unavailab
 
 ## 5. AWS resource plan (minimal)
 
-S3 ×2 (web, data; private, SSE, versioned data), CloudFront, Lambda ×1 with a Function URL (no API Gateway),
+API Gateway HTTP API (Phase 13), Lambda ×1 (data artifacts packaged inside), Amplify Hosting for the web app (no S3 or CloudFront of our own),
 Amazon Location API key, CloudWatch logs (30-day retention), AWS Budget. No VPC, no NAT, no
 always-on compute. Estimated steady-state cost: a few USD/month at demo traffic.
 
 ## 6. Security boundaries
 
-Browser → CloudFront (TLS). API Lambda role: `s3:GetObject` on the data bucket only. The Location
+Browser → Amplify Hosting / API Gateway (TLS). The API Lambda role has logging permissions only (it reads files in its own package). The Location
 key is browser-exposed by design, scoped to `geo-maps:*` read actions and allowed referrers.
 CI uses GitHub OIDC; no long-lived keys. See `docs/security/` (Phase 5).
 
@@ -129,3 +129,16 @@ Browser ──HTTPS GET/HEAD /v1/...──> CloudFront ──SigV4 (OAC), HTTPS�
   `isBase64Encoded`). Rasters are returned base64-encoded; buffered responses are limited to 6 MB.
 * Verified locally only (synthesized template and synthetic events). CloudFront origin authentication, the real Function URL rejection,
   production CSP and the first ARM64 invocation need a deployment to verify.
+
+## Request path (Phase 13, current design)
+
+```
+Browser ──HTTPS GET/HEAD /v1/...──> API Gateway HTTP API ($default stage, throttled) ──AWS_PROXY 2.0──> Lambda (FastAPI + Mangum) ──> artifacts in the package
+Browser ──HTTPS──> Amplify Hosting (static app) ;  Browser ──HTTPS──> maps.geo.ap-south-1.amazonaws.com (restricted key)
+```
+
+* The frontend calls the API cross-origin at `VITE_API_BASE_URL`; API Gateway CORS allows only the Amplify origin(s) (and localhost only if enabled).
+* Only `GET` and `HEAD` on `/v1/{proxy+}` are routed; `/docs`, `/openapi.json` and other methods never reach Lambda. The public read-only API is intentional.
+* No CloudFront, no cache policy, no Function URL, no S3 bucket of our own. Responses are not cached or compressed by the gateway.
+* The Lambda resource policy allows only `apigateway.amazonaws.com` for this API id and route. The sections above that mention CloudFront, OAC or the Function URL
+  describe the Phase 7 design that was never deployed. See `docs/deployment/AMPLIFY_MIGRATION.md`.

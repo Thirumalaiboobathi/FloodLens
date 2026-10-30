@@ -1,5 +1,12 @@
 # AWS cost protection setup (for the owner to execute)
 
+> **Superseded in part by Phase 13 (2026-10-30).** The deployment target changed from CloudFront + S3 + Lambda Function URL to
+> **AWS Amplify Hosting + API Gateway HTTP API + Lambda** (stack `FloodLensAmplify`), after the first CloudFront deployment failed on the
+> account's cache-policy query-string quota (see `reports/releases/2026-10-30-rc2/ROLLBACK-INVESTIGATION.md`). Statements below about
+> CloudFront, the Function URL, OAC, `config.json`, the 4-alarm set, reserved concurrency and the `FloodLens` stack describe the old design.
+> Current procedure: [AMPLIFY_MIGRATION.md](AMPLIFY_MIGRATION.md). Kept for the audit trail; its commands were never run against AWS.
+
+
 Written for: the project owner. 2026-10-30. **No budget, alarm, anomaly subscription or notification has been created.** Every command below changes AWS and is yours to run. Labels: **[V]** verified read-only · **[A]** assumption · **[U]** unknown.
 
 ## 0. Read this first: what budgets do and do not do

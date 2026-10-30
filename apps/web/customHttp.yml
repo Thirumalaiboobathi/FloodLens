@@ -1,0 +1,17 @@
+# Response headers for Amplify Hosting (the old CloudFront ResponseHeadersPolicy no longer exists).
+# Amplify reads customHttp.yml from the app root; if the console does not show these headers after the first build,
+# paste this file into App settings > Custom headers instead.
+# connect-src lists the API Gateway host pattern and the Amazon Location maps host for ap-south-1 only.
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      - key: Strict-Transport-Security
+        value: max-age=31536000; includeSubDomains
+      - key: X-Content-Type-Options
+        value: nosniff
+      - key: X-Frame-Options
+        value: DENY
+      - key: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - key: Content-Security-Policy
+        value: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: https://maps.geo.ap-south-1.amazonaws.com; connect-src 'self' https://*.execute-api.ap-south-1.amazonaws.com https://maps.geo.ap-south-1.amazonaws.com; worker-src 'self' blob:; child-src blob:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'"

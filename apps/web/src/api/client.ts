@@ -1,5 +1,6 @@
-// Same-origin, credential-free API client. Paths are built only from validated ids; the browser never
-// holds AWS credentials or tokens.
+// Credential-free API client. Paths are built only from validated ids; the browser never holds AWS credentials
+// or tokens. Production calls go straight to the API Gateway HTTP API named by VITE_API_BASE_URL (CORS-enabled,
+// public read-only); in development the Vite proxy serves /v1 from the same origin and the base is empty.
 
 import type {
   FacilityCollection, ObservedRainfallMetadata, PolygonCollection, RainfallCatalog, RainfallCells,
@@ -7,7 +8,36 @@ import type {
   ScenarioCatalog, ApiErrorBody,
 } from "./types";
 
-const BASE = (import.meta.env?.VITE_API_BASE as string | undefined) ?? "";
+export interface ApiBaseEnv { VITE_API_BASE_URL?: string; VITE_API_BASE?: string }
+export type ApiBase = { ok: true; base: string } | { ok: false; code: "api_not_configured" | "invalid_api_base"; message: string };
+
+/**
+ * Resolve the API origin. VITE_API_BASE_URL is the supported name (VITE_API_BASE is the older alias). The value is an
+ * https origin with no path, query or credentials (plain http only for localhost); a trailing slash is removed. An empty value means
+ * same-origin, which only works in development (Vite proxy), so a production build without it reports a clear error
+ * instead of asking the static host for /v1 and receiving index.html.
+ */
+export function resolveApiBase(env: ApiBaseEnv, production: boolean): ApiBase {
+  const raw = (env.VITE_API_BASE_URL ?? env.VITE_API_BASE ?? "").trim().replace(/\/+$/, "");
+  if (!raw) {
+    return production
+      ? { ok: false, code: "api_not_configured", message: "The FloodLens API address is not configured for this build." }
+      : { ok: true, base: "" };
+  }
+  try {
+    const u = new URL(raw);
+    const local = u.protocol === "http:" && ["localhost", "127.0.0.1"].includes(u.hostname);
+    if ((u.protocol !== "https:" && !local) || u.username || u.password || u.search || u.hash || (u.pathname !== "/" && u.pathname !== "")) {
+      return { ok: false, code: "invalid_api_base", message: "VITE_API_BASE_URL must be a bare https origin (scheme and host only; no path, query or credentials)." };
+    }
+    return { ok: true, base: u.origin };
+  } catch {
+    return { ok: false, code: "invalid_api_base", message: "VITE_API_BASE_URL is not a valid URL." };
+  }
+}
+
+const RESOLVED = resolveApiBase((import.meta.env ?? {}) as ApiBaseEnv, Boolean(import.meta.env?.PROD));
+const BASE = RESOLVED.ok ? RESOLVED.base : "";
 const ID = /^[a-z0-9_]+$/;
 const RAIN_ID = /^obs_(final|late)_\d{8}_\d{8}$/;
 
@@ -26,6 +56,7 @@ function seg(value: string, re = ID): string {
 export async function getJson<T>(path: string, params?: Record<string, string | number | undefined>, signal?: AbortSignal): Promise<T> {
   const qs = new URLSearchParams();
   for (const [k, v] of Object.entries(params ?? {})) if (v !== undefined) qs.set(k, String(v));
+  if (!RESOLVED.ok) throw new ApiError(0, RESOLVED.code, RESOLVED.message);
   const url = `${BASE}/v1${path}${qs.size ? `?${qs}` : ""}`;
   let res: Response;
   try {

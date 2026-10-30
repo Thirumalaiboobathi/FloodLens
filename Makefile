@@ -25,9 +25,9 @@ package-lambda:
 	$(PY) scripts/package_lambda.py
 test-infra:
 	cd infrastructure && npm test
-# ALARM_EMAIL and KEY_EXPIRE (ISO-8601, at most 90 days ahead) are required; synth is local-only
+# ALARM_EMAIL, KEY_EXPIRE (ISO-8601, at most 90 days ahead) and FRONTEND_ORIGINS (the Amplify https origin) are required; synth is local-only
 synth:
-	cd infrastructure && npx cdk synth --quiet -c alarmEmail=$(ALARM_EMAIL) -c locationKeyExpireTime=$(KEY_EXPIRE)
+	cd infrastructure && npx cdk synth --quiet -c alarmEmail=$(ALARM_EMAIL) -c locationKeyExpireTime=$(KEY_EXPIRE) -c frontendOrigins=$(FRONTEND_ORIGINS)
 
 .PHONY: release-bundle verify-release
 release-bundle:
