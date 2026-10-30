@@ -141,3 +141,56 @@ Done (not committed, not deployed, no AWS resource created or changed, no upload
   context; explicit 30-day logs for deploy-time helpers; pinned Lambda dependencies and `bin/` removed from the package; `.gitattributes` for
   `schemas/`. Tests: geospatial 174, API 132, frontend 83, infrastructure 20; Ruff, tsc, build, schema drift, manifests, secret scan all pass.
 Not done: deployment; any AWS-side verification; budgets/alerts (owner to create); HEAD support decision; custom domain/WAF.
+
+
+### Update 2026-10-30 (session 8) - Phase 6: release baseline, security hardening and deployment readiness
+Done (not committed, not deployed, no AWS resource created or changed, no upload; protected data, manifests, frozen schemas and exposure code untouched):
+- **Git:** `main` = `d2c67a2` ("first commit"), the only commit, equal to `origin/main`. It is the first verified baseline, **not** a historical one:
+  frozen-v1 preservation since Phase 1/3/4 cannot be proven. Git ignores `data/raw`, `data/processed`, `data/api`; `scripts/data_baseline.py` records and verifies their hashes.
+  Report: `reports/pre-deployment/phase6-git-baseline.json`.
+- **Fixed my Phase 5 defect:** 3 response-snapshot hashes included the per-request `data_freshness.as_of_utc`; `scripts/release_integrity.py` now excludes it.
+- Documents: `docs/deployment/RELEASE_READINESS.md` (findings P6-01..18, verification matrix), `SECURITY_OPERATIONS.md` (budgets, anomaly detection, key lifecycle, API exposure options),
+  `DEPLOYMENT_RUNBOOK.md` (17 sections, three approval gates, not executed).
+- Verified: arm64 `pydantic_core` ELF is AArch64; package equals source; handler answered 7 synthetic API Gateway events; HEAD returns 405 (cause documented).
+  **Not verified:** execution on Linux ARM64 (host is AMD64; an emulator check was denied by the permission system and not retried); anything on CloudFront/CSP.
+- New facts: key has `NoExpiry` unless `locationKeyExpireTime` is passed; Location `DeleteKey` requires 90 days of deactivation (rollback/rotation risk); a direct-URL flood shares the stage throttle.
+- Tests (all executed): geospatial 174, API 132, frontend 83, infrastructure 20; Ruff, tsc, build, schema drift, 15 manifests, secret scan, offline synth pass.
+Not done: deployment, bootstrap, budgets/alarms/keys, HEAD and API-front-door decisions (owner), ARM64 runtime test.
+
+
+### Update 2026-10-30 (session 9) - Phase 7: production architecture finalization and release candidate
+Done (not committed, not deployed, no AWS resource created or changed, no upload; protected data, manifests, frozen schemas, exposure code untouched):
+- **Starting state:** `main` = `d2c67a2`, the only commit; the Phase 6 commit the brief expected does not exist (Phases 6 and 7 are uncommitted).
+- **Architecture:** API Gateway removed. `/v1/*` now goes CloudFront -> Lambda Function URL (`AWS_IAM`, buffered) with a lambda-type OAC (SigV4 always); two Lambda permissions
+  (`InvokeFunctionUrl`, `InvokeFunction`) scoped to this distribution; no public principal. 37 synthesized resources (was 40). Browser path unchanged (`/v1/...`, no credentials).
+- **HEAD:** supported on all 24 GET routes (additive). GET operations in `/openapi.json` are byte-identical to before; 24 `head` operations added; HEAD has no body and never opens the GeoTIFF.
+- **Mandatory settings:** `locationKeyExpireTime` (<= 90 days, validated, real calendar date) and `alarmEmail` (SNS subscription always created; recipient must confirm). `apiRateLimit`/`apiBurstLimit` removed
+  (they now abort the synth); new `reservedConcurrency` (optional) and `invocationAlarmThreshold` + `LambdaTrafficSpike` alarm.
+- **Release bundle:** `scripts/create_release_bundle.py` (create/verify, never overwrites, 15 checks); bundle `reports/releases/2026-10-30-rc1/` (1,869 files, checksums, 13.5 MB data archive git-ignored); made on a dirty tree.
+- Docs: `PHASE7_IMPLEMENTATION_REPORT.md`, `RELEASE_ARTIFACTS.md`; updated API, ARCHITECTURE, DEPLOYMENT, RUNBOOK, POST_DEPLOYMENT_CHECKLIST (new gate H), SECURITY_OPERATIONS, RELEASE_READINESS.
+- Tests (all executed): geospatial 174, API 189 (+1 skipped, case-insensitive FS), frontend 83, infrastructure 32; Ruff, tsc, web build, schema drift, manifests, secret scan, offline synth pass.
+- **Not verified:** anything in AWS (direct Function URL refusal, OAC acceptance, CSP, tiles, cost/alarms); Linux ARM64 execution (no ARM64 host, no emulator installed); browser tests were not run.
+- Findings: no BLOCKER. HIGH P7-03 (tile spend uncapped, unchanged). MEDIUM P7-01 (Function URL path unverified), P7-02 (no API throttle/WAF), P7-04 (ARM64), P7-05, P7-11 (no Phase 6 commit).
+Not done: deployment, bootstrap, budgets/alarms, commit, regenerating the bundle from a clean tree.
+
+
+### Update 2026-10-30 (session 10) - Phase 8: release candidate audit and approval preparation
+Done (not committed, not deployed, not bootstrapped; protected data, manifests, frozen schemas, exposure code untouched):
+- **Incident I-1 (disclosed):** I ran `cdk diff` believing it read-only; it published the synthesized template (36,965 bytes, no secrets) to the CDK staging bucket and created/deleted a transient `FloodLens` stack record. Nothing else changed. Not reversed (owner's call). Runbook section 8 corrected.
+- **Git:** `main` = `d2c67a2` = `origin/main`; Phases 6-8 uncommitted (16 modified + 11 untracked); no clean release candidate possible until the owner commits. Bundle `2026-10-30-rc1` verifies OK (full) but is a dirty-tree draft; archive extracted and compared (630 files = `data/api`).
+- **AWS (read-only):** account 675613597178 matches; ap-south-1; **CDK already bootstrapped (v32), bootstrap not required**; no FloodLens stack; **Lambda concurrency quota 10 (shared with 10 other functions): no reservedConcurrency possible**; no FloodLens budgets; shared account with other projects.
+- Template re-audited: 37 resources, Function URL AWS_IAM, lambda-type OAC (SigV4, always), 2 scoped permissions, no API Gateway; `cdk diff`: 42 additions, 0 replacements, 0 deletions.
+- Tests (executed): geospatial 174, API 189 (+1 skipped), frontend 83, infrastructure 32; Ruff, tsc, build, schema drift, manifests, data baseline, release integrity, bundle verify pass.
+- Docs: `PHASE8_RELEASE_AUDIT.md`, `BOOTSTRAP_APPROVAL_PACKAGE.md`, `DEPLOYMENT_APPROVAL_PACKAGE.md`, `POST_DEPLOYMENT_VERIFICATION.md`, `reports/pre-deployment/phase8-audit.json`.
+- Findings: no BLOCKER; HIGH P8-01 (quota 10), P8-02 (tile spend); MEDIUM P8-03..08. ARM64 runtime: POST_DEPLOYMENT_VERIFICATION_REQUIRED.
+Verdict: READY FOR OWNER REVIEW (not ready for deployment approval).
+
+## Session 11 - Phase 9: deployment risk resolution (2026-10-30)
+
+Preparation and local checks only. No bootstrap, deploy, upload, commit, push or AWS change.
+
+- Incident I-1 reviewed read-only: the 36,965-byte template object is still in the CDK staging bucket (versioned, KMS, no secrets, no live reference; stack record DELETE_COMPLETE). Not deleted. `cdk diff` guidance corrected in six documents; `npm run diff` now refuses.
+- Prepared: `LAMBDA_QUOTA_PLAN.md` (request 1000, then reserve 10; a reservation is impossible at quota 10), `AWS_COST_PROTECTION_SETUP.md`, `DEPLOYMENT_IAM_REQUIREMENTS.md` (the stack runs as admin through the shared `cfn-exec-role`), `RELEASE_COMMIT_CHECKLIST.md`, `PHASE9_READINESS.md`, extended `POST_DEPLOYMENT_VERIFICATION.md` (rollback, emergency key restriction, gates 18-21).
+- Fixed a trap: untracked `reports/releases/*` would have made the tree dirty and blocked the clean bundle; `reports/releases/` is now git-ignored.
+- Regression (offline): geospatial 174, API 189 (1 skipped, 2 warnings), frontend 83, infrastructure 32; Ruff, tsc, build, schema drift, 15/15 manifests, data baseline UNCHANGED, release integrity exit 0, secret scan 0 hits, synth 37 resources.
+- Recommendation: READY FOR OWNER ACTIONS; NOT READY FOR DEPLOYMENT APPROVAL. Bootstrap not required.

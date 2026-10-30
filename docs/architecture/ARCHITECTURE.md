@@ -20,7 +20,7 @@ Heavy raster work never runs in an API request. The system has two halves:
                                   exposure, export)    │
                                                   Lambda (FastAPI+Mangum)
  CloudFront ─► S3 (frontend, OAC)                      ▲
- CloudFront ─► API Gateway HTTP API ───────────────────┘
+ CloudFront ─► Lambda Function URL (AWS_IAM, OAC) ──────┘
 ```
 
 ## 2. Hierarchical data strategy
@@ -42,8 +42,8 @@ Each region has a coverage status (`available | partial | processing | unavailab
   from S3 (local filesystem in dev) through a `repositories/` abstraction.
 - **`apps/web`** – React 19 + Vite + MapLibre GL. Map style/tiles from Amazon Location (API key
   restricted by referrer + action); data from our API.
-- **`infrastructure/`** – CDK (TypeScript): S3 (frontend, data), CloudFront + OAC, HTTP API,
-  Lambda, Location API key, log retention, throttling, budget.
+- **`infrastructure/`** – CDK (TypeScript): S3 (frontend, data), CloudFront + OAC, Lambda
+  Function URL (AWS_IAM, CloudFront OAC), Location API key, log retention, alarms.
 
 ## 4. Artifact formats
 
@@ -55,7 +55,7 @@ Each region has a coverage status (`available | partial | processing | unavailab
 
 ## 5. AWS resource plan (minimal)
 
-S3 ×2 (web, data; private, SSE, versioned data), CloudFront, API Gateway HTTP API, Lambda ×1,
+S3 ×2 (web, data; private, SSE, versioned data), CloudFront, Lambda ×1 with a Function URL (no API Gateway),
 Amazon Location API key, CloudWatch logs (30-day retention), AWS Budget. No VPC, no NAT, no
 always-on compute. Estimated steady-state cost: a few USD/month at demo traffic.
 
@@ -108,5 +108,24 @@ CI uses GitHub OIDC; no long-lived keys. See `docs/security/` (Phase 5).
 ## Phase 4 additions
 - **Water:** `data/api/<region>/water/` is published from the validated OSM water file; `/water` is bbox-bounded, paged and carries ODbL provenance.
 - **Basemap:** the browser loads `/config.json` (written at deploy time) and fetches an Amazon Location Maps v2 style; any failure falls back to a plain background with a banner.
-- **Deployment target (prepared, not deployed):** CloudFront (OAC to a private S3 bucket, `/v1/*` to an HTTP API) and a Python 3.13 arm64 Lambda that bundles the artifact tree.
+- **Deployment target (prepared, not deployed):** CloudFront (OAC to a private S3 bucket, `/v1/*` to a Lambda Function URL protected by OAC) and a Python 3.13 arm64 Lambda that bundles the artifact tree.
   See `docs/deployment/DEPLOYMENT.md` for the inventory, cost and security review.
+
+## Request path (Phase 7)
+
+```
+Browser ──HTTPS GET/HEAD /v1/...──> CloudFront ──SigV4 (OAC), HTTPS──> Lambda Function URL (AWS_IAM) ──> FastAPI (Mangum) ──> artifacts in the package
+```
+
+* **CloudFront is the only public entry point.** The browser calls `/v1/...` on the site's own origin and never signs anything; it holds no AWS
+  credentials. CloudFront signs each origin request with SigV4 using a Lambda-type origin access control (signing behaviour `always`).
+* **Trust model.** The Function URL has `AuthType AWS_IAM`. The Lambda resource policy has exactly two statements, both with principal
+  `cloudfront.amazonaws.com` and `SourceArn` = this distribution: `lambda:InvokeFunctionUrl` and `lambda:InvokeFunction` (the latter with
+  `InvokedViaFunctionUrl`). Nothing grants `*`. An unauthenticated request to the Function URL host must fail (HTTP 403 from the Lambda
+  service, before the function runs); this is asserted on the synthesized template and must be confirmed after deployment.
+* **No API Gateway.** The HTTP API, its stage throttle and access logs are gone. A Function URL has no stage throttle and cannot take a WAF; the
+  remaining controls are reserved concurrency (optional, hard cap), the `LambdaTrafficSpike` alarm (warning only) and CloudFront caching.
+* The event format is Lambda payload format 2.0, which Mangum 0.22 reads (`rawPath`, `rawQueryString`, `headers`, `cookies`, `body`,
+  `isBase64Encoded`). Rasters are returned base64-encoded; buffered responses are limited to 6 MB.
+* Verified locally only (synthesized template and synthetic events). CloudFront origin authentication, the real Function URL rejection,
+  production CSP and the first ARM64 invocation need a deployment to verify.

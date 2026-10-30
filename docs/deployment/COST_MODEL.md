@@ -1,5 +1,7 @@
 # FloodLens pilot cost model
 
+> **Phase 7 note.** API Gateway was removed: the "HTTP API requests" line and the `execute-api` abuse ceilings below no longer apply to the deployed design (the figures came from `scripts/cost_model.py`, which was not changed or rerun). Lambda invocations are now bounded by CloudFront cache misses. Map-tile and CloudFront figures are unchanged.
+
 Generated 2026-10-30 by `python scripts/cost_model.py` (re-run it after changing an assumption). USD, list prices,
 ap-south-1 and the India CloudFront price tier. **This is a model, not a quote.** Nothing has been deployed or billed.
 

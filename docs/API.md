@@ -94,3 +94,15 @@ or bad `limit`/`offset`, `404 region_not_found`, `404 water_not_published` (no v
 Sample (Chennai, `bbox=80.2,13.0,80.3,13.1&limit=1`): `matched` 193, `returned` 1, `truncated` true, `next_offset` 1,
 `source.license` `ODbL 1.0`, `source.dataset_id` `osm-chennai-water`. Whole analysis box: 1650 features
 (1044 water bodies, 606 waterways: drain 443, canal 79, stream 57, river 27).
+
+## HTTP HEAD (additive, Phase 7)
+
+Every `GET` route under `/v1` also answers `HEAD`: same status code, same parameter validation and error codes, the same headers
+(including `Content-Type`, `x-floodlens-schema-version` and, for rasters, `x-content-sha256`), and **no body**. `Content-Length` is
+the length of the corresponding `GET` body. JSON routes run exactly as for `GET` and drop the body; the GeoTIFF route sends headers
+only and never opens the file. `GET` behaviour, response schemas and error codes are unchanged (all 24 `GET` operations in
+`/openapi.json` are byte-identical to before; 24 `head` operations were added). Other methods, including `OPTIONS`, still return
+`405 method_not_allowed`; no CORS headers are sent because the browser calls the API same-origin through CloudFront.
+
+Behind CloudFront the API is reached through a Lambda Function URL (see `docs/architecture/ARCHITECTURE.md`). The URL is not a public
+endpoint: unsigned requests are rejected by the Lambda service (`AWS_IAM`). Clients always use `https://<site>/v1/...`.

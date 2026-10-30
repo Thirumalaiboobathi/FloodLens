@@ -1,0 +1,951 @@
+{
+  "additive_rainfall_1_1_0": {
+    "observed_rainfall_metadata": {
+      "fixture_sha256_lf": "0354f8d6ac58f0f68bd152a19674939e1078f7441315950c03affb1f80f0c289",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "a53c3df0aeadace7615e92a723b811ec9997e10bf2a9037e03ff0dea2467a61e",
+      "schema_sha256_raw": "a2906ebd97b775b7e595401d94bd38c5121e86122d335cf39644a1a1232e5132"
+    },
+    "rainfall_catalog": {
+      "fixture_sha256_lf": "25e05e2fd0da3b076dac6f83bcc878cb9256b2bbf51e4d113aa606ab5eedb468",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "66f2ac27da76806caa9008695097b64bb068097f5f08f13e332334755c83641f",
+      "schema_sha256_raw": "afb9aee95c3bf2868d96af3bed85723c4c78d04eae113bb4ec9ceb0677eff0cc"
+    },
+    "rainfall_cells": {
+      "fixture_sha256_lf": "516545c10914ee7e0bce25b0eebfc9f6bcd042eef095c688f9bbdac5dfad9f1a",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "654822f0fdfbad52291266f1737734c4bfe1440b92d85729778dadc99e75f2ef",
+      "schema_sha256_raw": "7aa6d5e65f8fa2e5ff5f627cb57080efad1421f83825870b204fcf61f92f8d40"
+    },
+    "rainfall_comparison": {
+      "fixture_sha256_lf": "6874d0fe60c8a90222724827d982c1188ddbeecc9455bbe9a3c31665a0f0147d",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "4bde029a8cbc0afbc1eb56d2bd801609053b43526580b105f70c2f3f787e1d5b",
+      "schema_sha256_raw": "94edb2a724f68898806e0199345b6846a5860548e41b2b142ccbbed52df93501"
+    },
+    "rainfall_coverage": {
+      "fixture_sha256_lf": "83caccbaf48ee0bbb21598a80cad829dd921ec7247444d8ce8222fea917a9e8a",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "990be2cabe5762ccf42117b2bc8d006d4b89de86ce2ea5f5e088d6572aaf3e81",
+      "schema_sha256_raw": "1f52c5426a3d9def3a181c32e4d7a2962f6c27522a4ee390c03ce8cd7d5519cd"
+    },
+    "rainfall_freshness": {
+      "fixture_sha256_lf": "7ca7b02d9361d08f18f7c1ded34d18696e70514caa688d641c3aef77325797b6",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "be790d3f1e69c8a4b4a5cdeb06076d90c689570a3e1e557219cdd244ead688ab",
+      "schema_sha256_raw": "2972c374e6e58f458faf634841ebc4d8a8f0bc42273e2f409377df775e95c90b"
+    },
+    "rainfall_provenance": {
+      "fixture_sha256_lf": "34a94f7d6b1cedac29648c2cef4b46f55d58ac2d40cbfce5915d95f4a2c7f2ee",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "c0bd0e77f1d2c39a2bfb187401663ce9c0b3ade3c049b815198ca8ecb4e5e2eb",
+      "schema_sha256_raw": "a59419e3766204a795f9aa97910f92a90e1feb7b2c5d142c850ba120d962ba2f"
+    },
+    "rainfall_summary": {
+      "fixture_sha256_lf": "94688ce55f5c3cc56cd1f3d6534fac4b302e3c4b619e5f90270ce675a551fd81",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "c2889fa662a68cddc4d6f2833134bbc1bfda20d16c689b3f15a89141da76d160",
+      "schema_sha256_raw": "c6d229d73669ae3c93f7f9122a23f57ae68517979692fa477fa528fe2ec959d2"
+    },
+    "scenario_catalog": {
+      "fixture_sha256_lf": "6fcc3b2f4c935065546acc0b60e31543ab02c5c0ae2440214b04ef63e3d2fd99",
+      "fixture_valid_against_schema": true,
+      "group": "rainfall_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "261778c8c0843cf1e853ab8f77bb5e6267d0738b7850154d6c32023be7bed919",
+      "schema_sha256_raw": "06972a93cc81c59d59764ebcd6a0184226748b6ef44630301c202eef018aec8a"
+    }
+  },
+  "additive_water_1_1_0": {
+    "water_features": {
+      "fixture_sha256_lf": "5412a3c61b3cda81c613617d8a8b71fdfc9a2ce952d3734083e0cb4830949cff",
+      "fixture_valid_against_schema": true,
+      "group": "water_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "4e52a48669d1654437c3529719362bc207303eba5dfdd3de4d75b906bb4f0e96",
+      "schema_sha256_raw": "048d97c3a27f4ff752acb57ceb83208240bb93061e922b90176e38de9c9eb297"
+    },
+    "water_provenance": {
+      "fixture_sha256_lf": "bde628175c344f03253fa98b089bc4e2bd5faadcaf05499e476eb37b2aa07ce5",
+      "fixture_valid_against_schema": true,
+      "group": "water_1.1.0",
+      "schema_equals_model_export": true,
+      "schema_has_crlf": true,
+      "schema_sha256_lf": "1a106914d1ba4750c895315b2769492508c9caeae4c604aa761012181ece0ceb",
+      "schema_sha256_raw": "417907e7988038533fd881d01546f7a58ab0e63c68ac36cd50a12f736da56c41"
+    }
+  },
+  "baseline_statement": "HEAD is the ROOT commit (single commit, no parents; remote has the same single commit). It contains the Phase 5 tree, so it is the FIRST verified baseline. It cannot show that the frozen v1 schemas/fixtures are unchanged since Phase 1/3/4: no earlier revision exists in this repository or its remote. Nothing here claims historical preservation.",
+  "forward_process": [
+    "After every commit: python scripts/release_integrity.py --baseline d2c67a2 --out <file>  (v1 schemas/fixtures vs this commit; exits 1 on any difference)",
+    "Before release: python scripts/data_baseline.py --verify (ignored data vs recorded hashes)",
+    "Frozen v1 changes require a new version dir + migration plan, never an in-place edit."
+  ],
+  "frozen_v1": {
+    "files": {
+      "data_confidence": {
+        "fixture_sha256_lf": "eab3b71dc8b8923d1c271cd1ae069bfd1d3eb7fb27a1935ebb67e35f6be75ebd",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "4e5978c44ebe52cee5d58ed3eeb00544d202f05ef41299bb59ed0d89659b95b9",
+        "schema_sha256_raw": "239e8f7fc01148eec2e9cebcd345ddc5452d584a6c81eeb5ee0839da54c37e7d"
+      },
+      "dataset_provenance": {
+        "fixture_sha256_lf": "b616e9cd1368b2915cea31fc841fba5bae1ea3f181bd4f1eda012678ed9791fb",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "56d8133d3de8042d7968187f2d5658f4df77fbe49b6fe988467e777af7b18b6e",
+        "schema_sha256_raw": "4766e0e92e77b4bed58c60887c8db29056c0d9f5f428433d9bf519fc1cbbd905"
+      },
+      "exposure_polygons": {
+        "fixture_sha256_lf": "d36f2e871cb51acbc3070460e1dead79dc36634e24e815beb5e15adc1547675a",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "26c06f660487a1c036f2de9c1fc1b3ae12cead2ca2bb475829c4b0772a5777e8",
+        "schema_sha256_raw": "7b9c862729ff5a9316d789c94c3c4d8b0ee40ea47ef2737197ba972005562707"
+      },
+      "facility_proximity": {
+        "fixture_sha256_lf": "f19cc2996984991fc139864fb7f19449be4ebdc3fb78fc4ea7c6d75fcbca3126",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "540338edc8eafd9c7858db533cf52e7590295ee23f5e5a5f5b87f5c4d048c82d",
+        "schema_sha256_raw": "4f1e2d565b9bd84cec5ce842f7cd945ff23d581ee1ff87af2919baf5476383ec"
+      },
+      "raster_layer_metadata": {
+        "fixture_sha256_lf": "caefb2bac0ad2b69eb758a9afff40e25bb57da8e969cf49cecd93b10131b79e8",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "fbd6653bd42aa976e05181a583dc303e5e2d730f9e6e0bfb6d71bb7c6e6dec8a",
+        "schema_sha256_raw": "a9bbb1f71d7505bc93ad9279551cc08fa095d7ba6c0347413a5806d490c68edf"
+      },
+      "regional_exposure_summary": {
+        "fixture_sha256_lf": "a6ecf58c63989a6616fb90a69df48d61aff99f2c55946bc713bbe37c4bb3da00",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "f700fa20f5ff89e28a804250229b4be8d96719997a7e5adb5a4d7fbf70f941b7",
+        "schema_sha256_raw": "390fa18b22d36b98e4f48b0a49fbda30178f0c2afc01809341f05d912c7a0aec"
+      },
+      "road_exposure": {
+        "fixture_sha256_lf": "b7b2522e8e2efaa5dec0475e343145125397f35e4ae1b48518cfa9217e19bab9",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "d4f6dfad6af28d2df420738c8ef977d049bb05b4d23d32f3a4316cc5b9e8edc9",
+        "schema_sha256_raw": "3f31082b5454dcca010727ac2535d45e359be2a48af62750b3988412fb3cd0f9"
+      },
+      "scenario_comparison": {
+        "fixture_sha256_lf": "c98deaccf0edc3f282dffb5faa3d342b781d9f3047620442b9978c49ce69623e",
+        "fixture_valid_against_schema": true,
+        "group": "v1.0.0",
+        "schema_equals_model_export": true,
+        "schema_has_crlf": true,
+        "schema_sha256_lf": "1620dbb3330b1d8fe6b2c9ec545710617b427070d8433b86e5ff2c5a6ddcb9b4",
+        "schema_sha256_raw": "fded9136f05009dac4332c53d18ce0cf5d1eeaf37ccd5e3ee0aa597ccb39b503"
+      }
+    },
+    "schema_count": 8
+  },
+  "generated_utc": "2026-10-30T09:47:31Z",
+  "genuine_historical_baseline": false,
+  "git": {
+    "branch": "main",
+    "commit_count_all_refs": 1,
+    "core_autocrlf": "true",
+    "head": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+    "head_subject": "first commit",
+    "origin_main": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+    "remote": "https://github.com/Thirumalaiboobathi/FloodLens.git",
+    "remote_head_via_ls_remote": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66 (read-only ls-remote; identical to local HEAD)",
+    "root_commit": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+    "staged_files": 0,
+    "tracked_files": 199,
+    "untracked_files": 1,
+    "working_tree_clean": "at recording time: only this phase's new/changed files (scripts/data_baseline.py untracked, scripts/release_integrity.py modified, reports/ updated); see final report"
+  },
+  "ignored_data_inventory": {
+    "aggregate": {
+      "data/api": {
+        "files": 630,
+        "sha256_of_listing": "e8b4b7f2ae52870645f82d43912f4017fe4b4796755481c131d4c22c9c5a941e"
+      }
+    },
+    "git_head_at_recording": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+    "note": "Recorded from disk; Git does not track these paths, so this proves 'unchanged since recording', not 'unchanged since Phase 1'.",
+    "per_file": {
+      "data/processed/boundaries/chennai-district-osm.geojson": {
+        "bytes": 26639,
+        "sha256": "7b015e8ae827bb9616c9c6fbeb4452dc83b6b6c1564ad3706bfc1edeb06afb9d"
+      },
+      "data/processed/boundaries/chennai-district.geojson": {
+        "bytes": 22697,
+        "sha256": "3c831f0c32f12c5c1aa99c6ad5f175fe98639928311bd9da5248ba472a27fc23"
+      },
+      "data/processed/exposure/chennai/baseline_class.tif": {
+        "bytes": 419362,
+        "sha256": "6c3b72a84f3b5a7225c000d7189a1c30a3ab48192bc36511eebf13966d25b4ec"
+      },
+      "data/processed/exposure/chennai/baseline_completeness.tif": {
+        "bytes": 146443,
+        "sha256": "0de226e3201730ad3560ba151eea121db6efcbdae84fdb2413bec2001ce3f27e"
+      },
+      "data/processed/exposure/chennai/baseline_facilities.geojson": {
+        "bytes": 643605,
+        "sha256": "35c0cda5b7683c16bf5a2d056d1383a3419a0f9db412ae8a3a7b2e28d28818bc"
+      },
+      "data/processed/exposure/chennai/baseline_index.tif": {
+        "bytes": 5223864,
+        "sha256": "a812bb458f34ca8425a99b0dc43325e37107546fb7e139ce8001f0fa94e1a904"
+      },
+      "data/processed/exposure/chennai/baseline_polygons.geojson": {
+        "bytes": 2579479,
+        "sha256": "722eaca8753b6d0e930631abda3d747f501af10681680dada5d7d9d4e5c3eba2"
+      },
+      "data/processed/exposure/chennai/baseline_roads_exposed.geojson": {
+        "bytes": 10638711,
+        "sha256": "7d1f94263e5491a693736fb80635818e0592d13ece613443733e64d3f3df5afa"
+      },
+      "data/processed/exposure/chennai/exposure_summary.json": {
+        "bytes": 8885,
+        "sha256": "f0abe5697ba60564a84d05aa05acfa2a5d0c6c28a340bf1768764fd48bed5f1e"
+      },
+      "data/processed/exposure/chennai/permanent_water_mask.tif": {
+        "bytes": 69764,
+        "sha256": "8ad2cd7578018f884d1b0dfe0441d024f7ce2774110f34eb5ebba5a67d1caba9"
+      },
+      "data/processed/exposure/chennai/rain_100mm_class.tif": {
+        "bytes": 414593,
+        "sha256": "558bab3d5e9dcf37b36c94b51f0b5de5031d803d8bb18b04ba9d575268d146ed"
+      },
+      "data/processed/exposure/chennai/rain_100mm_completeness.tif": {
+        "bytes": 146824,
+        "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+      },
+      "data/processed/exposure/chennai/rain_100mm_facilities.geojson": {
+        "bytes": 643577,
+        "sha256": "80e8b65eca89c171d51b8e965705942f6786a17308cfcc4c9439eac46c3dd374"
+      },
+      "data/processed/exposure/chennai/rain_100mm_index.tif": {
+        "bytes": 5217743,
+        "sha256": "8779341dd2986ccb137c48fd9f4fe5f108f046da1a4b00cb3849844f6cc915a3"
+      },
+      "data/processed/exposure/chennai/rain_100mm_polygons.geojson": {
+        "bytes": 2503974,
+        "sha256": "fc38ce8f9500da78e9b6f35ae0ba0dbf9b0f502ead73e393c7387bbb286aa7fa"
+      },
+      "data/processed/exposure/chennai/rain_100mm_roads_exposed.geojson": {
+        "bytes": 11684819,
+        "sha256": "c29c6c821dfefdab971e9675d64024a71989920f01b017c9b58f554d79852b9d"
+      },
+      "data/processed/exposure/chennai/rain_200mm_class.tif": {
+        "bytes": 397375,
+        "sha256": "4b25bc717aa5c57c9f3d429d8bc2e5359dc8498ecc50764889a3a9541672460b"
+      },
+      "data/processed/exposure/chennai/rain_200mm_completeness.tif": {
+        "bytes": 146824,
+        "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+      },
+      "data/processed/exposure/chennai/rain_200mm_facilities.geojson": {
+        "bytes": 643604,
+        "sha256": "b0fbafadebb329f2cae1bdbc68b8a5f923a4c41552f6bb23bbdb57f3ab80832b"
+      },
+      "data/processed/exposure/chennai/rain_200mm_index.tif": {
+        "bytes": 5204339,
+        "sha256": "fad26582578e61c4557052ecf219e1120c09b2b052dcd090976f86ebc5b20f8f"
+      },
+      "data/processed/exposure/chennai/rain_200mm_polygons.geojson": {
+        "bytes": 2246119,
+        "sha256": "011c3afab72acedbfcc7af81ccd0439fe7d3fd8b94e4a762c3f5021c47a8a048"
+      },
+      "data/processed/exposure/chennai/rain_200mm_roads_exposed.geojson": {
+        "bytes": 14192803,
+        "sha256": "0705a4f402eec5f80cf4ac7969ce350d9b04d17b36f29c9662bc5627678fce3c"
+      },
+      "data/processed/exposure/chennai/rain_300mm_class.tif": {
+        "bytes": 380827,
+        "sha256": "bc60a08e5cdef768d7f81fa171628bead5a422eaa2b8379f42ced11255330fc1"
+      },
+      "data/processed/exposure/chennai/rain_300mm_completeness.tif": {
+        "bytes": 146824,
+        "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+      },
+      "data/processed/exposure/chennai/rain_300mm_facilities.geojson": {
+        "bytes": 643593,
+        "sha256": "7fb3e402d50321553712c8c69b4c972a4668103e8a205c22d8e8f8d0c080a3d6"
+      },
+      "data/processed/exposure/chennai/rain_300mm_index.tif": {
+        "bytes": 5190616,
+        "sha256": "ce744bdd8e869e39d6f14bb9c1c791c71db1893d36f767c124d6c8937a73b99b"
+      },
+      "data/processed/exposure/chennai/rain_300mm_polygons.geojson": {
+        "bytes": 2008700,
+        "sha256": "0f44f659c339d9e1f0b026c23c1299119a9f53d463f99048784d1c0fd02c4476"
+      },
+      "data/processed/exposure/chennai/rain_300mm_roads_exposed.geojson": {
+        "bytes": 15864601,
+        "sha256": "4bd82b91ffac4dcd399ce1997cf939a0d5bb31b58eb04661cd93e9f9dacccaaf"
+      },
+      "data/processed/exposure/chennai/rain_50mm_class.tif": {
+        "bytes": 417261,
+        "sha256": "d876e248f9d4c6b0bbd0f3731fc1a36e0132ab059bdff9aafe130540e83194b6"
+      },
+      "data/processed/exposure/chennai/rain_50mm_completeness.tif": {
+        "bytes": 146824,
+        "sha256": "5723c01f744e2deb40eb54e885aa9cbe536326b8db84704d7c4d3faf042f8ec2"
+      },
+      "data/processed/exposure/chennai/rain_50mm_facilities.geojson": {
+        "bytes": 643588,
+        "sha256": "fe56bf56db6204266f83aeff8d7562d1994eba53c6f1f00b7f8052161e3d45b4"
+      },
+      "data/processed/exposure/chennai/rain_50mm_index.tif": {
+        "bytes": 5228056,
+        "sha256": "b7fa97c3ec5e96afc36872f1cc7f54704f51a93d45b6af6620444844e8cc0816"
+      },
+      "data/processed/exposure/chennai/rain_50mm_polygons.geojson": {
+        "bytes": 2701408,
+        "sha256": "a4c5fdff8fe11e3b1dba216b950132f5f64c57ba30309b8f7694fff08a6e48f3"
+      },
+      "data/processed/exposure/chennai/rain_50mm_roads_exposed.geojson": {
+        "bytes": 9894845,
+        "sha256": "24548c3a11c245e0215da2929503f12726e237e4e615ac1444a3570850e8ebc3"
+      },
+      "data/processed/exposure/chennai/sensitivity.json": {
+        "bytes": 17329,
+        "sha256": "6c7308fbb77b9b8eb3c289ab430dc9f507cbb74f2c5e2799c8cfe4a9761c29f9"
+      },
+      "data/processed/exposure/chennai/water_distance_m.tif": {
+        "bytes": 2406490,
+        "sha256": "97baf39913c9d5cbee3718395a9b1c45184b221a4d99be892e9777d48ae03f06"
+      },
+      "data/processed/osm/chennai/hospitals.geojson": {
+        "bytes": 713351,
+        "sha256": "5bccc0ceaedb5dafef03240be123e8424957e5b5ae7ece704e329eb73eb99002"
+      },
+      "data/processed/osm/chennai/roads.geojson": {
+        "bytes": 38208614,
+        "sha256": "725f9ebad3f6da2ae3f17bd8ab0e2f3a8d5c6c0337e8be433911f4dde1b9cc99"
+      },
+      "data/processed/osm/chennai/schools.geojson": {
+        "bytes": 236391,
+        "sha256": "b9f31bac7db45e56919a3d3cf11ba80319225e6585c5b3aef85e95aa66f8469a"
+      },
+      "data/processed/osm/chennai/water.geojson": {
+        "bytes": 1282846,
+        "sha256": "d25f4838368f26cc37fa46facbd9e5b26a51df2e190811495e23528bba5b9cdd"
+      },
+      "data/processed/rainfall/imerg-v07-late-total-chennai-2026-10-22_2026-10-28.tif": {
+        "bytes": 1407,
+        "sha256": "75a87ceb12366815be12c8b72e24b26c6e3046390d43e2b64b37b056fc709c22"
+      },
+      "data/processed/rainfall/imerg-v07-total-chennai-2023-12-03_2023-12-05.tif": {
+        "bytes": 1324,
+        "sha256": "a3ed89f3fcbdeb1d3ad145b4d39b1215bc6ef84e4c5e81624d5200f2a89fe295"
+      },
+      "data/processed/terrain/chennai/dem_land_utm.tif": {
+        "bytes": 5259501,
+        "sha256": "85bdafc6593d7d8c4b1c3f49005c7c52f08d5b975099adf196880e81b9b430d1"
+      },
+      "data/processed/terrain/chennai/dem_utm.tif": {
+        "bytes": 5274734,
+        "sha256": "251bf5d15a989cb5e75075da410da401de70d53f6b317d61c121b0a881c71371"
+      },
+      "data/processed/terrain/chennai/local_relief_m.tif": {
+        "bytes": 5302696,
+        "sha256": "76907e9c09bb884f679bd5e4b7688674dfcd559ff391d77cc55aa6d0328e6983"
+      },
+      "data/processed/terrain/chennai/negative_cells_report.json": {
+        "bytes": 2668,
+        "sha256": "49437d41ae30f6dc0020c39156e7ec2fadaa423829ebef035c73eb88fc010f69"
+      },
+      "data/processed/terrain/chennai/slope_deg.tif": {
+        "bytes": 5367907,
+        "sha256": "c17ff89a5d1c397c3c36b224b1d2dfff1bf1941a0ceed59d4f18f4ce00e5ec43"
+      },
+      "data/processed/terrain/chennai/whitebox/area.tif": {
+        "bytes": 16078332,
+        "sha256": "607e59b1ccf861263afb1ea420cf294e1e9804d86a70b43ea4da68887b57f648"
+      },
+      "data/processed/terrain/chennai/whitebox/cond.tif": {
+        "bytes": 16078332,
+        "sha256": "52c1eeeb1960b2db5f1a6e98d44d360ec3b47ff8d6e1c7a96c5eb43ffa2d4983"
+      },
+      "data/processed/terrain/chennai/whitebox/hand.tif": {
+        "bytes": 16078332,
+        "sha256": "7ebf01813fa3c45605fd9ef4420de3b76331e9603383584903f42ae2e010b27f"
+      },
+      "data/processed/terrain/chennai/whitebox/sca.tif": {
+        "bytes": 16078332,
+        "sha256": "a6b263d51a261973b6e6f6786034072d1cf57bcebc535a76c3233f37393398ee"
+      },
+      "data/processed/terrain/chennai/whitebox/slope.tif": {
+        "bytes": 8045892,
+        "sha256": "d222b1fa93d4c3792ebbe34f40ce210ba04b518221828ca3592d3a085c210374"
+      },
+      "data/processed/terrain/chennai/whitebox/streams.tif": {
+        "bytes": 16078332,
+        "sha256": "e68fa39eda6349cf4b629802d7671762cd04c211097e6ec149a59f0d0db37fe5"
+      },
+      "data/processed/terrain/chennai/whitebox/twi.tif": {
+        "bytes": 8045892,
+        "sha256": "9e6bde2936864b581283f31d66a272841da4f178386ff187cf9c8a61ac782040"
+      },
+      "data/raw/boundaries/IND-ADM1.geojson": {
+        "bytes": 46170854,
+        "sha256": "47aa0acb6f69868daee49143276f3ce323f18905ba7d38d0a86816b405028736"
+      },
+      "data/raw/boundaries/IND-ADM1_simplified.geojson": {
+        "bytes": 5103747,
+        "sha256": "4c63fe43294a391e8f2de4e9f86f3edb60f8688275b9fee90c61fb2aa0c26061"
+      },
+      "data/raw/boundaries/IND-ADM2.geojson": {
+        "bytes": 48317735,
+        "sha256": "8bef6929fd65432e7dc775e7c44473e84efff064ebddbfd6b834e6291546db40"
+      },
+      "data/raw/boundaries/IND-ADM2_simplified.geojson": {
+        "bytes": 7979916,
+        "sha256": "d68db39cd3e2d0892af268e2b0454166368ce3b5b8a78fcda63069ec92a641db"
+      },
+      "data/raw/boundaries/meta-ADM2.json": {
+        "bytes": 889,
+        "sha256": "656a9800da6c69a02bae980349eb44ac83ab3a452e894fc782230fa22cdd1a2c"
+      },
+      "data/raw/dem/chennai/Copernicus_DSM_COG_10_N12_00_E080_00_DEM.tif": {
+        "bytes": 7135610,
+        "sha256": "1a01ef3e05aa76aa4d47908cf2d29d300859b6b1777bf8a9222ac052f9bd3111"
+      },
+      "data/raw/dem/chennai/Copernicus_DSM_COG_10_N13_00_E080_00_DEM.tif": {
+        "bytes": 12362785,
+        "sha256": "93a01adb7be880f39fb500487d89e2b089bdac3772fdfff4e4ef055e04111e2d"
+      },
+      "data/raw/dem/chennai/N12_00_E080_00_GLO90.tif": {
+        "bytes": 889472,
+        "sha256": "97197b10e34e5434faca522309066f5aa88b0e9c7ace872f2e625e44ac8b3481"
+      },
+      "data/raw/dem/chennai/N13_00_E080_00_GLO90.tif": {
+        "bytes": 1512301,
+        "sha256": "2010bb906731cd5da728c7c8bd41bf6727299dfbe65f9fec0e5f3d12984b551b"
+      },
+      "data/raw/dem/chennai/aux/N12_00_E080_00_EDM.tif": {
+        "bytes": 123001,
+        "sha256": "23211a754646613ab46128c2b3c424a7017ca3aef151f5774b8ea9941ea5407d"
+      },
+      "data/raw/dem/chennai/aux/N12_00_E080_00_FLM.tif": {
+        "bytes": 117091,
+        "sha256": "1c83c9d6570b1387bc474d0390abbac13f3856f52795574f455484df98459df8"
+      },
+      "data/raw/dem/chennai/aux/N12_00_E080_00_HEM.tif": {
+        "bytes": 7441606,
+        "sha256": "0850cb5f5cf71e4b930959962b42a9d30a68e0a95c02acb69fb9471789f8f76e"
+      },
+      "data/raw/dem/chennai/aux/N12_00_E080_00_WBM.tif": {
+        "bytes": 97537,
+        "sha256": "a2bc188d72e0ab7f798180d6bd44e3156f93bd16bfe6a152309ac7d84726d89e"
+      },
+      "data/raw/dem/chennai/aux/N13_00_E080_00_EDM.tif": {
+        "bytes": 193955,
+        "sha256": "70203145802a72067bb207a767ea36c0d76312867ec98196b8359e9c4f2e5c7e"
+      },
+      "data/raw/dem/chennai/aux/N13_00_E080_00_FLM.tif": {
+        "bytes": 184797,
+        "sha256": "427766104b7c9130f96124893307a488dc6140070154017e30b273229aa34c5a"
+      },
+      "data/raw/dem/chennai/aux/N13_00_E080_00_HEM.tif": {
+        "bytes": 12521146,
+        "sha256": "fd9d3399c70a774304331e7521470c470486317dd4016adf573a111d3f770aa1"
+      },
+      "data/raw/dem/chennai/aux/N13_00_E080_00_WBM.tif": {
+        "bytes": 159710,
+        "sha256": "b84ac32d8b62cc7d44cc981cc00c7ca3b25ca3adff857b0de64943745aa09fe6"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261022-S000000-E235959.V07C.nc4": {
+        "bytes": 28207450,
+        "sha256": "6d062a90b250380e0707bf1653a18852acc9e7b57aa47709bbffaed6ffcc8f94"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261023-S000000-E235959.V07C.nc4": {
+        "bytes": 28611218,
+        "sha256": "86009438260c59c2242ecfec21b97e3bbaab0be19c7766c6c3262f54f8c8dec3"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261024-S000000-E235959.V07C.nc4": {
+        "bytes": 28711386,
+        "sha256": "70fc0365bc2abbfa4c0556f68e27b25445ffa14e3dbf3142b18a7ef14f994e64"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261025-S000000-E235959.V07C.nc4": {
+        "bytes": 28093666,
+        "sha256": "f6f6e0cd4d610395698e5c09c45ec5319db398c0acc3af47cb9fcdca78853ef3"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261026-S000000-E235959.V07C.nc4": {
+        "bytes": 27228457,
+        "sha256": "cd813280c6a8cc2c4c8991c99cc92c37ff12f85abed277379e74d29341c08c7c"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261027-S000000-E235959.V07C.nc4": {
+        "bytes": 28038622,
+        "sha256": "edb21179e185120bce87b80d7da760bea37d04204e0d3dd93b4cafcacac7cb3c"
+      },
+      "data/raw/imerg-late/chennai/3B-DAY-L.MS.MRG.3IMERG.20261028-S000000-E235959.V07C.nc4": {
+        "bytes": 28522757,
+        "sha256": "f57716e4818b9887d03583f832f128a340bf33f4d65c029e82e42267fa1664c6"
+      },
+      "data/raw/imerg/chennai/3B-DAY.MS.MRG.3IMERG.20231203-S000000-E235959.V07B.nc4": {
+        "bytes": 29767142,
+        "sha256": "ac4d700efbfa80335bcfcfb093ae7372d536ca74d6d1c084fcceb28faca28705"
+      },
+      "data/raw/imerg/chennai/3B-DAY.MS.MRG.3IMERG.20231204-S000000-E235959.V07B.nc4": {
+        "bytes": 30149991,
+        "sha256": "97b4fa7c010e449fec77ec3726f5bb801373219e02fdb60f7303c43d359d2ac7"
+      },
+      "data/raw/imerg/chennai/3B-DAY.MS.MRG.3IMERG.20231205-S000000-E235959.V07B.nc4": {
+        "bytes": 29601417,
+        "sha256": "1b8e3668b281fb7ee79294dbbd94357ffea9d85dc8a8df301ba4664304fe2765"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S000000-E002959.0000.V07C.HDF5": {
+        "bytes": 7245321,
+        "sha256": "7ebb7e819061d4b366e4bbb5ca45904dd32e69f5d868dccdb567e13b8de61986"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S003000-E005959.0030.V07C.HDF5": {
+        "bytes": 7320872,
+        "sha256": "d366cdd80f3106f2dcd8649b01a3bd8e4578aa26990572fab73fc8dacf92ae0e"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S010000-E012959.0060.V07C.HDF5": {
+        "bytes": 7294368,
+        "sha256": "fc82ceaabb40069c39bd4836915c22196ed2de3863917c1be0ea14e67cfa366a"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S013000-E015959.0090.V07C.HDF5": {
+        "bytes": 7261452,
+        "sha256": "a625ff4279226a8647a7c7dee9e635ca65b3df430ea6d24e96b1980954c0c696"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S020000-E022959.0120.V07C.HDF5": {
+        "bytes": 7355595,
+        "sha256": "10545e083c1393208143dea1c979445e1a725222a8ee4ff7a8f97b7ff6dcacb8"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S023000-E025959.0150.V07C.HDF5": {
+        "bytes": 7293527,
+        "sha256": "ee56e639610e90e88c38c5e10cad17cc039bbe487161c361ad0ff3ef9189b274"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S030000-E032959.0180.V07C.HDF5": {
+        "bytes": 7328116,
+        "sha256": "927427a72f1cbf0263d2a9798089fc5926557d24f16218ee30af9260d9278041"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S033000-E035959.0210.V07C.HDF5": {
+        "bytes": 7401491,
+        "sha256": "9541cdcdef802b6e40dee03bddba459d173e614c3d2fcf830ad4910560ddfb6c"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S040000-E042959.0240.V07C.HDF5": {
+        "bytes": 7411294,
+        "sha256": "8f83a625c19a6ae13baf571a075aec3419ee753af0b56e1e558df915fe080f0c"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S043000-E045959.0270.V07C.HDF5": {
+        "bytes": 7343650,
+        "sha256": "1e1eafad89d2bfbd53c1b2c127ea0462d42a0c3884d228efe85bf50564c719b8"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S050000-E052959.0300.V07C.HDF5": {
+        "bytes": 7344860,
+        "sha256": "034fd4a36dd7d3b0c02e42a5d47fd221cf6c8b8b66f4ae52cee72b0d4b548fb8"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S053000-E055959.0330.V07C.HDF5": {
+        "bytes": 7322232,
+        "sha256": "8875eed5dce02f18e9dc706de1495a130301eb90d2d50ad9334aeb82ec54f730"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S060000-E062959.0360.V07C.HDF5": {
+        "bytes": 7278858,
+        "sha256": "2dc326614e6913599b66716178074049bcc577d4795c012eafaa0ab2da1cb3a1"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S063000-E065959.0390.V07C.HDF5": {
+        "bytes": 7265246,
+        "sha256": "723b8f13726f728a03a3be7e623eb205a1e77652e266dd06ce48827fdf179f3f"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S070000-E072959.0420.V07C.HDF5": {
+        "bytes": 7332988,
+        "sha256": "5bc94a26d0cbd814f5c6d4eb520f4fa76e433ceb617745c168eb4950d85256b8"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S073000-E075959.0450.V07C.HDF5": {
+        "bytes": 7408574,
+        "sha256": "7da77f0182d4c4993d0fca0ee96eb859b184e7721cd5d9b609869fa68d140aba"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S080000-E082959.0480.V07C.HDF5": {
+        "bytes": 7364338,
+        "sha256": "b1249cb967db0e36685981798cd7f59389a794822f6317167e64cb2de748e12e"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S083000-E085959.0510.V07C.HDF5": {
+        "bytes": 7503750,
+        "sha256": "4f8f81bd06cd3690cdf65e74aac095e06220bcacf1267d5699bbfa3b3a2cd42c"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S090000-E092959.0540.V07C.HDF5": {
+        "bytes": 7311697,
+        "sha256": "989891033339b7c16ff3adbe5f98f72abfb6f4bdb09c1d5a8f8db7325ad96d4b"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S093000-E095959.0570.V07C.HDF5": {
+        "bytes": 7473602,
+        "sha256": "ef72f55eea6012363538440ad98f9a8c281930b02080de1d1032e2d11be4b86f"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S100000-E102959.0600.V07C.HDF5": {
+        "bytes": 7383397,
+        "sha256": "0334892b796b0437aba059b0abc4bc0aa85f3d8fe693f062ce399dd136292409"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S103000-E105959.0630.V07C.HDF5": {
+        "bytes": 7379135,
+        "sha256": "1f20aaa21a01c51b9d0f61c562db58a2b8dadd0b12cd3767481e325b2f53b65c"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S110000-E112959.0660.V07C.HDF5": {
+        "bytes": 7523249,
+        "sha256": "cbd732e711d55b10d39bbab506c7ebc6e1006313d59ef25c3460da018a3a4c8f"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S113000-E115959.0690.V07C.HDF5": {
+        "bytes": 7586375,
+        "sha256": "0ba0fb79636a229fd8bff5e9b427e7aca90b5221b4828d4671d5fd3b622b3b70"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S120000-E122959.0720.V07C.HDF5": {
+        "bytes": 7468106,
+        "sha256": "a8db5b6f957bb41bbedf0a0cce5e1974e3381d018c0597d4027ee8e11d978575"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S123000-E125959.0750.V07C.HDF5": {
+        "bytes": 7463436,
+        "sha256": "496c72c10eec227c8b93f87c30c2ab1f8a6fe9d8f43ee6daa22bfe98c3b9ee76"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S130000-E132959.0780.V07C.HDF5": {
+        "bytes": 7410507,
+        "sha256": "9ede45321fb5627707a6e6ba3d7b83133a82c5b795f13ca778dabd929d0e25fd"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S133000-E135959.0810.V07C.HDF5": {
+        "bytes": 7419273,
+        "sha256": "e5c54ccef089d0a86fa103ff29e29a7cf8375dbc3e31ece0c46a1b053858bf57"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S140000-E142959.0840.V07C.HDF5": {
+        "bytes": 7530268,
+        "sha256": "2f477b20cb80d50210359031440a008795d60160942aee4ce45e42c8958735ae"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S143000-E145959.0870.V07C.HDF5": {
+        "bytes": 7542654,
+        "sha256": "91d2f0eb8a7aa32fe51f7a5023d6c8278020b1cde661590c0a6a2e6ad5714a96"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S150000-E152959.0900.V07C.HDF5": {
+        "bytes": 7571922,
+        "sha256": "486c24fe79fd8709e05d8f8212b400bb7985774df7f6eaaacdd4781e310b9240"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S153000-E155959.0930.V07C.HDF5": {
+        "bytes": 7612825,
+        "sha256": "11bb2b2c62a12e20ebc2e1c81747db33509489f82cd582f17c9cce8e7a57a938"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S160000-E162959.0960.V07C.HDF5": {
+        "bytes": 7519284,
+        "sha256": "845fa1bc70530793e5bc0fffd4b38112b1235968e5e1d390cff76016ab434d70"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S163000-E165959.0990.V07C.HDF5": {
+        "bytes": 7548229,
+        "sha256": "ecd49546a0f048418b1daa3af1805f012252393d3656f944e5d35557e94e9541"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S170000-E172959.1020.V07C.HDF5": {
+        "bytes": 7508690,
+        "sha256": "2961f69f6b71577c931746e9d303ea6dd3a7684cfdfec21a310a1e3d32b59a7c"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S173000-E175959.1050.V07C.HDF5": {
+        "bytes": 7576363,
+        "sha256": "275329eeabefbd25b166ec045afe197308b407be5f65471c9b8d0ecd537fbd71"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S180000-E182959.1080.V07C.HDF5": {
+        "bytes": 7399601,
+        "sha256": "0d9efc9efa74602c95363b180ea63dcdfaa1af3c6e3bd41d46cbfc04040da979"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S183000-E185959.1110.V07C.HDF5": {
+        "bytes": 7619458,
+        "sha256": "011c15f8f8a8b01e065f3fa069dd612bc3fa614179136051f387ca269db47f4a"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S190000-E192959.1140.V07C.HDF5": {
+        "bytes": 7498862,
+        "sha256": "14122b83c7158cc4e0df564096d8bb8899822f2182b1eb280100c9430f9b26ef"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S193000-E195959.1170.V07C.HDF5": {
+        "bytes": 7497539,
+        "sha256": "9a1fab6eebe31728b18b9eaa8c84f7ef0e394e485da2be951a0c81ab9608868e"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S200000-E202959.1200.V07C.HDF5": {
+        "bytes": 7567651,
+        "sha256": "5a9ded4ad91e14dc9e18db442c09b25220d3ac89f096ab20860af333971dbec9"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S203000-E205959.1230.V07C.HDF5": {
+        "bytes": 7433410,
+        "sha256": "4d3e381703eb01aec8bd0847a700594bf7cfbcc0e3111b15c66dc4fd0359d635"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S210000-E212959.1260.V07C.HDF5": {
+        "bytes": 7593156,
+        "sha256": "b96a0ad5c0ed0278acdfc76198629718c717c75f904ba3c5567370fdb22c9ac7"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S213000-E215959.1290.V07C.HDF5": {
+        "bytes": 7726317,
+        "sha256": "24e325adf95975d0f2999d8754e0016c9c6e87877b5d2f73c9c560ff1042ed60"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S220000-E222959.1320.V07C.HDF5": {
+        "bytes": 7509969,
+        "sha256": "0d8963d90a03a4cd562e773d27b15d66651cc62abd8a1a57e354a9b64891f665"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S223000-E225959.1350.V07C.HDF5": {
+        "bytes": 7442433,
+        "sha256": "b56baee1d40fa7ae1cd39b11c3bec396e869c59172f242886047caafb721e0d2"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S230000-E232959.1380.V07C.HDF5": {
+        "bytes": 7479491,
+        "sha256": "31ba0cd027af484e68c1dae4adb338b895222c376492b4ca71c3048e2df6e3f8"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/3B-HHR-L.MS.MRG.3IMERG.20261022-S233000-E235959.1410.V07C.HDF5": {
+        "bytes": 7406879,
+        "sha256": "40a0a50f7d37d5d992fc24c1572d275d062cea614898d41ad4fb8a27f8fc857f"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/SHA256SUMS.txt": {
+        "bytes": 6240,
+        "sha256": "4a3efd6eee08bd345edf89f71ebd5afa3683fc692c04fea61c00ba15460b23d3"
+      },
+      "data/raw/investigations/imerg-late-halfhourly-20261022/download_log.json": {
+        "bytes": 19727,
+        "sha256": "969f7b5d7f0f738d444181376a765a2940e40e203fbf35f4c3f9b34d8a906e8b"
+      },
+      "data/raw/osm/chennai/hospitals.json": {
+        "bytes": 480543,
+        "sha256": "5c0f9ccb47e1111cc84d70d9c401e027ca4480a18ee3e602a9ca3261d0eba632"
+      },
+      "data/raw/osm/chennai/roads.json": {
+        "bytes": 39673584,
+        "sha256": "d6d148e86e5af9b6e5311752498c674d9b8362cd2a8b808ef703ae45f640814d"
+      },
+      "data/raw/osm/chennai/schools.json": {
+        "bytes": 134085,
+        "sha256": "039667ade6fdeec880b4803942d2fcbb34f7b5627a800e4d3970a13321d91bfd"
+      },
+      "data/raw/osm/chennai/water.json": {
+        "bytes": 1587301,
+        "sha256": "b2d237177332bdc497fb7edbf1ed2e0de2664f54fe0667a0f75fe19d2ee26719"
+      }
+    },
+    "recorded_utc": "2026-10-30T09:47:36Z"
+  },
+  "phase5_report_comparison": {
+    "explanation": "Phase 5 hashed data_freshness.as_of_utc, a per-request timestamp, so those 3 hashes were never reproducible (verified: two calls 1 s apart differ only in as_of_utc). scripts/release_integrity.py now excludes that field; Phase 5 file release-integrity.json is left as generated.",
+    "method_note": "13/16 raw-byte hashes matched Phase 5 when re-run before the script fix; the 3 others contain as_of_utc. The report's response_snapshot now uses a normalised hash (as_of_utc removed) and is NOT byte-comparable with release-integrity.json.",
+    "routes_identical": true,
+    "schema_files_identical": true,
+    "snapshot_identical": 13,
+    "snapshot_not_comparable": [
+      "/v1/regions/chennai/rainfall",
+      "/v1/regions/chennai/rainfall/obs_final_20231203_20231205",
+      "/v1/regions/chennai/rainfall/obs_late_20261022_20261028"
+    ],
+    "snapshot_total": 16
+  },
+  "release_integrity_findings": [
+    {
+      "message": "schemas/ on disk use CRLF (Windows autocrlf); hashes are compared after LF normalisation. ",
+      "severity": "LOW"
+    }
+  ],
+  "response_snapshot": {
+    "/v1/health": {
+      "response_sha256": "1a60a55e09acbaf45dd767d68bef72b2186ef86fde0a3ea6bf1b5e315dba98b8",
+      "status": 200
+    },
+    "/v1/regions": {
+      "response_sha256": "acf93fee78cba2c8730d8d18f03d2d3e26e5650b026a1a012cd1bae2b064d9b4",
+      "status": 200
+    },
+    "/v1/regions/chennai/provenance": {
+      "response_sha256": "d24d4a16f9b8deb803d9c7e799aad545888f1390d51d984eea8786b499b48d80",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall": {
+      "response_sha256": "66f9b7ad59a7d2ed56b23e0dc4c4b82cbfd2376d05a169010691f164f422b04f",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/coverage": {
+      "response_sha256": "36f6f196539de9c1f4e4016c54d15be6ce0a541c77e03bb9c197ced4ee1457b8",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205": {
+      "response_sha256": "4d172b33bb92adf08fac8d684ebae35083466c1e80087616dc17a38049f8264d",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/cells": {
+      "response_sha256": "4f38a98b06d937b42127ab88452dd62849b2fd44927ba788211c6d5992d80a73",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/provenance": {
+      "response_sha256": "b9dada8ffe0da293631305f604ac70c9d96fec8bc5082fe339e0f332eb1dd321",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_final_20231203_20231205/summary": {
+      "response_sha256": "a35ae1eb4ce5fbba62044015326838da7a017a440e3657f0a7ca9ee9f48fe92f",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028": {
+      "response_sha256": "9b8d884513450289dbf679b148bdbb3d49fc31eda58d2576e2d1e056e85c8044",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/cells": {
+      "response_sha256": "be6645ee09ebcfdbf367d82ead22a0b3acdf7c211ffb71624866fedf25883520",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/provenance": {
+      "response_sha256": "63e1ad2cd458ad523d16890ac92922d08e666c12238517cd48f190e71d2dbf31",
+      "status": 200
+    },
+    "/v1/regions/chennai/rainfall/obs_late_20261022_20261028/summary": {
+      "response_sha256": "2a4d12448e3b15f2ea49a70f58c565b92bbfce37e3c41a96934e854724572b87",
+      "status": 200
+    },
+    "/v1/regions/chennai/scenario-catalog": {
+      "response_sha256": "14c8ac0b7af3a07ccd07f41876b5a47b38fffd6f3085785edbb20215832b134f",
+      "status": 200
+    },
+    "/v1/regions/chennai/scenarios": {
+      "response_sha256": "deaf7a6946621eba80c55bcb9e6df157693b0db0f7cae38d8a2a21669624f68c",
+      "status": 200
+    },
+    "/v1/regions/chennai/water/provenance": {
+      "response_sha256": "acc6d9630507df8190597f815194269c89915f7335590bb97255d4d212fa6f98",
+      "status": 200
+    }
+  },
+  "routes": {
+    "/v1/health": {
+      "group": "v1.0.0",
+      "operation_sha256": "f6ec94d9841d361f1fe0c926daba59b6eac0d4209ab66d248f34f0cc54ad0b5f"
+    },
+    "/v1/regions": {
+      "group": "v1.0.0",
+      "operation_sha256": "07959be10e4982b13ae2898253255e25de738215c448f150c4981f7f076d1292"
+    },
+    "/v1/regions/{region}/comparison": {
+      "group": "v1.0.0",
+      "operation_sha256": "a609c1ee4478c1fa22aa80f4bb449b0e015ae3f7eec08e008aca58de7de1f52d"
+    },
+    "/v1/regions/{region}/confidence": {
+      "group": "v1.0.0",
+      "operation_sha256": "185320ae37bd4b2db657b5633ee48c53d3a5af1b6e7fc4c3a720effa2ef1a346"
+    },
+    "/v1/regions/{region}/layers": {
+      "group": "v1.0.0",
+      "operation_sha256": "61f309e8b6820bcdb2b5f1e3c4ff4a88e1967ecd416eff6f16b26fdbaf385544"
+    },
+    "/v1/regions/{region}/layers/{layer_id}": {
+      "group": "v1.0.0",
+      "operation_sha256": "21da7611daf39e995885ce86cf7ea60284447d2b2a1b39b75e67e290d7176a59"
+    },
+    "/v1/regions/{region}/provenance": {
+      "group": "v1.0.0",
+      "operation_sha256": "2ae4606b8da729cb0812e99fe7bdc8fb5d5e5ada5a223fbab0407b63439d2a41"
+    },
+    "/v1/regions/{region}/rainfall": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "2d6bf3ad67b08097a50167e8653635d7b00a94b1fb55dce750742eeb931486fa"
+    },
+    "/v1/regions/{region}/rainfall/comparison": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "3baed164389e9b6215faf06fe7cd1d927fec9cb7794d34382d5c983c11348927"
+    },
+    "/v1/regions/{region}/rainfall/coverage": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "6e91cb0503b289a043fb2671152fd8cec80543431e56dde2757754026ab9ee35"
+    },
+    "/v1/regions/{region}/rainfall/freshness": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "45b2947aec2fafa5cbc8f8418c7a771a3aa67bfeb1f2bd1d1f9f3b4b1512ae1b"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "412926dfa2705160944781b667ef66d3980edc84101c8ab6ad9c633864603cb4"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/cells": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "f9fb13f36f93c0cbdf406d352e05101b17ed937a6bc6a1eee142a0555f7e428a"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/provenance": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "72270fc405536853d6a2fc3e15df4504be047da5780637aa6b3e3f598bdd1ea7"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/raster": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "e04b1236e93a6cefb7e12599d2f473332ef85bf7a1cb7741acea8ab4d9f43df1"
+    },
+    "/v1/regions/{region}/rainfall/{scenario_id}/summary": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "2747279fabd35b22b09a8f3eab77eeec4cb85dfee5ac4dbc1cd7b1432b8acc23"
+    },
+    "/v1/regions/{region}/scenario-catalog": {
+      "group": "rainfall_1.1.0",
+      "operation_sha256": "bad17079316fceaae553fb76df6e335ec95b1fc90f318a01df04bdfb125bd02c"
+    },
+    "/v1/regions/{region}/scenarios": {
+      "group": "v1.0.0",
+      "operation_sha256": "f9ee28b6c0e3d5d2e89b65d61bd5cd75aef4e1ade8cd408d6e44654a0a32d804"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/facilities": {
+      "group": "v1.0.0",
+      "operation_sha256": "573ed025caef58a6758a548e89a0b3aa43ee2fc2ac812ff65ba0702a29737dde"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/polygons": {
+      "group": "v1.0.0",
+      "operation_sha256": "1706da7a19d6a16b95ddb8d7588d2554e6649eaae836c7ce05d03528bce3a697"
+    },
+    "/v1/regions/{region}/scenarios/{scenario}/roads": {
+      "group": "v1.0.0",
+      "operation_sha256": "9228eae850b75a0b0d65c85cf28d31777e9a660710df652c79708182342b1199"
+    },
+    "/v1/regions/{region}/summary": {
+      "group": "v1.0.0",
+      "operation_sha256": "c00213e03d8ca66af1858719b637612deefeb0d43dd19fb7b84f475a09b10c9e"
+    },
+    "/v1/regions/{region}/water": {
+      "group": "water_1.1.0",
+      "operation_sha256": "956fa2cb76d72289a818ac3c4ae172d11edb0c80943d6317d64c79cb119c3866"
+    },
+    "/v1/regions/{region}/water/provenance": {
+      "group": "water_1.1.0",
+      "operation_sha256": "b375b74f152fee68fcf0b09c00838afe72c8cac3817ee64b3c422e9e0aabea82"
+    }
+  },
+  "tracked_vs_disk_lf_normalised": {
+    "manifests": {
+      "all_identical": true,
+      "files": 15
+    },
+    "schemas_and_fixtures": {
+      "all_identical": true,
+      "files": 38
+    }
+  }
+}

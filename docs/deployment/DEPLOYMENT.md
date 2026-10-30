@@ -19,7 +19,7 @@ deployed, no AWS resource exists, and no data has been uploaded.** Deployment ne
 Browser ──HTTPS──> CloudFront (default *.cloudfront.net certificate)
                      │  default behaviour     : private S3 bucket via Origin Access Control (React build)
                      │  /config.json (no cache): same bucket; written at deploy time (basemap key + style)
-                     │  /v1/*  (5 min cache)   : HTTP API ──> Lambda (FastAPI + Mangum, python3.13, arm64)
+                     │  /v1/*  (5 min cache)   : Lambda Function URL (AWS_IAM, CloudFront OAC) ──> FastAPI + Mangum, python3.13, arm64
                      └─ response headers: HSTS, nosniff, frame DENY, referrer policy, CSP
 Browser ──HTTPS──> maps.geo.ap-south-1.amazonaws.com   (Amazon Location Maps v2, restricted API key)
 Offline (laptop / processing environment, not AWS): ingestion, terrain, exposure, rainfall, artifact build
@@ -40,7 +40,7 @@ Offline (laptop / processing environment, not AWS): ingestion, terrain, exposure
 | Dependencies (arm64 wheels, py3.13) | 16 MB unzipped, 3.1 MB zipped | |
 | Artifacts `data/api/chennai` | 91 MB raw (roads 78 MB in 600 tiles, polygons 9.8 MB, water 1 MB), 13 MB zipped | |
 | **Package total** | **98.6 MiB unzipped** (re-measured in Phase 5; ≈ 16 MB zipped) | 250 MB unzipped, 50 MB zipped direct upload |
-| Largest single response (`polygons?limit=20000`) | 2.2 MB | 6 MB Lambda response, 10 MB HTTP API |
+| Largest single response (`polygons?limit=20000`) | 2.2 MB | 6 MB Lambda buffered response |
 | Largest road tile file | 0.94 MB | |
 
 Bundling means no per-request S3 reads, no S3 IAM on the API role, atomic code+data releases, and the same
@@ -57,12 +57,12 @@ road tiles parse to several MB of Python objects each. Timeout 15 s.
 |---|---|
 | S3 | 1 bucket (private, block-public-all, SSE-S3, versioned, TLS-only policy, `RETAIN`), 1 bucket policy (CloudFront OAC read only) |
 | CloudFront | 1 distribution (PriceClass_200, HTTP/2+3, IPv6), 1 OAC, 1 function (SPA rewrite), 1 cache policy, 1 response headers policy |
-| API Gateway | 1 HTTP API, 1 `$default` stage (throttle 50 rps / burst 100, access logs), 1 integration, 2 routes (`GET`/`HEAD /v1/{proxy+}`) |
+| Lambda Function URL | 1 URL (`AWS_IAM`, buffered), 1 lambda-type OAC (SigV4, always), 2 resource-policy statements for `cloudfront.amazonaws.com` scoped to the distribution. **No API Gateway.** |
 | Lambda | 1 API function (python3.13, arm64, 1024 MB, 15 s), 1 CDK custom-resource function (`ReadMapsKey`), 1 CDK bucket-deployment function + CLI layer, 2 permissions |
 | Amazon Location | 1 API key (`geo-maps:GetStyleDescriptor/GetTile/GetSprites/GetGlyphs` on `arn:aws:geo-maps:ap-south-1::provider/default`, referrer = the CloudFront domain, optional expiry) |
 | IAM | 3 roles + 2 policies, all CDK-generated (see §5) |
-| CloudWatch | 2 log groups (30 days, `RETAIN`), 4 alarms (Lambda errors, throttles, p95 > 10 s; API 5xx ≥ 5), 1 dashboard |
-| SNS | 1 topic; an e-mail subscription only if `-c alarmEmail=` is passed |
+| CloudWatch | 1 retained log group + 3 helper groups (30 days), 4 alarms (Lambda errors, throttles, p95 > 10 s, traffic spike), 1 dashboard |
+| SNS | 1 topic and an e-mail subscription (`-c alarmEmail=` is required; the recipient must confirm it) |
 | Custom resources | 2 bucket deployments (site, `config.json`; `prune: false`), 1 `describeKey` call |
 
 Also required once, **at deploy time**: `cdk bootstrap` creates the `CDKToolkit` stack (asset bucket, roles) in the account.
@@ -75,7 +75,7 @@ Assumptions: 2,000 map sessions/month, ~60 API calls/session before caching (≈
 | Item | Estimate | Note |
 |---|---|---|
 | Lambda (arm64, 1 GB, ~150 ms) | ≈ $0 | ~18 k GB-s and 120 k requests are inside the always-free allowance |
-| API Gateway HTTP API | ≈ $0.15 | ≈ $1 per million requests; CloudFront caching reduces calls |
+| API Gateway | $0 | removed in Phase 7 (previously ≈ $0.15) |
 | CloudFront | ≈ $0 | inside the always-free 1 TB / 10 M requests |
 | S3 + CloudWatch logs/alarms/dashboard | < $1 | 4 alarms and 1 dashboard fall inside free allowances |
 | **Amazon Location tiles** | **$0 for the first 3 months, then ≈ $16** at 400 k tiles/month | 500 k tile requests/month free for 3 months. **$0.04 per 1,000 tiles in ap-south-1** (AWS Price List, `APS3-Usage-Default-Maps-Tiles`, `GetTile`). Style, sprite and glyph requests are free (AWS docs). *(Superseded by COST_MODEL.md; the earlier "$16–$160" bracket was wrong above $16.)* |
@@ -116,7 +116,7 @@ and ACM certificate, WAF (≈ $5+/month), CloudFront access logging.
 | `VITE_LOCATION_COLOR_SCHEME` | `Light` | `Light`/`Dark` (Standard and Monochrome) |
 | `VITE_LOCATION_POLITICAL_VIEW` | `IND` | ISO country code; empty disables |
 
-CDK context (`-c name=value`): `alarmEmail`, `locationKeyExpireTime` (ISO-8601; default no expiry), `mapStyle`, `extraReferers` (comma list), `webDistDir`, `lambdaDir`.
+CDK context (`-c name=value`): **required:** `alarmEmail`, `locationKeyExpireTime` (ISO-8601 with time zone, in the future, at most 90 days ahead); optional: `reservedConcurrency`, `invocationAlarmThreshold` (default 3000 invocations per 5 minutes), `mapStyle`, `extraReferers` (comma list), `webDistDir`, `lambdaDir`. `apiRateLimit`/`apiBurstLimit` were removed with API Gateway and now abort the synth.
 
 ## 5. Security review
 
@@ -127,7 +127,7 @@ CDK context (`-c name=value`): `alarmEmail`, `locationKeyExpireTime` (ISO-8601; 
 | API Lambda role | Logging only (`AWSLambdaBasicExecutionRole`). No S3, no other service. Env holds only the artifact path. |
 | CDK-managed roles | Bucket-deployment role has `s3:DeleteObject*` on the site bucket and `cloudfront:CreateInvalidation` on `*` (CDK defaults, deploy-time only; `prune: false`). `ReadMapsKey` role: `geo:DescribeKey` on one key. |
 | API exposure | Read-only: only `GET`/`HEAD /v1/**`. Inputs validated (bbox ranges, 2° span cap, enums, id patterns, paged limits); internals never leak (500 body is generic). |
-| **Direct API access** | The `execute-api` URL is public and bypasses CloudFront. Acceptable for read-only public data; mitigated by stage throttling. HTTP APIs cannot take WAF. Reserved Lambda concurrency was **not** set because a new account's unreserved-concurrency floor (10) can make it fail; check quotas, then set it. |
+| **Direct API access** | **Closed in Phase 7.** The Function URL is `AWS_IAM`; only this distribution may invoke it. Unsigned requests fail (to confirm after deployment). Function URLs have no stage throttle; use reserved concurrency and the traffic alarm. Reserved Lambda concurrency was **not** set because a new account's unreserved-concurrency floor (10) can make it fail; check quotas, then set it. |
 | Map key abuse | Referrer restriction stops other browsers' sites, but anyone can read `/config.json` and call tiles with a forged `Referer`, which would bill the account. Mitigate: expiry (`locationKeyExpireTime`), a billing/usage alarm (not configured here), WAF/rate limit on a custom domain, or move to Cognito. |
 | TLS | HSTS 1 year. **Minimum TLS 1.2 is not enforced**: CloudFront ignores it on the default `*.cloudfront.net` certificate; it needs a custom domain + ACM certificate in us-east-1. |
 | CSP | `default-src 'self'`; scripts `'self'` only; `style-src 'unsafe-inline'` (MapLibre and React inline styles); connect/font to the Amazon Location maps host only; `frame-ancestors 'none'`. Not yet exercised in a real CloudFront deployment. |
@@ -146,8 +146,8 @@ CDK context (`-c name=value`): `alarmEmail`, `locationKeyExpireTime` (ISO-8601; 
 
 # 2. needs approval; run with the intended profile, account 675613597178
 (cd infrastructure && npx cdk bootstrap aws://675613597178/ap-south-1)     # creates CDKToolkit stack
-(cd infrastructure && npx cdk diff)                                         # review
-(cd infrastructure && npx cdk deploy -c alarmEmail=you@example.org)         # creates the stack
+# (no cdk diff: it writes to AWS, see DEPLOYMENT_RUNBOOK.md section 8; review the synthesized template instead)
+(cd infrastructure && npx cdk deploy -c alarmEmail=you@example.org -c locationKeyExpireTime=<ISO date, at most 90 days ahead>)   # creates the stack
 ```
 
 Smoke test after an approved deploy: `GET <SiteUrl>/v1/health`, `GET <SiteUrl>/v1/regions/chennai/rainfall`, open the site, confirm the

@@ -26,3 +26,6 @@ data/api/
 # CDK build output (Lambda package, never committed)
 infrastructure/build/
 infrastructure/cdk.out/
+
+# local release bundles (manifest, checksums, archive) live outside Git: untracked files would make the tree dirty and block a clean bundle
+reports/releases/

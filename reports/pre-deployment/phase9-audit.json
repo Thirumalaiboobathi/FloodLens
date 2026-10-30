@@ -1,0 +1,174 @@
+{
+ "approvals": {
+  "bootstrap": "not required",
+  "deployment": "not yet; owner actions 1-6 and written approval outstanding"
+ },
+ "aws_mutations_this_phase": false,
+ "blockers": [],
+ "bootstrapped": false,
+ "committed": false,
+ "cost_protection": {
+  "anomaly_monitor": "Default-Services-Monitor; subscription unverified",
+  "budgets_are_caps": false,
+  "budgets_created": false,
+  "existing_budgets": [
+   "My Monthly Cost Budget 3",
+   "TinaiPoet-Monthly-10USD 10",
+   "billsense-monthly-10usd 10",
+   "shopflow-monthly 25"
+  ],
+  "location_keys": 0
+ },
+ "date": "2026-10-30",
+ "deployed": false,
+ "findings": [
+  [
+   "P9-01",
+   "HIGH",
+   "Lambda quota 10, no reservation possible"
+  ],
+  [
+   "P9-02",
+   "HIGH",
+   "tile spend uncapped"
+  ],
+  [
+   "P9-03",
+   "MEDIUM",
+   "uncommitted tree, no clean bundle"
+  ],
+  [
+   "P9-04",
+   "MEDIUM",
+   "stack runs as admin via shared cfn-exec-role; long-term admin deployer"
+  ],
+  [
+   "P9-05",
+   "MEDIUM",
+   "AWS-side behaviour unverified"
+  ],
+  [
+   "P9-06",
+   "MEDIUM",
+   "anomaly subscription and Location budget filter unconfirmed"
+  ],
+  [
+   "P9-07",
+   "LOW",
+   "historical API Gateway text under superseded banners"
+  ],
+  [
+   "P9-08",
+   "LOW",
+   "I-1 object remains"
+  ],
+  [
+   "P9-09",
+   "LOW",
+   "CRLF may change hashes across OS"
+  ],
+  [
+   "P9-10",
+   "INFORMATIONAL",
+   "bootstrap v32 present"
+  ]
+ ],
+ "git": {
+  "branch": "main",
+  "dirty": true,
+  "equals_origin_main": true,
+  "gitignore_fix": "reports/releases/ ignored so bundle files cannot make the tree dirty",
+  "head": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+  "protected_paths_changed": false,
+  "rc1_status": "dirty-tree draft, superseded, not regenerated",
+  "staged": 0
+ },
+ "iam": {
+  "cfn_exec_role_policy": "AdministratorAccess",
+  "changed": false,
+  "deploy_role_passrole": "cfn-exec-role only",
+  "principal": "IAM user AI-agent (AdministratorAccess)",
+  "recommendation": "dedicated short-lived/MFA deployer limited to sts:AssumeRole on deploy, file-publishing, lookup roles; no long-term admin key"
+ },
+ "incident_I1": {
+  "bucket_versioning": "Enabled",
+  "bytes": 36965,
+  "deleted": false,
+  "docs_corrected": [
+   "DEPLOYMENT_RUNBOOK",
+   "DEPLOYMENT",
+   "PRE_DEPLOYMENT_REVIEW",
+   "SECURITY_OPERATIONS",
+   "DEVELOPMENT",
+   "DEPLOYMENT_APPROVAL_PACKAGE",
+   "infrastructure/package.json diff script"
+  ],
+  "encryption": "aws:kms",
+  "noncurrent_expiry_days": 30,
+  "object": "s3://cdk-hnb659fds-assets-675613597178-ap-south-1/9f43afec267d276c10c46092878a64e5212dc7ed7c7fdbb422df8a547ff6ce19.json",
+  "recommendation": "leave, or owner deletes the specific version after first real deployment",
+  "referenced_by_live_stack": false,
+  "sensitive_values": "none (placeholder e-mail owner@example.invalid, ServiceToken fields only)",
+  "stack_FloodLens": "DELETE_COMPLETE",
+  "version_id": "PY.uLGgPaZvMkvMaI9t93Bf7vpOxkSzk"
+ },
+ "key_lifecycle": {
+  "alarm_email_required": true,
+  "email_or_expiry_invented": false,
+  "invalid_dates_rejected": true,
+  "key_created": false,
+  "max_days": 90,
+  "sns_confirmation_required": true
+ },
+ "lambda_quota": {
+  "pending_request": false,
+  "quota": 10,
+  "recommended_request": 1000,
+  "request_submitted": false,
+  "reservation_rule": "quota minus reservations must stay at least 100 [A]",
+  "reserved_by_any_function": 0,
+  "reserved_concurrency_assigned": false,
+  "unreserved": 10
+ },
+ "phase": 9,
+ "recommendation": "READY FOR OWNER ACTIONS; NOT READY FOR DEPLOYMENT APPROVAL",
+ "tests": {
+  "api": {
+   "failed": 0,
+   "passed": 189,
+   "skipped": 1,
+   "warnings": 2
+  },
+  "browser_tests": "not run",
+  "cdk_synth_offline": {
+   "api_gateway": 0,
+   "resources": 37
+  },
+  "data_baseline": "UNCHANGED",
+  "frontend": {
+   "failed": 0,
+   "passed": 83,
+   "skipped": 0
+  },
+  "geospatial": {
+   "failed": 0,
+   "passed": 174,
+   "skipped": 0
+  },
+  "infrastructure": {
+   "failed": 0,
+   "passed": 32,
+   "skipped": 0
+  },
+  "manifests": "15/15 ok",
+  "release_integrity": "exit 0, 1 LOW (CRLF)",
+  "ruff": "clean",
+  "schema_drift": "none",
+  "secret_scan": {
+   "files": 216,
+   "hits": 0
+  },
+  "tsc": "clean (web, infrastructure)",
+  "web_build": "ok"
+ }
+}

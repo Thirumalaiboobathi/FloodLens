@@ -3,11 +3,11 @@
 **Status: NOT RUN.** The stack has not been deployed, so nothing below has been verified. Each line states what to run
 and what a pass looks like; record the actual result next to it. Only use this after the owner has approved and run the deployment.
 
-Set once (values come from the stack outputs `SiteUrl`, `ApiEndpoint`, `SiteBucketName`):
+Set once (values come from the stack outputs `SiteUrl`, `ApiFunctionUrl`, `SiteBucketName`):
 
 ```bash
 SITE=https://dxxxxxxxxxxxx.cloudfront.net      # SiteUrl
-API=https://xxxxxxxxxx.execute-api.ap-south-1.amazonaws.com   # ApiEndpoint
+FNURL=https://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.lambda-url.ap-south-1.on.aws   # ApiFunctionUrl (not a public entry point)
 BUCKET=floodlens-sitebucket-...                 # SiteBucketName
 B=$SITE/v1/regions/chennai
 ```
@@ -28,7 +28,7 @@ Never paste the Location key into a ticket, chat or log. Everything here is a re
 - [ ] `curl -s -o /dev/null -w "%{http_code} %{content_type}\n" "$B/water?bbox=70,5,90,25"` → `422 application/json` and body code `bbox_too_large` (an API error must not be replaced by `index.html`).
 - [ ] `curl -s -w "%{http_code}\n" $B/nonexistent` → `404 application/json`.
 - [ ] Error caching: repeat a 422 request twice and note whether the second is a CloudFront hit (default error-caching TTL is short; record the observed `age`) [A].
-- [ ] `HEAD $B/rainfall` → record the status. Expected today: `405` (F-09). Decide whether that is acceptable.
+- [ ] `curl -sI $B/rainfall` → `200`, correct `content-type`, `content-length`, **no body** (HEAD is supported since Phase 7). `curl -sI $B/rainfall/<scenario_id>/raster` → `200 image/tiff`. Record whether `content-length` survives the Function URL and CloudFront [U]; a missing length is cosmetic.
 - [ ] Compression: `curl -s -H 'accept-encoding: br,gzip' -D- -o /dev/null "$B/scenarios/rain_200mm/polygons?bbox=80.05,12.85,80.35,13.25&limit=5000"` → `content-encoding: br` or `gzip`; transfer ≈ 0.4 MB, not 1.7 MB.
 - [ ] Raster: `curl -s $B/rainfall/<scenario_id>/raster | head -c 4 | xxd` → `4949 2a00` (`II*\0`, a TIFF), `content-type: image/tiff`.
 
@@ -77,3 +77,18 @@ Never paste the Location key into a ticket, chat or log. Everything here is a re
 
 Fill in the date, deploying person, commit, and the actual result of every item; attach screenshots. Anything that
 fails goes into PRE_DEPLOYMENT_REVIEW.md as a new finding with a severity.
+
+## H. Phase 7 gates: Function URL, OAC, first ARM64 invocation (changes nothing)
+
+Section B's `execute-api` checks (F-02) no longer apply; use these.
+
+- [ ] **Direct access is refused:** `curl -s -o /dev/null -w "%{http_code}\n" $FNURL/v1/health` → `403` (AuthType AWS_IAM, unsigned). A `200` means the Function URL is public: **stop and report as a BLOCKER**.
+- [ ] Same for `$FNURL/v1/regions` → `403`.
+- [ ] **CloudFront reaches the function:** `curl -s -o /dev/null -w "%{http_code}\n" $SITE/v1/health` → `200`. A `403` from CloudFront here means the OAC signature or the two Lambda permissions were not accepted.
+- [ ] `aws lambda get-policy --function-name <ApiFunction> --query Policy --output text` → exactly two statements, principal `cloudfront.amazonaws.com`, each with `AWS:SourceArn` = this distribution, actions `lambda:InvokeFunctionUrl` and `lambda:InvokeFunction`; no `"Principal":"*"`. [AWS-READ]
+- [ ] `aws lambda get-function-url-config --function-name <ApiFunction>` → `AuthType: AWS_IAM`, `InvokeMode: BUFFERED`, no `Cors`. [AWS-READ]
+- [ ] A query string survives signing: `$B/water?bbox=80.20,13.00,80.25,13.05` → 200 with `matched` > 0; and `$B/scenarios/rain_200mm/polygons?bbox=80.05,12.85,80.35,13.25&limit=5000` → 200, about 1.7 MB (large buffered response under the 6 MB limit).
+- [ ] The first invocation shows no `Runtime.ImportModuleError` in the function log group (the ARM64 module loads); record `Init Duration` and `Max Memory Used`.
+- [ ] No API Gateway exists: `aws cloudformation describe-stack-resources --stack-name FloodLens --query "StackResources[?starts_with(ResourceType,'AWS::ApiGateway')]"` → `[]`.
+- [ ] The alarm e-mail subscription is **Confirmed**, not "PendingConfirmation": `aws sns list-subscriptions-by-topic --topic-arn <AlarmTopic>`. Unconfirmed subscriptions receive nothing.
+- [ ] `aws location describe-key --key-name <name> --query '[ExpireTime,NoExpiry]'` → an expiry at most 90 days away, `NoExpiry: false`. Calendar a rotation reminder.

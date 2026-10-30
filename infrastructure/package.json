@@ -7,7 +7,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "synth": "cdk synth --quiet",
-    "diff": "cdk diff"
+    "diff": "echo cdk diff is disabled for this project: it writes to AWS, see docs/deployment/DEPLOYMENT_RUNBOOK.md section 8 && exit 1"
   },
   "dependencies": {
     "aws-cdk-lib": "2.275.0",

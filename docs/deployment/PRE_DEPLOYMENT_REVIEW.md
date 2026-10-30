@@ -1,5 +1,7 @@
 # FloodLens — Pre-deployment security, cost and release-integrity review (Phase 5)
 
+> **Phase 7 note.** F-02 (public `execute-api` URL) and F-09 (HEAD 405) are addressed in code (Function URL + OAC; HEAD support), the key expiry (F-03) and the alarm e-mail (F-04) are mandatory. See [PHASE7_IMPLEMENTATION_REPORT.md](PHASE7_IMPLEMENTATION_REPORT.md). Nothing is verified in AWS.
+
 Reviewed: 2026-10-30. Scope: local review of the Phase 4 tree. **Nothing was deployed, uploaded, committed or pushed;
 no AWS resource was created or changed; no protected data, manifest, exposure output or frozen schema was modified.**
 
@@ -209,7 +211,7 @@ wheels for the Lambda package build.
 3. **Create budgets and alerts yourself** (COST_MODEL.md §6): account budget, Amazon Location budget, anomaly monitor.
 4. **Check Lambda quotas** (Service Quotas, read-only) before deciding on `reservedConcurrency` (F-05).
 5. Choose deploy-time context: `alarmEmail` (required in practice, F-04), `locationKeyExpireTime` (≤ 90 days), `apiRateLimit`/`apiBurstLimit`.
-6. Build immediately before deploying: `python scripts/package_lambda.py`, `npm run build`, then `cdk diff` and read it.
+6. Build immediately before deploying: `python scripts/package_lambda.py`, `npm run build`, then `cdk synth` and read the template. Do not run `cdk diff`: it publishes the template to the staging bucket (DEPLOYMENT_RUNBOOK.md section 8).
 7. Bootstrap needs to be approved separately (it creates the CDK toolkit resources in the account).
 8. After deployment, work through POST_DEPLOYMENT_CHECKLIST.md and create the per-key usage alarm.
 
@@ -220,3 +222,6 @@ wheels for the Lambda package build.
 * Direct API access remains possible (F-02).
 * Data refresh requires rebuild and redeploy.
 * Pilot assumptions in COST_MODEL.md are estimates; real analytics will move them.
+
+---
+**Phase 6 update (2026-10-30):** a commit now exists (`d2c67a2`, single root commit, equals `origin/main`), so F-01 is superseded by P6-01 in [RELEASE_READINESS.md](RELEASE_READINESS.md): the baseline is the first verified one, not a historical one. The three response hashes in `release-integrity.json` that contain `data_freshness.as_of_utc` were never reproducible (script fixed in Phase 6). F-02, F-03 and F-09 are analysed further in [SECURITY_OPERATIONS.md](SECURITY_OPERATIONS.md).

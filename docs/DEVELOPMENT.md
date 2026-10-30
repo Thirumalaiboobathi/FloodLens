@@ -27,7 +27,7 @@ WhiteboxTools (hydrology) is a native `.exe` downloaded into the venv by the `wh
 | FastAPI backend *(Phase 3, not built yet)* | `cd services/api && uvicorn app.main:app --reload` |
 | React frontend *(Phase 4, not built yet)* | `cd apps/web && npm install && npm run dev` |
 | Frontend build *(Phase 4)* | `cd apps/web && npm run build` |
-| CDK synth/diff *(Phase 5)* | `cd infrastructure && npx cdk synth` / `npx cdk diff` |
+| CDK synth/diff *(Phase 5)* | `cd infrastructure && npx cdk synth` (do not use `cdk diff`: it writes to AWS) |
 | CDK deploy *(Phase 7)* | `npx cdk deploy` — **only after explicit approval** of account, region, resources and cost |
 
 ## Earthdata token (IMERG) — keep it out of files and chat

@@ -35,7 +35,7 @@ RAINFALL_PATH_PREFIXES = ("/v1/regions/{region}/rainfall", "/v1/regions/{region}
 WATER_PATH_PREFIX = "/v1/regions/{region}/water"
 BASE = "/v1/regions/chennai"
 # parameterless / fixed requests whose full response bytes are hashed (a snapshot, not a baseline comparison)
-SNAPSHOT_NOTE = "Hashes of the CURRENT behaviour; they prove nothing about earlier versions until compared with a committed earlier snapshot."
+SNAPSHOT_NOTE = "Hashes of the CURRENT behaviour (data_freshness.as_of_utc excluded: it is a per-request clock value; age_days still depends on the date); they prove nothing about earlier versions until compared with a committed earlier snapshot."
 
 SNAPSHOT_REQUESTS = [
     "/v1/health", "/v1/regions", f"{BASE}/scenarios", f"{BASE}/scenario-catalog", f"{BASE}/provenance",
@@ -50,6 +50,21 @@ def sha(b: bytes) -> str:
 def lf(b: bytes) -> bytes:
     """Canonical form: LF endings. Windows checkouts (core.autocrlf=true) hold CRLF; Git stores LF."""
     return b.replace(b"\r\n", b"\n")
+
+
+def stable_sha(content: bytes) -> str:
+    """Hash a response with the per-request clock field removed (data_freshness.as_of_utc changes every call)."""
+    try:
+        doc = json.loads(content)
+    except ValueError:
+        return sha(content)
+
+    def strip(o):
+        if isinstance(o, dict):
+            return {k: strip(v) for k, v in o.items() if k != "as_of_utc"}
+        return [strip(i) for i in o] if isinstance(o, list) else o
+
+    return sha(json.dumps(strip(doc), sort_keys=True).encode())
 
 
 def git(*args: str) -> tuple[int, bytes]:
@@ -135,14 +150,14 @@ def main(out_path: Path, requested: str | None) -> int:
     snapshot = {}
     for req in SNAPSHOT_REQUESTS:
         r = client.get(req)
-        snapshot[req] = {"status": r.status_code, "response_sha256": sha(r.content)}
+        snapshot[req] = {"status": r.status_code, "response_sha256": stable_sha(r.content)}
     ids = [i for i in client.get(f"{BASE}/rainfall").json()["datasets"]]
     ids = [d["scenario_id"] for d in ids]
     for sid in ids:
         for suffix in ("", "/summary", "/provenance", "/cells"):
             req = f"{BASE}/rainfall/{sid}{suffix}"
             r = client.get(req)
-            snapshot[req] = {"status": r.status_code, "response_sha256": sha(r.content)}
+            snapshot[req] = {"status": r.status_code, "response_sha256": stable_sha(r.content)}
     if any(v["status"] != 200 for v in snapshot.values()):
         finding("HIGH", "a snapshot request did not return 200: "
                         + ", ".join(k for k, v in snapshot.items() if v["status"] != 200))
@@ -168,7 +183,7 @@ def main(out_path: Path, requested: str | None) -> int:
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    print(f"wrote {out_path.relative_to(ROOT)}; git comparison: {git_cmp['status']}; "
+    print(f"wrote {out_path}; git comparison: {git_cmp['status']}; "
           f"findings: {[f['severity'] for f in findings]}")
     return 1 if any(f["severity"] == "BLOCKER" for f in findings) else 0
 

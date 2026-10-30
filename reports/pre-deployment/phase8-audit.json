@@ -1,0 +1,515 @@
+{
+ "api": {
+  "get_operations": 24,
+  "head_operations": 24,
+  "options": "405, no CORS; acceptable: same-origin and CloudFront allows only GET/HEAD"
+ },
+ "approvals": {
+  "bootstrap": "not required (already bootstrapped, v32)",
+  "deployment": "not recommended until prerequisites in DEPLOYMENT_APPROVAL_PACKAGE.md section 2 are met"
+ },
+ "archive": {
+  "bytes": 13464329,
+  "extracted_equals_data_api": true,
+  "extracted_files": 630,
+  "hash_matches_manifest": true,
+  "non_json_tif_files": [],
+  "only_under_data_api": true,
+  "present": true,
+  "sha256": "c6abb1d0dc97b95be2bf73743d70c8e32ed0fec91fe6ccf872a5cf35152c02c8",
+  "suspicious_files": []
+ },
+ "aws_readiness": {
+  "account": "675613597178",
+  "account_matches_expected": true,
+  "budgets": {
+   "anomaly_monitor": "Default-Services-Monitor (dimension SERVICE); subscriptions unreadable by CLI",
+   "floodlens_budgets_exist": false,
+   "other_budgets": 4
+  },
+  "cdk_bootstrap": {
+   "app_requires": [
+    6,
+    8
+   ],
+   "bootstrap_required": false,
+   "created": "2026-08-20",
+   "qualifier": "hnb659fds",
+   "stack": "CDKToolkit",
+   "status": "CREATE_COMPLETE",
+   "version": 32
+  },
+  "cdk_diff": {
+   "additions": 42,
+   "deletions": 0,
+   "replacements": 0
+  },
+  "floodlens_stack_exists": false,
+  "lambda": {
+   "adjustable": true,
+   "concurrent_executions_quota": 10,
+   "decision": "no reservedConcurrency possible now; request quota increase then reserve 10",
+   "other_functions_in_region": 10,
+   "pending_increase_request": false,
+   "reservable": 0,
+   "unreserved": 10
+  },
+  "location_keys": 0,
+  "maps_endpoint_resolves": true,
+  "method": "read-only describe/get/list calls (plus incident I-1)",
+  "principal": "IAM user AI-agent (AdministratorAccess among others)",
+  "profile": "default (none set)",
+  "region": "ap-south-1"
+ },
+ "blockers": [],
+ "bundle": {
+  "checks": {
+   "data_inventory_unchanged_since_recording": "PASS",
+   "imerg_random_error_absent_from_api_frontend_and_artifacts": "PASS",
+   "lambda_artifacts_equal_data_api": "PASS",
+   "lambda_code_equals_source": "PASS",
+   "lambda_handler_resolves": "PASS",
+   "lambda_has_no_geospatial_libraries": "PASS",
+   "lambda_has_no_windows_binaries": "PASS",
+   "lambda_native_modules_are_aarch64": "PASS",
+   "lambda_native_modules_are_cpython_313_linux": "PASS",
+   "lambda_required_artifacts_present": "PASS",
+   "lambda_unzipped_size_within_250mb": "PASS",
+   "lambda_versions_match_pins": "PASS",
+   "no_secrets_or_credential_files_in_bundle_inputs": "PASS",
+   "protected_tracked_paths_match_head": "PASS",
+   "web_build_has_index_and_no_runtime_config": "PASS"
+  },
+  "checksums_file_lines": 1856,
+  "clean_at_creation": false,
+  "commit": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+  "created_utc": "2026-10-30T11:01:52Z",
+  "id": "2026-10-30-rc1",
+  "inventories": {
+   "api_artifacts": {
+    "bytes": 93934306,
+    "files": 630,
+    "listing_sha256": "60c24975555371d15dcfdb74821d8e4fb97a880a69d6884d40632292848fddbb"
+   },
+   "dataset_manifests": {
+    "bytes": 108610,
+    "files": 15,
+    "listing_sha256": "bff5e9986de472a6a62894c604ed5af229f5895fac229409a8da205a05e6361d"
+   },
+   "lambda_package": {
+    "bytes": 103361262,
+    "files": 1040,
+    "listing_sha256": "8b33da52a445042b193019adca6e9b1c7beba67a66c4386e85c3a350b7968c6f"
+   },
+   "source_tree": {
+    "bytes": 1150367,
+    "files": 177,
+    "listing_sha256": "286c92637d09d0f82b28bc1fe0a316a25bedb1ea98f77c846edfbb7bcc929df6"
+   },
+   "web_build": {
+    "bytes": 1872298,
+    "files": 7,
+    "listing_sha256": "75a3fd5befb546c3d82bf9d7cb060968f978a80cfbd64ef79457c5cb6244c5fa"
+   }
+  },
+  "manifest_sha256": "d8dcd29e1c989448fbc4634d47d44569a3dd81f24e252a2e5916e2fa5b355ae4",
+  "uncommitted_at_creation": 24,
+  "validation_verdict": "PASS"
+ },
+ "classification": {
+  "arm64_runtime": "POST_DEPLOYMENT_VERIFICATION_REQUIRED",
+  "csp": "SYNTHESIZED_ONLY",
+  "function_url_oac": "SYNTHESIZED_ONLY",
+  "tiles": "REQUIRES_DEPLOYMENT"
+ },
+ "findings": [
+  [
+   "I-1",
+   "LOW",
+   "cdk diff wrote a template object and a transient stack record to AWS"
+  ],
+  [
+   "P8-01",
+   "HIGH",
+   "Lambda concurrency quota 10, shared; no reservation possible"
+  ],
+  [
+   "P8-02",
+   "HIGH",
+   "map tile spend uncapped; budgets notify only"
+  ],
+  [
+   "P8-03",
+   "MEDIUM",
+   "working tree dirty; no clean release candidate"
+  ],
+  [
+   "P8-04",
+   "MEDIUM",
+   "Function URL/OAC, CSP, tiles, alarms unverified in AWS"
+  ],
+  [
+   "P8-05",
+   "MEDIUM",
+   "ARM64 runtime unverified"
+  ],
+  [
+   "P8-06",
+   "MEDIUM",
+   "shared account: $25 budget includes other projects"
+  ],
+  [
+   "P8-07",
+   "MEDIUM",
+   "no API throttle/WAF; only the shared quota"
+  ],
+  [
+   "P8-08",
+   "MEDIUM",
+   "key deletion/rotation behaviour unknown; 90-day rotation duty"
+  ],
+  [
+   "P8-09",
+   "LOW",
+   "deployer is an AdministratorAccess IAM user"
+  ],
+  [
+   "P8-10",
+   "LOW",
+   "anomaly subscriptions unreadable by CLI"
+  ],
+  [
+   "P8-11",
+   "LOW",
+   "wildcard CreateInvalidation (CDK default); wheels unpinned; Mangum deprecation"
+  ],
+  [
+   "P8-12",
+   "INFORMATIONAL",
+   "bootstrap present (v32); OPTIONS 405 acceptable; cost model not rerun"
+  ]
+ ],
+ "generated_utc": "2026-10-30T11:24:11Z",
+ "git": {
+  "branch": "main",
+  "by_class": {
+   "application source": 2,
+   "application source (release tooling)": 3,
+   "deployment artifact (release bundle)": 3,
+   "documentation": 13,
+   "generated report": 1,
+   "infrastructure/config": 4,
+   "tests": 3
+  },
+  "changed_files": 29,
+  "commit_count_all": 1,
+  "head": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+  "inventory": [
+   {
+    "class": "infrastructure/config",
+    "path": ".gitignore",
+    "state": "modified"
+   },
+   {
+    "class": "infrastructure/config",
+    "path": "Makefile",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "PROJECT_STATUS.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "TASKS.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/API.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/architecture/ARCHITECTURE.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/COST_MODEL.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/DEPLOYMENT.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/POST_DEPLOYMENT_CHECKLIST.md",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/PRE_DEPLOYMENT_REVIEW.md",
+    "state": "modified"
+   },
+   {
+    "class": "infrastructure/config",
+    "path": "infrastructure/bin/floodlens.ts",
+    "state": "modified"
+   },
+   {
+    "class": "infrastructure/config",
+    "path": "infrastructure/lib/floodlens-stack.ts",
+    "state": "modified"
+   },
+   {
+    "class": "tests",
+    "path": "infrastructure/test/floodlens-stack.test.ts",
+    "state": "modified"
+   },
+   {
+    "class": "application source (release tooling)",
+    "path": "scripts/release_integrity.py",
+    "state": "modified"
+   },
+   {
+    "class": "application source",
+    "path": "services/api/floodlens_api/lambda_handler.py",
+    "state": "modified"
+   },
+   {
+    "class": "application source",
+    "path": "services/api/floodlens_api/main.py",
+    "state": "modified"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/DEPLOYMENT_RUNBOOK.md",
+    "state": "untracked"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/PHASE7_IMPLEMENTATION_REPORT.md",
+    "state": "untracked"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/RELEASE_ARTIFACTS.md",
+    "state": "untracked"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/RELEASE_READINESS.md",
+    "state": "untracked"
+   },
+   {
+    "class": "documentation",
+    "path": "docs/deployment/SECURITY_OPERATIONS.md",
+    "state": "untracked"
+   },
+   {
+    "class": "generated report",
+    "path": "reports/pre-deployment/phase6-git-baseline.json",
+    "state": "untracked"
+   },
+   {
+    "class": "deployment artifact (release bundle)",
+    "path": "reports/releases/2026-10-30-rc1/checksums.sha256",
+    "state": "untracked"
+   },
+   {
+    "class": "deployment artifact (release bundle)",
+    "path": "reports/releases/2026-10-30-rc1/release-manifest.json",
+    "state": "untracked"
+   },
+   {
+    "class": "deployment artifact (release bundle)",
+    "path": "reports/releases/2026-10-30-rc1/validation.json",
+    "state": "untracked"
+   },
+   {
+    "class": "application source (release tooling)",
+    "path": "scripts/create_release_bundle.py",
+    "state": "untracked"
+   },
+   {
+    "class": "application source (release tooling)",
+    "path": "scripts/data_baseline.py",
+    "state": "untracked"
+   },
+   {
+    "class": "tests",
+    "path": "services/api/tests/test_head_and_function_url.py",
+    "state": "untracked"
+   },
+   {
+    "class": "tests",
+    "path": "services/api/tests/test_release_bundle.py",
+    "state": "untracked"
+   }
+  ],
+  "origin_main": "d2c67a2eb08818bcfcbdf7a81990d08cc4a8ba66",
+  "protected_changes": [],
+  "protected_diff_vs_head": "",
+  "reproducible_from_commit": false,
+  "working_tree_clean": false
+ },
+ "incident": {
+  "id": "I-1",
+  "reason_not_reversed": "deleting would be a further AWS change; left to the owner",
+  "reversed": false,
+  "s3_object": {
+   "bucket": "cdk-hnb659fds-assets-675613597178-ap-south-1",
+   "bytes": 36965,
+   "contains": "synthesized template with placeholder e-mail; no secrets",
+   "key": "9f43afec267d276c10c46092878a64e5212dc7ed7c7fdbb422df8a547ff6ce19.json",
+   "last_modified": "2026-10-30T11:26:08Z"
+  },
+  "stack_record": {
+   "created": "2026-10-30T11:26:07Z",
+   "deleted": "2026-10-30T11:26:15Z",
+   "name": "FloodLens",
+   "status": "DELETE_COMPLETE"
+  },
+  "summary": "cdk diff (method auto) published the template to the CDK staging bucket and created/deleted a transient stack record"
+ },
+ "lambda_package": {
+  "arm64_runtime": "POST_DEPLOYMENT_VERIFICATION_REQUIRED",
+  "bytes": 103361262,
+  "checks": [
+   {
+    "detail": "1 ELF modules, all EM_AARCH64",
+    "name": "lambda_native_modules_are_aarch64",
+    "status": "PASS"
+   },
+   {
+    "detail": "1 CPython extension modules, tags: ['cpython-313-aarch64-linux-gnu']",
+    "name": "lambda_native_modules_are_cpython_313_linux",
+    "status": "PASS"
+   },
+   {
+    "detail": "no .exe/.dll/.pyd, no PE headers",
+    "name": "lambda_has_no_windows_binaries",
+    "status": "PASS"
+   },
+   {
+    "detail": "distributions: ['annotated-doc', 'annotated-types', 'anyio', 'fastapi', 'idna', 'mangum', 'opentelemetry-api', 'pydantic', 'pydantic-core', 'starlette', 'typing-extensions', 'typing-inspection']",
+    "name": "lambda_has_no_geospatial_libraries",
+    "status": "PASS"
+   },
+   {
+    "detail": "CDK handler floodlens_api.lambda_handler.handler -> floodlens_api/lambda_handler.py defines handler",
+    "name": "lambda_handler_resolves",
+    "status": "PASS"
+   },
+   {
+    "detail": "8 modules compared",
+    "name": "lambda_code_equals_source",
+    "status": "PASS"
+   },
+   {
+    "detail": "630 artifact files compared",
+    "name": "lambda_artifacts_equal_data_api",
+    "status": "PASS"
+   },
+   {
+    "detail": "3 required files present",
+    "name": "lambda_required_artifacts_present",
+    "status": "PASS"
+   },
+   {
+    "detail": "12 pins matched",
+    "name": "lambda_versions_match_pins",
+    "status": "PASS"
+   },
+   {
+    "detail": "98.6 MiB unzipped of 250 MiB; 16.1 MiB as a deflate zip (CDK uploads via S3, so the 50 MB direct-upload limit does not apply)",
+    "name": "lambda_unzipped_size_within_250mb",
+    "status": "PASS"
+   }
+  ],
+  "files": 1040
+ },
+ "phase": 8,
+ "recommendation": "READY FOR OWNER REVIEW",
+ "template": {
+  "api_gateway_resources": [],
+  "by_type": {
+   "AWS::CDK::Metadata": 1,
+   "AWS::CloudFront::CachePolicy": 1,
+   "AWS::CloudFront::Distribution": 1,
+   "AWS::CloudFront::Function": 1,
+   "AWS::CloudFront::OriginAccessControl": 2,
+   "AWS::CloudFront::ResponseHeadersPolicy": 1,
+   "AWS::CloudWatch::Alarm": 4,
+   "AWS::CloudWatch::Dashboard": 1,
+   "AWS::IAM::Policy": 2,
+   "AWS::IAM::Role": 3,
+   "AWS::Lambda::Function": 3,
+   "AWS::Lambda::LayerVersion": 2,
+   "AWS::Lambda::Permission": 2,
+   "AWS::Lambda::Url": 1,
+   "AWS::Location::APIKey": 1,
+   "AWS::Logs::LogGroup": 4,
+   "AWS::S3::Bucket": 1,
+   "AWS::S3::BucketPolicy": 1,
+   "AWS::SNS::Subscription": 1,
+   "AWS::SNS::Topic": 1,
+   "Custom::AWS": 1,
+   "Custom::CDKBucketDeployment": 2
+  },
+  "contains_execute_api": false,
+  "note": "synthesized with a placeholder e-mail and 2026-12-29 expiry; not deployment values",
+  "outputs": [
+   "SiteUrl",
+   "ApiFunctionUrl",
+   "SiteBucketName",
+   "MapsApiKeyArn"
+  ],
+  "resources": 37,
+  "sha256": "45a1cc356fb93b0e89a5cbdb2d6a38046d4c710a0e7cc12d151e9f76e7738588"
+ },
+ "tests": {
+  "api": {
+   "failed": 0,
+   "passed": 189,
+   "skip_reason": "case-insensitive filesystem",
+   "skipped": 1,
+   "warnings": 2
+  },
+  "browser_tests": "not run",
+  "bundle_verify_full": "OK",
+  "cdk_synth_offline": "37 resources",
+  "data_baseline": "UNCHANGED",
+  "frontend": {
+   "failed": 0,
+   "passed": 83,
+   "skipped": 0
+  },
+  "geospatial": {
+   "failed": 0,
+   "passed": 174,
+   "skipped": 0
+  },
+  "infrastructure": {
+   "failed": 0,
+   "passed": 32,
+   "skipped": 0
+  },
+  "manifests": "ok",
+  "release_integrity": "exit 0; 1 LOW (CRLF checkout)",
+  "ruff": "clean",
+  "schema_drift": "none",
+  "tsc_infrastructure": "clean",
+  "tsc_web": "clean",
+  "web_build": "succeeded"
+ },
+ "web_build": {
+  "equals_bundle": true,
+  "files": 7,
+  "listing_sha256": "75a3fd5befb546c3d82bf9d7cb060968f978a80cfbd64ef79457c5cb6244c5fa"
+ }
+}

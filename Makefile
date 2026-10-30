@@ -25,5 +25,12 @@ package-lambda:
 	$(PY) scripts/package_lambda.py
 test-infra:
 	cd infrastructure && npm test
+# ALARM_EMAIL and KEY_EXPIRE (ISO-8601, at most 90 days ahead) are required; synth is local-only
 synth:
-	cd infrastructure && npx cdk synth --quiet
+	cd infrastructure && npx cdk synth --quiet -c alarmEmail=$(ALARM_EMAIL) -c locationKeyExpireTime=$(KEY_EXPIRE)
+
+.PHONY: release-bundle verify-release
+release-bundle:
+	$(PY) scripts/create_release_bundle.py create --release-id $(RELEASE_ID)
+verify-release:
+	$(PY) scripts/create_release_bundle.py verify --release-id $(RELEASE_ID)

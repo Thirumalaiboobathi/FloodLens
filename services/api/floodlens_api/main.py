@@ -9,6 +9,7 @@ from typing import Annotated, Literal
 from fastapi import APIRouter, FastAPI, Path, Query, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.routing import APIRoute
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from floodlens_api import API_VERSION
@@ -361,7 +362,67 @@ def rainfall_raster(region: str, scenario_id: RainId):
                         headers={"x-content-sha256": meta["raster"]["sha256"]})
 
 
+
+
+def _add_head_routes(router: APIRouter) -> None:
+    """HEAD for every GET route: same path, parameters, validation and status; the body is dropped by HeadBodyMiddleware."""
+    for r in list(router.routes):
+        if isinstance(r, APIRoute) and r.methods == {"GET"}:
+            router.add_api_route(
+                r.path[len(router.prefix):], r.endpoint, methods=["HEAD"], name=r.name,
+                response_model=r.response_model, response_class=r.response_class,
+                status_code=r.status_code, responses=r.responses, include_in_schema=False)
+
+
+class HeadBodyMiddleware:
+    """Serve HEAD with the status and headers of the GET response and no body.
+
+    The route runs exactly as for GET (so validation and errors cannot differ). JSON responses keep the
+    Content-Length of the GET body; FileResponse (the GeoTIFF) already sends headers only for HEAD and never reads the file.
+    """
+
+    def __init__(self, inner):
+        self.inner = inner
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] != "http" or scope["method"] != "HEAD":
+            await self.inner(scope, receive, send)
+            return
+
+        async def no_body(message):
+            if message["type"] == "http.response.body":
+                message = {"type": "http.response.body", "body": b"", "more_body": message.get("more_body", False)}
+            await send(message)
+
+        await self.inner(scope, receive, no_body)
+
+
+def _head_operation(get_op: dict) -> dict:
+    """OpenAPI entry for HEAD, derived from the GET operation: same parameters and status codes, no response content."""
+    op = {k: v for k, v in get_op.items() if k not in ("responses", "operationId", "summary", "description", "requestBody")}
+    op["summary"] = f"{get_op.get('summary', 'Request')} (HEAD)"
+    op["description"] = "Same status code, headers and parameter validation as the GET operation; no response body."
+    op["operationId"] = get_op["operationId"].removesuffix("_get") + "_head"
+    op["responses"] = {code: {"description": r.get("description", ""), **({"headers": r["headers"]} if "headers" in r else {})}
+                       for code, r in get_op["responses"].items()}
+    return op
+
+
+def _openapi_with_head() -> dict:
+    first = app.openapi_schema is None
+    schema = _openapi()
+    if first:
+        for item in schema["paths"].values():
+            if "get" in item:
+                item["head"] = _head_operation(item["get"])
+    return schema
+
+
+_add_head_routes(v1)
 app.include_router(v1)
+app.add_middleware(HeadBodyMiddleware)
+_openapi = app.openapi
+app.openapi = _openapi_with_head
 
 try:  # AWS Lambda entry point when mangum is packaged; absent in local development
     from mangum import Mangum
