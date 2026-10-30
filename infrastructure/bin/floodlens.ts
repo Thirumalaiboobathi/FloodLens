@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib";
-import { FloodLensStack, REGION, validateAlarmEmail, validateFrontendOrigins, validateKeyExpiry } from "../lib/floodlens-stack";
+import { FloodLensStack, REGION, validateAlarmEmail, validateFrontendOrigins, validateMapsApiKeyArn } from "../lib/floodlens-stack";
 
 /** The only account this app may target. A mismatch aborts synth, so a wrong profile cannot deploy. */
 export const EXPECTED_ACCOUNT = "675613597178";
@@ -35,18 +35,18 @@ if (process.env.CDK_DEFAULT_REGION && process.env.CDK_DEFAULT_REGION !== REGION)
   throw new Error(`Refusing to synthesize: default region is ${process.env.CDK_DEFAULT_REGION}, expected ${REGION}.`);
 }
 
-// Required for every synth: the map key must expire (at most 90 days), alarms need a recipient, and CORS plus
-// the map key must name the real Amplify origin(s).
+// Required for every synth: alarms need a recipient, CORS must name the real Amplify origin(s), and the existing
+// (console-created) map key's ARN is recorded in an output. The key itself is not managed here.
 const alarmEmail = validateAlarmEmail(ctx("alarmEmail"));
-const locationKeyExpireTime = validateKeyExpiry(ctx("locationKeyExpireTime"));
+const mapsApiKeyArn = validateMapsApiKeyArn(ctx("mapsApiKeyArn")).arn;
 const frontendOrigins = validateFrontendOrigins(ctx("frontendOrigins")?.split(",").map((s) => s.trim()).filter(Boolean));
 
 new FloodLensStack(app, STACK_NAME, {
   env: { account, region: REGION },
-  description: "FloodLens backend: API Gateway HTTP API, Lambda (FastAPI, ARM64), Amazon Location map key, CloudWatch alarms. Frontend is hosted by AWS Amplify.",
+  description: "FloodLens backend: API Gateway HTTP API, Lambda (FastAPI, ARM64), CloudWatch alarms. Frontend is hosted by AWS Amplify.",
   lambdaDir: ctx("lambdaDir") ?? "build/lambda",
   alarmEmail,
-  locationKeyExpireTime,
+  mapsApiKeyArn,
   frontendOrigins,
   allowLocalDevCors: ctx("allowLocalDevCors") === "true",
   mapStyle: ctx("mapStyle"),

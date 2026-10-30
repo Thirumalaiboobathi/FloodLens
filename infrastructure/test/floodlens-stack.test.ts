@@ -7,19 +7,18 @@ import { Match, Template } from "aws-cdk-lib/assertions";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
   DEFAULT_API_BURST_LIMIT, DEFAULT_API_RATE_LIMIT, FloodLensStack, INTEGRATION_TIMEOUT_SECONDS, LAMBDA_TIMEOUT_SECONDS,
-  LOCAL_DEV_ORIGIN, MAX_KEY_LIFETIME_DAYS, validateAlarmEmail, validateFrontendOrigins, validateKeyExpiry,
+  LOCAL_DEV_ORIGIN, validateAlarmEmail, validateFrontendOrigins, validateMapsApiKeyArn,
 } from "../lib/floodlens-stack";
 
 // A tiny stand-in for the real Lambda package: the stack only needs the directory to exist.
 let tmp: string;
 let template: Template;
 let json: string;
-const DAY = 86_400_000;
 const ORIGIN = "https://main.d1a2b3c4d5e6f7.amplifyapp.com";
-const inDays = (n: number) => new Date(Date.now() + n * DAY).toISOString();
+const KEY_ARN = "arn:aws:geo:ap-south-1:675613597178:api-key/floodlens";
 type Props = ConstructorParameters<typeof FloodLensStack>[2];
 const baseProps = (): Props => ({
-  lambdaDir: path.join(tmp, "lambda"), alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(60),
+  lambdaDir: path.join(tmp, "lambda"), alarmEmail: "ops@example.org", mapsApiKeyArn: KEY_ARN,
   frontendOrigins: [ORIGIN],
 });
 const stackWith = (extra: Partial<Props> = {}) =>
@@ -115,18 +114,15 @@ describe("cors", () => {
     expect(JSON.stringify(c)).not.toContain('"*"');
   });
 
-  it("adds the local dev origin only when explicitly asked, and never to the map key", () => {
+  it("adds the local dev origin only when explicitly asked", () => {
     expect(cors(template).AllowOrigins).not.toContain(LOCAL_DEV_ORIGIN);
     const t = stackWith({ allowLocalDevCors: true });
     expect(cors(t).AllowOrigins).toEqual([ORIGIN, LOCAL_DEV_ORIGIN]);
-    expect(JSON.stringify(Object.values(t.findResources("AWS::Location::APIKey")))).not.toContain("localhost");
   });
 
   it("supports several explicit origins (for example a custom domain)", () => {
     const t = stackWith({ frontendOrigins: [ORIGIN, "https://floodlens.example.org"] });
     expect(cors(t).AllowOrigins).toEqual([ORIGIN, "https://floodlens.example.org"]);
-    t.hasResourceProperties("AWS::Location::APIKey", Match.objectLike({
-      Restrictions: Match.objectLike({ AllowReferers: [`${ORIGIN}/*`, "https://floodlens.example.org/*"] }) }));
   });
 
   it("validates origins: required, https, bare, no wildcard", () => {
@@ -192,73 +188,33 @@ describe("lambda", () => {
   });
 });
 
-describe("amazon location map key", () => {
-  it("allows only map read actions on the default map provider, bound to the frontend origin, with an expiry", () => {
-    const exp = inDays(40);
-    const t = stackWith({ locationKeyExpireTime: exp });
-    t.hasResourceProperties("AWS::Location::APIKey", Match.objectLike({
-      ExpireTime: exp.replace(/\.\d{3}Z$/, "Z"), NoExpiry: false,
-      Restrictions: {
-        AllowActions: ["geo-maps:GetStyleDescriptor", "geo-maps:GetTile", "geo-maps:GetSprites", "geo-maps:GetGlyphs"],
-        AllowResources: [Match.objectLike({ "Fn::Join": Match.anyValue() })],
-        AllowReferers: [`${ORIGIN}/*`],
-      },
-    }));
-    const k = JSON.stringify(Object.values(template.findResources("AWS::Location::APIKey")));
-    expect(k).toContain("geo-maps:");
-    expect(k).toContain("provider/default");
-    expect(k).not.toMatch(/geo:\*|geo-maps:\*|"\*"/);
+describe("amazon location map key (owned outside the stack)", () => {
+  it("creates no Location resource and no custom resource: the console-created key is only referenced", () => {
+    expect(resources(template).filter((r) => r.Type.startsWith("AWS::Location::"))).toHaveLength(0);
+    expect(json).not.toMatch(/AWS::Location|describeKey|DescribeKey|AWSCDK|"geo:[A-Za-z]|geo-maps:/);
   });
 
-  it("never produces a key without an expiry, a wildcard referrer, or a literal key value", () => {
-    for (const k of Object.values(template.findResources("AWS::Location::APIKey"))) {
-      expect(k.Properties.NoExpiry).toBe(false);
-      expect(k.Properties.ExpireTime).toBeDefined();
-      for (const r of k.Properties.Restrictions.AllowReferers) expect(r).not.toMatch(/\*\./);
-    }
+  it("records only the key ARN and name in outputs, never a key value", () => {
+    const out = template.toJSON().Outputs;
+    expect(Object.keys(out).sort()).toEqual(["ApiBaseUrl", "MapStyle", "MapsApiKeyArn", "MapsApiKeyName"]);
+    expect(out.MapsApiKeyArn.Value).toBe(KEY_ARN);
+    expect(out.MapsApiKeyName.Value).toBe("floodlens");
     expect(json).not.toMatch(/v1\.public\./);
   });
 
-  it("has no custom resource reading the key value: the owner reads it once and sets the Amplify variable", () => {
-    expect(json).not.toMatch(/describeKey|DescribeKey|AWSCDK/);
-    const out = template.toJSON().Outputs;
-    expect(Object.keys(out).sort()).toEqual(["ApiBaseUrl", "MapStyle", "MapsApiKeyArn", "MapsApiKeyName"]);
-    expect(JSON.stringify(out)).not.toMatch(/\bKey\b.*Value|v1\.public/);
-  });
-
-  it("gives a stack-unique, deterministic key name", () => {
-    const name = Object.values(template.findResources("AWS::Location::APIKey"))[0].Properties.KeyName as string;
-    expect(name).toMatch(/^floodlens-web-maps-[0-9a-f]{8}$/);
+  it("accepts only an api-key ARN in this region and rejects a missing, foreign or malformed one", () => {
+    expect(validateMapsApiKeyArn(KEY_ARN)).toEqual({ arn: KEY_ARN, name: "floodlens" });
+    expect(() => validateMapsApiKeyArn(undefined)).toThrow(/mapsApiKeyArn is required/);
+    for (const bad of ["floodlens", "arn:aws:geo:us-east-1:675613597178:api-key/floodlens", "arn:aws:geo:ap-south-1:6756:api-key/floodlens",
+      "arn:aws:geo:ap-south-1:675613597178:map/floodlens", "arn:aws:geo:ap-south-1:675613597178:api-key/", "arn:aws:geo:ap-south-1:675613597178:api-key/*"]) {
+      expect(() => validateMapsApiKeyArn(bad), bad).toThrow(/not an Amazon Location key ARN/);
+    }
+    expect(() => new FloodLensStack(new cdk.App(), "N", { ...baseProps(), mapsApiKeyArn: undefined as unknown as string }))
+      .toThrow(/mapsApiKeyArn is required/);
   });
 });
 
 describe("mandatory deployment settings", () => {
-  const now = new Date("2026-10-30T00:00:00Z");
-
-  it("rejects a missing key expiry", () => {
-    expect(() => validateKeyExpiry(undefined, now)).toThrow(/required/);
-    expect(() => validateKeyExpiry("", now)).toThrow(/required/);
-    expect(() => new FloodLensStack(new cdk.App(), "N", { ...baseProps(), locationKeyExpireTime: undefined as unknown as string }))
-      .toThrow(/locationKeyExpireTime is required/);
-  });
-
-  it("rejects malformed, impossible, expired and too-distant expiries", () => {
-    for (const bad of ["tomorrow", "2026-13-40T00:00:00Z", "2026-11-30", "2026-11-30T00:00:00", "30/11/2026", "2026-02-30T00:00:00Z"]) {
-      expect(() => validateKeyExpiry(bad, now), bad).toThrow(/ISO-8601|valid date/);
-    }
-    expect(() => validateKeyExpiry("2026-10-29T23:59:59Z", now)).toThrow(/not in the future/);
-    expect(() => validateKeyExpiry("2026-10-30T00:00:00Z", now)).toThrow(/not in the future/);
-    expect(() => validateKeyExpiry("2027-02-01T00:00:00Z", now)).toThrow(/more than 90 days/);
-  });
-
-  it("accepts an expiry up to exactly the maximum lifetime, and normalizes it to UTC", () => {
-    expect(MAX_KEY_LIFETIME_DAYS).toBe(90);
-    expect(validateKeyExpiry("2026-10-30T00:00:01Z", now)).toBe("2026-10-30T00:00:01Z");
-    expect(validateKeyExpiry("2027-01-28T00:00:00Z", now)).toBe("2027-01-28T00:00:00Z"); // exactly 90 days
-    expect(validateKeyExpiry("2027-01-28T05:30:00+05:30", now)).toBe("2027-01-28T00:00:00Z");
-    expect(() => validateKeyExpiry("2027-01-28T00:00:01Z", now)).toThrow(/more than 90 days/);
-  });
-
   it("rejects a missing or malformed alarm e-mail", () => {
     expect(() => validateAlarmEmail(undefined)).toThrow(/required/);
     expect(() => validateAlarmEmail("")).toThrow(/required/);
@@ -270,7 +226,7 @@ describe("mandatory deployment settings", () => {
     expect(validateAlarmEmail("first.last+floodlens@example.co.in")).toBe("first.last+floodlens@example.co.in");
   });
 
-  it("fails the CDK app when a required setting is missing, the expiry is too far out, or a reservation is passed", () => {
+  it("fails the CDK app when a required setting is missing or a reservation is passed", () => {
     const run = (ctx: Record<string, string>): string => {
       try {
         execFileSync(process.execPath, [path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs"), path.resolve(__dirname, "../bin/floodlens.ts")], {
@@ -280,11 +236,10 @@ describe("mandatory deployment settings", () => {
         return "";
       } catch (e) { return String((e as { stderr?: Buffer }).stderr ?? e); }
     };
-    const ok = { alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(30), frontendOrigins: ORIGIN };
-    expect(run({ locationKeyExpireTime: inDays(30), frontendOrigins: ORIGIN })).toMatch(/alarmEmail is required/);
-    expect(run({ alarmEmail: "ops@example.org", frontendOrigins: ORIGIN })).toMatch(/locationKeyExpireTime is required/);
-    expect(run({ ...ok, locationKeyExpireTime: inDays(120) })).toMatch(/more than 90 days/);
-    expect(run({ alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(30) })).toMatch(/frontendOrigins is required/);
+    const ok = { alarmEmail: "ops@example.org", mapsApiKeyArn: KEY_ARN, frontendOrigins: ORIGIN };
+    expect(run({ mapsApiKeyArn: KEY_ARN, frontendOrigins: ORIGIN })).toMatch(/alarmEmail is required/);
+    expect(run({ alarmEmail: "ops@example.org", frontendOrigins: ORIGIN })).toMatch(/mapsApiKeyArn is required/);
+    expect(run({ alarmEmail: "ops@example.org", mapsApiKeyArn: KEY_ARN })).toMatch(/frontendOrigins is required/);
     expect(run({ ...ok, frontendOrigins: "https://*.amplifyapp.com" })).toMatch(/wildcard/);
     expect(run({ ...ok, reservedConcurrency: "10" })).toMatch(/reservedConcurrency is not supported/);
   }, 90_000);

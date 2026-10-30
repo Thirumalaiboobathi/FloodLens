@@ -1,4 +1,3 @@
-import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as cdk from "aws-cdk-lib";
@@ -8,7 +7,6 @@ import * as integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import * as cloudwatch from "aws-cdk-lib/aws-cloudwatch";
 import * as cwActions from "aws-cdk-lib/aws-cloudwatch-actions";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as location from "aws-cdk-lib/aws-location";
 import * as logs from "aws-cdk-lib/aws-logs";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as subs from "aws-cdk-lib/aws-sns-subscriptions";
@@ -26,11 +24,12 @@ export interface FloodLensProps extends cdk.StackProps {
    */
   alarmEmail: string;
   /**
-   * REQUIRED. ISO-8601 expiry for the browser map key: in the future and at most MAX_KEY_LIFETIME_DAYS away.
-   * The key is public by design (map actions, bound to the frontend origin); expiry limits how long a leaked or
-   * abused copy stays useful. Rotate by redeploying with a later date before it lapses.
+   * REQUIRED. ARN of the EXISTING Amazon Location browser key (created by the owner in the console, because CloudFormation
+   * was denied AWS::Location::APIKey creation in this account). The stack only records it in an output; it never creates,
+   * changes or reads the key. The key value is read by the owner with `aws location describe-key` and set as the Amplify
+   * variable VITE_LOCATION_API_KEY. The key's own expiry (at most 90 days) and referrers are managed outside this stack.
    */
-  locationKeyExpireTime: string;
+  mapsApiKeyArn: string;
   /**
    * REQUIRED. The browser origins of the Amplify-hosted frontend (and any custom domain), for example
    * https://main.d1a2b3c4d5e6f7.amplifyapp.com. They become the API's CORS allow-list and the map key's
@@ -47,12 +46,8 @@ export interface FloodLensProps extends cdk.StackProps {
   apiBurstLimit?: number;
   /** Invocations per 5 minutes that raise the traffic-spike alarm (default 3000, about 10 requests/second sustained). */
   invocationAlarmThreshold?: number;
-  /** Clock used to validate the key expiry. For tests. */
-  now?: Date;
 }
 
-/** Longest allowed lifetime of the public map key, counted from synthesis. */
-export const MAX_KEY_LIFETIME_DAYS = 90;
 export const LOCAL_DEV_ORIGIN = "http://localhost:5173";
 export const DEFAULT_API_RATE_LIMIT = 10;
 export const DEFAULT_API_BURST_LIMIT = 20;
@@ -60,29 +55,16 @@ export const DEFAULT_API_BURST_LIMIT = 20;
 export const LAMBDA_TIMEOUT_SECONDS = 15;
 export const INTEGRATION_TIMEOUT_SECONDS = 20;
 
-/** Checks the map-key expiry (required, ISO-8601 with a time zone, in the future, within MAX_KEY_LIFETIME_DAYS). Returns it as UTC. */
-export function validateKeyExpiry(value: string | undefined, now: Date = new Date()): string {
+/** Checks the existing map key's ARN (an Amazon Location api-key in this stack's region). Returns it with the key name. */
+export function validateMapsApiKeyArn(value: string | undefined): { arn: string; name: string } {
   if (!value) {
-    throw new Error("locationKeyExpireTime is required (for example -c locationKeyExpireTime=2027-01-15T00:00:00Z): the map key is never created without an expiry.");
+    throw new Error("mapsApiKeyArn is required (for example -c mapsApiKeyArn=arn:aws:geo:ap-south-1:<account>:api-key/<name>): the stack does not create the map key.");
   }
-  const m = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-](\d{2}):(\d{2}))$/.exec(value);
+  const m = new RegExp(`^arn:aws:geo:${REGION}:\\d{12}:api-key/([A-Za-z0-9._-]{1,100})$`).exec(value);
   if (!m) {
-    throw new Error(`locationKeyExpireTime "${value}" is not an ISO-8601 timestamp with a time zone (for example 2027-01-15T00:00:00Z).`);
+    throw new Error(`mapsApiKeyArn "${value}" is not an Amazon Location key ARN in ${REGION} (arn:aws:geo:${REGION}:<12-digit account>:api-key/<name>).`);
   }
-  // Date.parse rolls impossible dates over (2026-02-30 becomes March 2), so check the calendar fields explicitly.
-  const [y, mo, d, h, mi, sec] = [m[1], m[2], m[3], m[4], m[5], m[6] ?? "0"].map(Number);
-  const daysInMonth = new Date(Date.UTC(y, mo, 0)).getUTCDate();
-  if (mo < 1 || mo > 12 || d < 1 || d > daysInMonth || h > 23 || mi > 59 || sec > 59 || Number(m[8] ?? 0) > 23 || Number(m[9] ?? 0) > 59) {
-    throw new Error(`locationKeyExpireTime "${value}" is not a valid date.`);
-  }
-  const t = new Date(value);
-  if (Number.isNaN(t.getTime())) throw new Error(`locationKeyExpireTime "${value}" is not a valid date.`);
-  if (t.getTime() <= now.getTime()) throw new Error(`locationKeyExpireTime ${value} is not in the future.`);
-  const limit = now.getTime() + MAX_KEY_LIFETIME_DAYS * 86_400_000;
-  if (t.getTime() > limit) {
-    throw new Error(`locationKeyExpireTime ${value} is more than ${MAX_KEY_LIFETIME_DAYS} days away (latest allowed ${new Date(limit).toISOString()}).`);
-  }
-  return t.toISOString().replace(/\.\d{3}Z$/, "Z");
+  return { arn: value, name: m[1] };
 }
 
 /** Checks the alarm recipient (required, one plausible e-mail address). */
@@ -132,8 +114,7 @@ function positiveInt(name: string, value: number | undefined, fallback: number):
 }
 
 /**
- * FloodLens backend: read-only FastAPI on Lambda behind an API Gateway HTTP API, plus the Amazon Location browser map
- * key and CloudWatch alarms. The React app is NOT in this stack: AWS Amplify Hosting builds and serves it from GitHub.
+ * FloodLens backend: read-only FastAPI on Lambda behind an API Gateway HTTP API, plus CloudWatch alarms. The React app is NOT in this stack: AWS Amplify Hosting builds and serves it from GitHub.
  * No geospatial processing runs here: the API serves artifacts built offline and shipped inside the Lambda package.
  */
 export class FloodLensStack extends cdk.Stack {
@@ -141,7 +122,7 @@ export class FloodLensStack extends cdk.Stack {
     super(scope, id, { ...props, env: { account: props.env?.account, region: REGION } });
 
     const alarmEmail = validateAlarmEmail(props.alarmEmail);
-    const keyExpiry = validateKeyExpiry(props.locationKeyExpireTime, props.now);
+    const mapKey = validateMapsApiKeyArn(props.mapsApiKeyArn);
     const origins = validateFrontendOrigins(props.frontendOrigins);
     const lambdaDir = requireDir(props.lambdaDir, "Build it first: python scripts/package_lambda.py");
     const rate = positiveInt("apiRateLimit", props.apiRateLimit, DEFAULT_API_RATE_LIMIT);
@@ -214,22 +195,11 @@ export class FloodLensStack extends cdk.Stack {
       },
     });
 
-    // ---- Amazon Location: maps-only, referrer-bound browser key with a mandatory expiry -------------------
-    // CloudFormation does not return an API key's value. The owner reads it once after deployment
-    // (aws location describe-key) and enters it as the Amplify environment variable VITE_LOCATION_API_KEY. It is
-    // a public browser key by design (map actions only, bound to the frontend origin) and never appears in source.
-    const keySuffix = crypto.createHash("sha256").update(`${this.stackName}/MapsApiKey`).digest("hex").slice(0, 8);
-    const mapKey = new location.CfnAPIKey(this, "MapsApiKey", {
-      keyName: `floodlens-web-maps-${keySuffix}`,
-      description: "FloodLens browser basemap key: map actions only, restricted to the Amplify frontend origin, expires",
-      restrictions: {
-        allowActions: ["geo-maps:GetStyleDescriptor", "geo-maps:GetTile", "geo-maps:GetSprites", "geo-maps:GetGlyphs"],
-        allowResources: [`arn:${cdk.Aws.PARTITION}:geo-maps:${REGION}::provider/default`],
-        allowReferers: origins.map((o) => `${o}/*`),
-      },
-      expireTime: keyExpiry,
-      noExpiry: false,
-    });
+    // ---- Amazon Location: the browser map key already exists --------------------------------------------
+    // CloudFormation was denied AWS::Location::APIKey in this account, so the owner created the key in the console.
+    // This stack neither creates nor changes it and has no permission to read it. The owner reads the value once
+    // (aws location describe-key) and enters it as the Amplify variable VITE_LOCATION_API_KEY. It is a public browser
+    // key by design (map actions, bound to the frontend origin) and never appears in source, outputs or reports.
 
     // ---- observability -----------------------------------------------------------------------------------
     const topic = new sns.Topic(this, "AlarmTopic", { displayName: "FloodLens alarms" });
@@ -274,8 +244,8 @@ export class FloodLensStack extends cdk.Stack {
       value: httpApi.apiEndpoint,
       description: "Set as the Amplify environment variable VITE_API_BASE_URL (no trailing slash).",
     });
-    new cdk.CfnOutput(this, "MapsApiKeyName", { value: mapKey.keyName });
-    new cdk.CfnOutput(this, "MapsApiKeyArn", { value: mapKey.attrKeyArn }); // the key value is never an output
+    new cdk.CfnOutput(this, "MapsApiKeyName", { value: mapKey.name });
+    new cdk.CfnOutput(this, "MapsApiKeyArn", { value: mapKey.arn }); // the key value is never an output
     new cdk.CfnOutput(this, "MapStyle", { value: props.mapStyle ?? "Monochrome", description: "Value for VITE_LOCATION_STYLE." });
   }
 }

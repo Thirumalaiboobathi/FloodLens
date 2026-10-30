@@ -67,7 +67,7 @@ Because the Amplify domain is needed for CORS and the key referrer, and the key 
 2. **Commit and push** this migration (owner approval), then build a new release bundle from the clean commit.
 3. **Create the Amplify app** in the console (Host web app → GitHub → this repository → branch `main`; app root `apps/web`). Authorize through the GitHub App flow; no token goes into source. Cancel or let the first build fail; the origin is then known: `https://main.<appId>.amplifyapp.com`.
 4. **Deploy the backend:** `python scripts/package_lambda.py` then
-   `cd infrastructure && npx cdk deploy FloodLensAmplify -c alarmEmail=<monitored email> -c locationKeyExpireTime=<85 days from today, ISO-8601> -c frontendOrigins=https://main.<appId>.amplifyapp.com`
+   `cd infrastructure && npx cdk deploy FloodLensAmplify -c alarmEmail=<monitored email> -c mapsApiKeyArn=arn:aws:geo:ap-south-1:<account>:api-key/<name> (the key is created by hand; the stack does not create it) -c frontendOrigins=https://main.<appId>.amplifyapp.com`
    (keep CDK's IAM prompt; run it from a terminal). Never pass `reservedConcurrency`; never run `cdk diff`.
 5. Read outputs `ApiBaseUrl`, `MapsApiKeyName`; read the key (section 5).
 6. In Amplify set the five variables, the rewrite rule and (if needed) custom headers; start a build.
