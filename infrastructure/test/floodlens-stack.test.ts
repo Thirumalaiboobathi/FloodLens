@@ -6,251 +6,229 @@ import * as cdk from "aws-cdk-lib";
 import { Match, Template } from "aws-cdk-lib/assertions";
 import { beforeAll, describe, expect, it } from "vitest";
 import {
-  API_QUERY_PARAMS, FloodLensStack, MAX_KEY_LIFETIME_DAYS, REGION, validateAlarmEmail, validateKeyExpiry,
+  DEFAULT_API_BURST_LIMIT, DEFAULT_API_RATE_LIMIT, FloodLensStack, INTEGRATION_TIMEOUT_SECONDS, LAMBDA_TIMEOUT_SECONDS,
+  LOCAL_DEV_ORIGIN, MAX_KEY_LIFETIME_DAYS, validateAlarmEmail, validateFrontendOrigins, validateKeyExpiry,
 } from "../lib/floodlens-stack";
 
-// Tiny stand-ins for the real web build and Lambda package: the stack only needs directories to exist.
+// A tiny stand-in for the real Lambda package: the stack only needs the directory to exist.
 let tmp: string;
 let template: Template;
 let json: string;
 const DAY = 86_400_000;
+const ORIGIN = "https://main.d1a2b3c4d5e6f7.amplifyapp.com";
 const inDays = (n: number) => new Date(Date.now() + n * DAY).toISOString();
 type Props = ConstructorParameters<typeof FloodLensStack>[2];
 const baseProps = (): Props => ({
-  webDistDir: path.join(tmp, "web"), lambdaDir: path.join(tmp, "lambda"),
-  alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(60),
+  lambdaDir: path.join(tmp, "lambda"), alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(60),
+  frontendOrigins: [ORIGIN],
 });
 const stackWith = (extra: Partial<Props> = {}) =>
   Template.fromStack(new FloodLensStack(new cdk.App(), "T", { ...baseProps(), ...extra }));
+const resources = (t: Template) => Object.values(t.toJSON().Resources) as { Type: string; Properties: Record<string, any> }[]; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 beforeAll(() => {
   tmp = fs.mkdtempSync(path.join(os.tmpdir(), "floodlens-cdk-"));
-  fs.mkdirSync(path.join(tmp, "web"));
-  fs.writeFileSync(path.join(tmp, "web", "index.html"), "<!doctype html>");
   fs.mkdirSync(path.join(tmp, "lambda"));
   fs.writeFileSync(path.join(tmp, "lambda", "handler.py"), "");
   template = stackWith();
   json = JSON.stringify(template.toJSON());
 });
 
-describe("storage", () => {
-  it("has a private, encrypted, TLS-only, retained site bucket and no other bucket is public", () => {
-    template.hasResourceProperties("AWS::S3::Bucket", {
-      PublicAccessBlockConfiguration: { BlockPublicAcls: true, BlockPublicPolicy: true, IgnorePublicAcls: true, RestrictPublicBuckets: true },
-      BucketEncryption: Match.objectLike({ ServerSideEncryptionConfiguration: Match.anyValue() }),
-      VersioningConfiguration: { Status: "Enabled" },
-    });
-    for (const b of Object.values(template.findResources("AWS::S3::Bucket"))) {
-      expect(b.DeletionPolicy).toBe("Retain");
-      expect(b.Properties.PublicAccessBlockConfiguration).toBeDefined();
+describe("removed architecture", () => {
+  it("has no CloudFront, S3 site bucket, Function URL, OAC, bucket deployment or custom-resource key reader", () => {
+    const types = new Set(resources(template).map((r) => r.Type));
+    for (const t of types) {
+      expect(t, t).not.toMatch(/^AWS::CloudFront::|^AWS::S3::|^Custom::|^AWS::Lambda::Url$|^AWS::Lambda::LayerVersion$/);
     }
-    template.hasResourceProperties("AWS::S3::BucketPolicy", {
-      PolicyDocument: { Statement: Match.arrayWith([Match.objectLike({
-        Effect: "Deny", Action: "s3:*", Condition: { Bool: { "aws:SecureTransport": "false" } } })]) },
-    });
+    expect(json).not.toMatch(/cloudfront\.amazonaws\.com|FunctionUrl|CachePolicy|OriginAccessControl/i);
   });
 
-  it("grants bucket reads only to CloudFront through origin access control, never to a public principal", () => {
-    expect(Object.values(template.findResources("AWS::CloudFront::Distribution"))[0]
-      .Properties.DistributionConfig.Origins.filter((o: { S3OriginConfig?: unknown }) => o.S3OriginConfig)).toHaveLength(1);
-    for (const p of Object.values(template.findResources("AWS::S3::BucketPolicy"))) {
-      for (const st of p.Properties.PolicyDocument.Statement) {
-        if (st.Effect !== "Allow") continue;
-        expect(JSON.stringify(st.Principal)).not.toBe(JSON.stringify({ AWS: "*" }));
-        expect(st.Principal).not.toBe("*");
-      }
-    }
-    expect(json).toContain("cloudfront.amazonaws.com");
-    expect(json).toContain("AWS:SourceArn");
+  it("creates the API on API Gateway v2 (HTTP API) only, never a REST API", () => {
+    template.resourceCountIs("AWS::ApiGatewayV2::Api", 1);
+    template.hasResourceProperties("AWS::ApiGatewayV2::Api", { ProtocolType: "HTTP" });
+    expect(resources(template).filter((r) => r.Type.startsWith("AWS::ApiGateway::"))).toHaveLength(0);
   });
 });
 
-describe("api and lambda", () => {
+describe("api gateway http api", () => {
+  it("proxies GET and HEAD under /v1 to Lambda with payload format 2.0 (AWS_PROXY) and nothing else", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Integration", {
+      IntegrationType: "AWS_PROXY", PayloadFormatVersion: "2.0", TimeoutInMillis: INTEGRATION_TIMEOUT_SECONDS * 1000,
+    });
+    const routes = Object.values(template.findResources("AWS::ApiGatewayV2::Route")).map((r) => r.Properties.RouteKey).sort();
+    expect(routes).toEqual(["GET /v1/{proxy+}", "HEAD /v1/{proxy+}"]);
+    // no $default catch-all, no ANY route, no docs or OpenAPI route
+    expect(routes.join()).not.toMatch(/\$default|ANY|docs|openapi|POST|PUT|DELETE|PATCH/);
+  });
+
+  it("sets an integration timeout above the Lambda timeout and within the HTTP API maximum of 30 s", () => {
+    expect(INTEGRATION_TIMEOUT_SECONDS).toBeGreaterThan(LAMBDA_TIMEOUT_SECONDS);
+    expect(INTEGRATION_TIMEOUT_SECONDS).toBeLessThanOrEqual(30);
+  });
+
+  it("has no authorizer, no mapping or request transform that could drop or rename a query parameter", () => {
+    expect(json).not.toMatch(/Authorizer|RequestParameters|RequestTemplates|ParameterMapping/);
+    expect(resources(template).filter((r) => r.Type === "AWS::ApiGatewayV2::Integration")
+      .every((r) => r.Properties.RequestParameters === undefined)).toBe(true);
+  });
+
+  it("uses the $default stage, auto-deployed, throttled, with structured access logs and no execute-api opt-out", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Stage", Match.objectLike({
+      StageName: "$default", AutoDeploy: true,
+      DefaultRouteSettings: { ThrottlingRateLimit: DEFAULT_API_RATE_LIMIT, ThrottlingBurstLimit: DEFAULT_API_BURST_LIMIT },
+      AccessLogSettings: Match.objectLike({ DestinationArn: Match.anyValue(), Format: Match.stringLikeRegexp("requestId") }),
+    }));
+    const api = Object.values(template.findResources("AWS::ApiGatewayV2::Api"))[0].Properties;
+    expect(api.DisableExecuteApiEndpoint).toBeUndefined();
+  });
+
+  it("makes the throttle configurable and rejects nonsense", () => {
+    stackWith({ apiRateLimit: 5, apiBurstLimit: 8 }).hasResourceProperties("AWS::ApiGatewayV2::Stage", {
+      DefaultRouteSettings: { ThrottlingRateLimit: 5, ThrottlingBurstLimit: 8 } });
+    expect(() => stackWith({ apiRateLimit: 0 })).toThrow(/positive integer/);
+    expect(() => stackWith({ apiRateLimit: 30, apiBurstLimit: 10 })).toThrow(/at least apiRateLimit/);
+  });
+
+  it("keeps access logs free of client IP, user agent, headers and query string", () => {
+    const stage = Object.values(template.findResources("AWS::ApiGatewayV2::Stage"))[0].Properties;
+    const fmt: string = stage.AccessLogSettings.Format;
+    for (const field of ["requestId", "httpMethod", "routeKey", "status", "responseLatency", "integrationStatus"]) expect(fmt).toContain(field);
+    expect(fmt).not.toMatch(/sourceIp|userAgent|requestHeader|rawQueryString|queryString|authorization|identity/i);
+  });
+
+  it("does not cache API responses anywhere", () => {
+    expect(json).not.toMatch(/CacheClusterEnabled|CachingEnabled|CachePolicy|CacheTtl/);
+  });
+});
+
+describe("cors", () => {
+  const cors = (t: Template) => Object.values(t.findResources("AWS::ApiGatewayV2::Api"))[0].Properties.CorsConfiguration;
+
+  it("allows exactly the frontend origin, GET/HEAD/OPTIONS, a short header list, and no credentials", () => {
+    const c = cors(template);
+    expect(c.AllowOrigins).toEqual([ORIGIN]);
+    expect([...c.AllowMethods].sort()).toEqual(["GET", "HEAD", "OPTIONS"]);
+    expect(c.AllowHeaders).toEqual(["accept", "content-type", "x-request-id"]);
+    expect(c.AllowCredentials).toBe(false);
+    expect(c.MaxAge).toBe(86400);
+    expect(c.ExposeHeaders).toEqual(expect.arrayContaining(["x-floodlens-schema-version", "x-content-sha256", "x-request-id"]));
+    expect(JSON.stringify(c)).not.toContain('"*"');
+  });
+
+  it("adds the local dev origin only when explicitly asked, and never to the map key", () => {
+    expect(cors(template).AllowOrigins).not.toContain(LOCAL_DEV_ORIGIN);
+    const t = stackWith({ allowLocalDevCors: true });
+    expect(cors(t).AllowOrigins).toEqual([ORIGIN, LOCAL_DEV_ORIGIN]);
+    expect(JSON.stringify(Object.values(t.findResources("AWS::Location::APIKey")))).not.toContain("localhost");
+  });
+
+  it("supports several explicit origins (for example a custom domain)", () => {
+    const t = stackWith({ frontendOrigins: [ORIGIN, "https://floodlens.example.org"] });
+    expect(cors(t).AllowOrigins).toEqual([ORIGIN, "https://floodlens.example.org"]);
+    t.hasResourceProperties("AWS::Location::APIKey", Match.objectLike({
+      Restrictions: Match.objectLike({ AllowReferers: [`${ORIGIN}/*`, "https://floodlens.example.org/*"] }) }));
+  });
+
+  it("validates origins: required, https, bare, no wildcard", () => {
+    expect(() => validateFrontendOrigins(undefined)).toThrow(/required/);
+    expect(() => validateFrontendOrigins([])).toThrow(/required/);
+    for (const bad of ["*", "https://*.amplifyapp.com", "http://example.org", "https://example.org/", "https://example.org/app",
+      "https://example.org?x=1", "https://user:pw@example.org", "not a url", "localhost:5173"]) {
+      expect(() => validateFrontendOrigins([bad]), bad).toThrow();
+    }
+    expect(validateFrontendOrigins([ORIGIN.toUpperCase().replace("HTTPS", "https"), ORIGIN])).toEqual([ORIGIN]);
+    expect(() => new FloodLensStack(new cdk.App(), "O", { ...baseProps(), frontendOrigins: undefined as unknown as string[] }))
+      .toThrow(/frontendOrigins is required/);
+  });
+});
+
+describe("lambda", () => {
   it("runs Python 3.13 on arm64 with no secrets and only the artifact directory configured", () => {
     template.hasResourceProperties("AWS::Lambda::Function", Match.objectLike({
       Runtime: "python3.13", Architectures: ["arm64"], Handler: "floodlens_api.lambda_handler.handler",
-      MemorySize: 1024, Timeout: 15,
+      MemorySize: 1024, Timeout: LAMBDA_TIMEOUT_SECONDS,
       Environment: { Variables: { FLOODLENS_ARTIFACT_DIR: "/var/task/data/api" } },
     }));
+    template.resourceCountIs("AWS::Lambda::Function", 1); // no deploy-time helper functions any more
   });
 
-  it("gives the API function no data-plane permissions: no S3, no wildcard resource, no inline admin", () => {
-    const roles = template.findResources("AWS::IAM::Role");
-    const apiRole = Object.entries(roles).find(([k]) => k.startsWith("ApiFunctionServiceRole"));
-    expect(apiRole).toBeDefined();
-    const policies = Object.entries(template.findResources("AWS::IAM::Policy"))
-      .filter(([, p]) => JSON.stringify(p.Properties.Roles).includes("ApiFunctionServiceRole"));
-    for (const [, p] of policies) {
+  it("does not reserve concurrency, and the app refuses a reservedConcurrency context", () => {
+    expect(json).not.toContain("ReservedConcurrentExecutions");
+    expect((stackWith() as Template).findResources("AWS::Lambda::Function")).toBeDefined();
+  });
+
+  it("gives the function no data-plane permissions: logging only", () => {
+    const policies = Object.values(template.findResources("AWS::IAM::Policy"))
+      .filter((p) => JSON.stringify(p.Properties.Roles).includes("ApiFunctionServiceRole"));
+    for (const p of policies) {
       for (const st of p.Properties.PolicyDocument.Statement) {
         const acts = ([] as string[]).concat(st.Action);
         expect(acts.every((a) => a.startsWith("logs:") || a.startsWith("xray:"))).toBe(true);
       }
     }
-    expect(JSON.stringify(apiRole![1])).not.toContain("s3:");
+    const role = Object.entries(template.findResources("AWS::IAM::Role")).find(([k]) => k.startsWith("ApiFunctionServiceRole"));
+    expect(role).toBeDefined();
+    expect(JSON.stringify(role![1])).not.toContain("s3:");
+    template.resourceCountIs("AWS::IAM::Role", 1);
   });
 
-  it("retains the one-month function log group, and every log group has 30-day retention", () => {
-    const groups = Object.values(template.findResources("AWS::Logs::LogGroup"));
-    // the API function's group is retained; the other three are deploy-time helpers
-    expect(groups.filter((g) => g.DeletionPolicy === "Retain")).toHaveLength(1);
-    for (const g of groups) expect(g.Properties.RetentionInDays).toBe(30);
-  });
-});
-
-describe("function url and origin access control", () => {
-  const dist = () => Object.values(template.findResources("AWS::CloudFront::Distribution"))[0].Properties.DistributionConfig;
-  const oacs = () => Object.entries(template.findResources("AWS::CloudFront::OriginAccessControl"));
-
-  it("exposes exactly one Function URL and it requires AWS_IAM (no unauthenticated invocation, no CORS grant)", () => {
-    template.resourceCountIs("AWS::Lambda::Url", 1);
-    template.hasResourceProperties("AWS::Lambda::Url", { AuthType: "AWS_IAM", InvokeMode: "BUFFERED" });
-    for (const u of Object.values(template.findResources("AWS::Lambda::Url"))) {
-      expect(u.Properties.AuthType).not.toBe("NONE");
-      expect(u.Properties.Cors).toBeUndefined();
-    }
-  });
-
-  it("signs CloudFront-to-Lambda requests with SigV4 through a dedicated lambda-type OAC", () => {
-    template.hasResourceProperties("AWS::CloudFront::OriginAccessControl", {
-      OriginAccessControlConfig: Match.objectLike({ OriginAccessControlOriginType: "lambda", SigningBehavior: "always", SigningProtocol: "sigv4" }),
-    });
-    template.hasResourceProperties("AWS::CloudFront::OriginAccessControl", {
-      OriginAccessControlConfig: Match.objectLike({ OriginAccessControlOriginType: "s3", SigningBehavior: "always" }),
-    });
-    expect(oacs()).toHaveLength(2); // one for S3, one for the Function URL
-  });
-
-  it("attaches that OAC to the /v1 origin, over HTTPS only with TLS 1.2, and the origin host is the Function URL", () => {
-    const lambdaOac = oacs().find(([, o]) => o.Properties.OriginAccessControlConfig.OriginAccessControlOriginType === "lambda")![0];
-    const api = dist().Origins.filter((o: { CustomOriginConfig?: unknown }) => o.CustomOriginConfig);
-    expect(api).toHaveLength(1);
-    expect(api[0].OriginAccessControlId).toEqual({ "Fn::GetAtt": [lambdaOac, "Id"] });
-    expect(api[0].CustomOriginConfig).toMatchObject({ OriginProtocolPolicy: "https-only", OriginSSLProtocols: ["TLSv1.2"] });
-    expect(JSON.stringify(api[0].DomainName)).toContain("FunctionUrl");
-    const behaviour = dist().CacheBehaviors.find((c: { PathPattern: string }) => c.PathPattern === "/v1/*");
-    expect(behaviour.TargetOriginId).toBe(api[0].Id);
-  });
-
-  it("lets only this CloudFront distribution invoke the function: two scoped statements, no public principal", () => {
+  it("allows invocation only by API Gateway, scoped to this API's execution ARN, and never by a public principal", () => {
     const perms = Object.values(template.findResources("AWS::Lambda::Permission")).map((p) => p.Properties);
-    expect(perms).toHaveLength(2);
-    expect(perms.map((p) => p.Action).sort()).toEqual(["lambda:InvokeFunction", "lambda:InvokeFunctionUrl"]);
+    expect(perms.length).toBeGreaterThanOrEqual(1);
     for (const p of perms) {
-      expect(p.Principal).toBe("cloudfront.amazonaws.com");
-      expect(JSON.stringify(p.SourceArn)).toMatch(/cloudfront::.*:distribution\//); // a distribution in this account
-      expect(JSON.stringify(p.SourceArn)).toContain("Distribution"); // this stack's distribution
+      expect(p.Action).toBe("lambda:InvokeFunction");
+      expect(p.Principal).toBe("apigateway.amazonaws.com");
+      const arn = JSON.stringify(p.SourceArn);
+      expect(arn).toContain("execute-api");
+      expect(arn).toContain("HttpApi"); // the API's own id, not a wildcard
+      expect(arn).toContain("/v1/{proxy+}"); // only the /v1 route on this API id, never the whole API
     }
-    expect(perms.find((p) => p.Action === "lambda:InvokeFunction")!.InvokedViaFunctionUrl).toBe(true);
+    expect(JSON.stringify(perms)).not.toContain('"Principal":"*"');
   });
 
-  it("has no API Gateway resource, no execute-api host and no ApiEndpoint output, so there is no second public API origin", () => {
-    const types = Object.values(template.toJSON().Resources).map((r) => (r as { Type: string }).Type);
-    expect(types.filter((t) => t.startsWith("AWS::ApiGateway"))).toEqual([]);
-    expect(json).not.toContain("execute-api");
-    expect(Object.keys(template.toJSON().Outputs)).not.toContain("ApiEndpoint");
-  });
-
-  it("does not carry API Gateway throttle settings forward", () => {
-    expect(json).not.toMatch(/Throttling(Rate|Burst)Limit/);
-  });
-
-  it("keeps /v1 as the public path, and the browser code and config hold no AWS signing material", () => {
-    expect(dist().CacheBehaviors.map((c: { PathPattern: string }) => c.PathPattern).sort()).toEqual(["/config.json", "/v1/*"]);
-    const web = path.resolve(__dirname, "../../apps/web/src");
-    const walk = (d: string): string[] => fs.readdirSync(d, { withFileTypes: true })
-      .flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
-    expect(fs.readFileSync(path.join(web, "api/client.ts"), "utf-8")).toContain("${BASE}/v1${path}");
-    for (const f of walk(web).filter((x) => /\.tsx?$/.test(x) && !/\.test\./.test(x))) {
-      const src = fs.readFileSync(f, "utf-8").replace(/\/\/.*$/gm, "");
-      expect(src, f).not.toMatch(/sigv4|aws4|x-amz-|AWS_SECRET|AKIA[0-9A-Z]{16}|SecretAccessKey|@aws-sdk/i);
-    }
-    const cfg = Object.values(template.findResources("Custom::CDKBucketDeployment")).map((d) => JSON.stringify(d.Properties)).join("");
-    // config.json is a zipped asset; the template carries one marker, the public map key read back from Amazon Location
-    expect(cfg.match(/<<marker:/g)).toHaveLength(1);
-    expect(cfg).toContain("ReadMapsKey");
-    expect(cfg).not.toMatch(/SECRET|SIGN|CREDENTIAL/i);
+  it("has no Function URL at all", () => {
+    template.resourceCountIs("AWS::Lambda::Url", 0);
+    expect(json).not.toContain("InvokeFunctionUrl");
   });
 });
 
-describe("cloudfront", () => {
-  it("redirects to HTTPS and has a /v1 API behaviour plus an uncached /config.json", () => {
-    template.hasResourceProperties("AWS::CloudFront::Distribution", Match.objectLike({
-      DistributionConfig: Match.objectLike({
-        DefaultRootObject: "index.html", HttpVersion: "http2and3",
-        DefaultCacheBehavior: Match.objectLike({ ViewerProtocolPolicy: "redirect-to-https", Compress: true }),
-        CacheBehaviors: Match.arrayWith([
-          Match.objectLike({ PathPattern: "/v1/*", ViewerProtocolPolicy: "redirect-to-https", AllowedMethods: ["GET", "HEAD"] }),
-          Match.objectLike({ PathPattern: "/config.json" }),
-        ]),
-      }),
-    }));
-  });
-
-  it("never replaces API errors with the app shell: SPA fallback is a function, not distribution error pages", () => {
-    const dist = Object.values(template.findResources("AWS::CloudFront::Distribution"))[0];
-    expect(dist.Properties.DistributionConfig.CustomErrorResponses).toBeUndefined();
-    template.resourceCountIs("AWS::CloudFront::Function", 1);
-  });
-
-  it("sends HSTS, nosniff, frame-deny, referrer policy and a CSP that allows only self and the maps host", () => {
-    template.hasResourceProperties("AWS::CloudFront::ResponseHeadersPolicy", Match.objectLike({
-      ResponseHeadersPolicyConfig: Match.objectLike({ SecurityHeadersConfig: Match.objectLike({
-        StrictTransportSecurity: Match.objectLike({ Override: true, IncludeSubdomains: true }),
-        ContentTypeOptions: { Override: true },
-        FrameOptions: { FrameOption: "DENY", Override: true },
-        ContentSecurityPolicy: Match.objectLike({ ContentSecurityPolicy: Match.stringLikeRegexp(
-          `^default-src 'self'; script-src 'self'; .*connect-src 'self' https://maps\\.geo\\.${REGION}\\.amazonaws\\.com;.*frame-ancestors 'none'`) }),
-      }) }),
-    }));
-    const csp = /ContentSecurityPolicy":"([^"]+)"/.exec(json)![1];
-    expect(csp).not.toMatch(/script-src[^;]*('unsafe-inline'|'unsafe-eval'|\*)/);
-    expect(csp).not.toMatch(/(?:^|[ ;])\*(?:[ ;]|$)/);
-  });
-});
-
-describe("amazon location", () => {
-  it("creates a maps-only key restricted to the site origin, in ap-south-1, with an expiry, and never outputs its value", () => {
-    template.hasResourceProperties("AWS::Location::APIKey", {
-      Restrictions: {
-        AllowActions: ["geo-maps:GetStyleDescriptor", "geo-maps:GetTile", "geo-maps:GetSprites", "geo-maps:GetGlyphs"],
-        AllowResources: [{ "Fn::Join": ["", ["arn:", { Ref: "AWS::Partition" }, `:geo-maps:${REGION}::provider/default`]] }],
-        AllowReferers: [{ "Fn::Join": ["", ["https://", Match.anyValue(), "/*"]] }],
-      },
-      NoExpiry: false,
-      ExpireTime: Match.stringLikeRegexp("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"),
-    });
-    const outputs = Object.keys(template.toJSON().Outputs);
-    expect(outputs).toEqual(expect.arrayContaining(["SiteUrl", "ApiFunctionUrl", "SiteBucketName", "MapsApiKeyArn"]));
-    expect(outputs.some((o) => /key$/i.test(o) && o !== "MapsApiKeyArn")).toBe(false);
-  });
-
-  it("supports extra referrers and writes the validated expiry in UTC", () => {
-    const exp = inDays(30);
-    const t = stackWith({ locationKeyExpireTime: exp, extraReferers: ["https://floodlens.example.org/*"] });
+describe("amazon location map key", () => {
+  it("allows only map read actions on the default map provider, bound to the frontend origin, with an expiry", () => {
+    const exp = inDays(40);
+    const t = stackWith({ locationKeyExpireTime: exp });
     t.hasResourceProperties("AWS::Location::APIKey", Match.objectLike({
       ExpireTime: exp.replace(/\.\d{3}Z$/, "Z"), NoExpiry: false,
-      Restrictions: Match.objectLike({ AllowReferers: Match.arrayWith(["https://floodlens.example.org/*"]) }),
+      Restrictions: {
+        AllowActions: ["geo-maps:GetStyleDescriptor", "geo-maps:GetTile", "geo-maps:GetSprites", "geo-maps:GetGlyphs"],
+        AllowResources: [Match.objectLike({ "Fn::Join": Match.anyValue() })],
+        AllowReferers: [`${ORIGIN}/*`],
+      },
     }));
+    const k = JSON.stringify(Object.values(template.findResources("AWS::Location::APIKey")));
+    expect(k).toContain("geo-maps:");
+    expect(k).toContain("provider/default");
+    expect(k).not.toMatch(/geo:\*|geo-maps:\*|"\*"/);
   });
 
-  it("never produces a key without an expiry", () => {
-    expect(json).not.toContain('"NoExpiry":true');
+  it("never produces a key without an expiry, a wildcard referrer, or a literal key value", () => {
     for (const k of Object.values(template.findResources("AWS::Location::APIKey"))) {
       expect(k.Properties.NoExpiry).toBe(false);
       expect(k.Properties.ExpireTime).toBeDefined();
+      for (const r of k.Properties.Restrictions.AllowReferers) expect(r).not.toMatch(/\*\./);
     }
+    expect(json).not.toMatch(/v1\.public\./);
   });
 
-  it("reads the key back with a describe-only permission on that one key and hides response data", () => {
-    const pol = Object.values(template.findResources("AWS::IAM::Policy"))
-      .filter((p) => JSON.stringify(p.Properties.PolicyDocument).includes("geo:DescribeKey"));
-    expect(pol).toHaveLength(1);
-    const sts = pol[0].Properties.PolicyDocument.Statement;
-    expect(sts).toHaveLength(1);
-    expect(sts[0].Action).toBe("geo:DescribeKey");
-    expect(JSON.stringify(sts[0].Resource)).not.toBe('"*"');
-    expect(json).toContain("describeKey");
-    expect(json).toContain('\\"logApiResponseData\\":false');
+  it("has no custom resource reading the key value: the owner reads it once and sets the Amplify variable", () => {
+    expect(json).not.toMatch(/describeKey|DescribeKey|AWSCDK/);
+    const out = template.toJSON().Outputs;
+    expect(Object.keys(out).sort()).toEqual(["ApiBaseUrl", "MapStyle", "MapsApiKeyArn", "MapsApiKeyName"]);
+    expect(JSON.stringify(out)).not.toMatch(/\bKey\b.*Value|v1\.public/);
+  });
+
+  it("gives a stack-unique, deterministic key name", () => {
+    const name = Object.values(template.findResources("AWS::Location::APIKey"))[0].Properties.KeyName as string;
+    expect(name).toMatch(/^floodlens-web-maps-[0-9a-f]{8}$/);
   });
 });
 
@@ -292,7 +270,7 @@ describe("mandatory deployment settings", () => {
     expect(validateAlarmEmail("first.last+floodlens@example.co.in")).toBe("first.last+floodlens@example.co.in");
   });
 
-  it("fails the CDK app when a required setting is missing, the expiry is too far out, or a removed API Gateway setting is passed", () => {
+  it("fails the CDK app when a required setting is missing, the expiry is too far out, or a reservation is passed", () => {
     const run = (ctx: Record<string, string>): string => {
       try {
         execFileSync(process.execPath, [path.resolve(__dirname, "../node_modules/tsx/dist/cli.mjs"), path.resolve(__dirname, "../bin/floodlens.ts")], {
@@ -302,17 +280,20 @@ describe("mandatory deployment settings", () => {
         return "";
       } catch (e) { return String((e as { stderr?: Buffer }).stderr ?? e); }
     };
-    expect(run({ locationKeyExpireTime: inDays(30) })).toMatch(/alarmEmail is required/);
-    expect(run({ alarmEmail: "ops@example.org" })).toMatch(/locationKeyExpireTime is required/);
-    expect(run({ alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(120) })).toMatch(/more than 90 days/);
-    expect(run({ alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(30), apiRateLimit: "20" })).toMatch(/no longer exists/);
-  }, 60_000);
+    const ok = { alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(30), frontendOrigins: ORIGIN };
+    expect(run({ locationKeyExpireTime: inDays(30), frontendOrigins: ORIGIN })).toMatch(/alarmEmail is required/);
+    expect(run({ alarmEmail: "ops@example.org", frontendOrigins: ORIGIN })).toMatch(/locationKeyExpireTime is required/);
+    expect(run({ ...ok, locationKeyExpireTime: inDays(120) })).toMatch(/more than 90 days/);
+    expect(run({ alarmEmail: "ops@example.org", locationKeyExpireTime: inDays(30) })).toMatch(/frontendOrigins is required/);
+    expect(run({ ...ok, frontendOrigins: "https://*.amplifyapp.com" })).toMatch(/wildcard/);
+    expect(run({ ...ok, reservedConcurrency: "10" })).toMatch(/reservedConcurrency is not supported/);
+  }, 90_000);
 });
 
 describe("observability and safety", () => {
-  it("alarms on Lambda errors, throttles, latency and traffic spikes (no API Gateway alarm)", () => {
+  it("alarms on Lambda errors, throttles, latency, traffic spikes and API 5xx", () => {
     const alarms = Object.values(template.findResources("AWS::CloudWatch::Alarm")).map((a) => a.Properties.MetricName);
-    expect(alarms.sort()).toEqual(["Duration", "Errors", "Invocations", "Throttles"]);
+    expect(alarms.sort()).toEqual(["5xx", "Duration", "Errors", "Invocations", "Throttles"]);
     template.hasResourceProperties("AWS::CloudWatch::Alarm", { MetricName: "Invocations", Threshold: 3000, Period: 300 });
     stackWith({ invocationAlarmThreshold: 600 }).hasResourceProperties("AWS::CloudWatch::Alarm", { MetricName: "Invocations", Threshold: 600 });
     template.resourceCountIs("AWS::CloudWatch::Dashboard", 1);
@@ -327,45 +308,33 @@ describe("observability and safety", () => {
     stackWith({ alarmEmail: "other@example.org" }).hasResourceProperties("AWS::SNS::Subscription", { Endpoint: "other@example.org" });
   });
 
-  it("deploys content without pruning, and writes no AWS access key, secret or token anywhere", () => {
-    for (const d of Object.values(template.findResources("Custom::CDKBucketDeployment"))) {
-      expect(d.Properties.Prune).toBe(false);
-    }
+  it("writes no AWS access key, secret or token anywhere", () => {
     expect(json).not.toMatch(/AKIA[0-9A-Z]{16}/);
     expect(json).not.toMatch(/ASIA[0-9A-Z]{16}/);
     expect(json).not.toMatch(/aws_secret_access_key|SecretAccessKey|aws_session_token|EARTHDATA/i);
-    expect(json).not.toMatch(/v1\.public\./); // no literal browser key in the template
   });
 
-  it("does not create destructive or billing resources", () => {
-    const types = new Set(Object.values(template.toJSON().Resources).map((r) => (r as { Type: string }).Type));
-    for (const t of types) expect(t).not.toMatch(/Budgets|Billing|Organizations|IAM::User$|IAM::AccessKey/);
+  it("does not create destructive or billing resources, IAM users, or Amplify apps", () => {
+    const types = new Set(resources(template).map((r) => r.Type));
+    for (const t of types) expect(t).not.toMatch(/Budgets|Billing|Organizations|IAM::User$|IAM::AccessKey|Amplify/);
   });
 
-  it("fails clearly when the web build or Lambda package is missing", () => {
-    expect(() => new FloodLensStack(new cdk.App(), "X", { ...baseProps(), webDistDir: path.join(tmp, "nope") })).toThrow(/npm run build/);
+  it("gives every log group one-month retention; the API function and access logs are retained on delete", () => {
+    const groups = Object.values(template.findResources("AWS::Logs::LogGroup"));
+    expect(groups).toHaveLength(2); // function logs, API access logs
+    for (const g of groups) {
+      expect(g.Properties.RetentionInDays).toBe(30);
+      expect(g.DeletionPolicy).toBe("Retain");
+    }
+  });
+
+  it("fails clearly when the Lambda package is missing", () => {
     expect(() => new FloodLensStack(new cdk.App(), "Y", { ...baseProps(), lambdaDir: path.join(tmp, "nope") })).toThrow(/package_lambda\.py/);
   });
-});
 
-describe("abuse limits and cost controls", () => {
-  it("keys the API cache on the API's own query parameters only, so unknown parameters cannot bust it", () => {
-    template.hasResourceProperties("AWS::CloudFront::CachePolicy", Match.objectLike({
-      CachePolicyConfig: Match.objectLike({ ParametersInCacheKeyAndForwardedToOrigin: Match.objectLike({
-        QueryStringsConfig: { QueryStringBehavior: "whitelist", QueryStrings: [...API_QUERY_PARAMS] } }) }),
-    }));
-  });
-
-  it("makes reserved concurrency configurable and off by default; the API Gateway throttle options are gone", () => {
-    expect(json).not.toContain("ReservedConcurrentExecutions");
-    stackWith({ reservedConcurrency: 5 }).hasResourceProperties("AWS::Lambda::Function", { Runtime: "python3.13", ReservedConcurrentExecutions: 5 });
-    expect("apiRateLimit" in baseProps()).toBe(false);
-  });
-
-  it("gives every deploy-time helper function an explicit one-month log group", () => {
-    const groups = Object.values(template.toJSON().Resources as Record<string, { Type: string; Properties: { RetentionInDays?: number } }>)
-      .filter((r) => r.Type === "AWS::Logs::LogGroup");
-    expect(groups.length).toBe(4); // api function, key reader, two bucket deployments
-    expect(groups.every((g) => g.Properties.RetentionInDays === 30)).toBe(true);
+  it("creates the stack under an identity distinct from the rolled-back FloodLens stack", async () => {
+    const src = fs.readFileSync(path.resolve(__dirname, "../bin/floodlens.ts"), "utf-8");
+    expect(src).toMatch(/STACK_NAME = "FloodLensAmplify"/);
+    expect(src).not.toMatch(/new FloodLensStack\(app, "FloodLens"/);
   });
 });

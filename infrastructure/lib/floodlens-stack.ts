@@ -1,17 +1,15 @@
+import * as crypto from "node:crypto";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import * as cdk from "aws-cdk-lib";
-import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
-import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
-import * as cr from "aws-cdk-lib/custom-resources";
-import * as iam from "aws-cdk-lib/aws-iam";
+import * as apigw from "aws-cdk-lib/aws-apigateway";
+import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
+import * as integrations from "aws-cdk-lib/aws-apigatewayv2-integrations";
 import * as cloudwatch from "aws-cdk-lib/aws-cloudwatch";
 import * as cwActions from "aws-cdk-lib/aws-cloudwatch-actions";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as location from "aws-cdk-lib/aws-location";
 import * as logs from "aws-cdk-lib/aws-logs";
-import * as s3 from "aws-cdk-lib/aws-s3";
-import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as sns from "aws-cdk-lib/aws-sns";
 import * as subs from "aws-cdk-lib/aws-sns-subscriptions";
 import type { Construct } from "constructs";
@@ -19,8 +17,6 @@ import type { Construct } from "constructs";
 export const REGION = "ap-south-1";
 
 export interface FloodLensProps extends cdk.StackProps {
-  /** Built React app (apps/web/dist). */
-  webDistDir: string;
   /** Output of scripts/package_lambda.py (infrastructure/build/lambda). */
   lambdaDir: string;
   /**
@@ -31,20 +27,24 @@ export interface FloodLensProps extends cdk.StackProps {
   alarmEmail: string;
   /**
    * REQUIRED. ISO-8601 expiry for the browser map key: in the future and at most MAX_KEY_LIFETIME_DAYS away.
-   * The key is public by design (map actions, bound to the site origin); expiry limits how long a leaked or
+   * The key is public by design (map actions, bound to the frontend origin); expiry limits how long a leaked or
    * abused copy stays useful. Rotate by redeploying with a later date before it lapses.
    */
   locationKeyExpireTime: string;
-  /** Amazon Location style served to the browser: Standard | Monochrome | Hybrid | Satellite. */
-  mapStyle?: string;
-  /** Extra origins allowed to use the map key (for example a custom domain). */
-  extraReferers?: string[];
   /**
-   * Optional Lambda reserved concurrency. Unset by default: new accounts can have a low concurrency quota
-   * and a reservation that leaves under 100 unreserved executions makes the deployment fail. A Function URL has no
-   * API Gateway stage throttle, so this is the only hard cap on concurrent executions.
+   * REQUIRED. The browser origins of the Amplify-hosted frontend (and any custom domain), for example
+   * https://main.d1a2b3c4d5e6f7.amplifyapp.com. They become the API's CORS allow-list and the map key's
+   * referrers. Wildcards are rejected.
    */
-  reservedConcurrency?: number;
+  frontendOrigins: string[];
+  /** Also allow http://localhost:5173 in API CORS (never in the map key). Off by default. */
+  allowLocalDevCors?: boolean;
+  /** Amazon Location style served to the browser: Standard | Monochrome | Hybrid | Satellite. Documented for the frontend env. */
+  mapStyle?: string;
+  /** Sustained requests per second allowed by the API stage (default 10). */
+  apiRateLimit?: number;
+  /** Burst requests allowed by the API stage (default 20). */
+  apiBurstLimit?: number;
   /** Invocations per 5 minutes that raise the traffic-spike alarm (default 3000, about 10 requests/second sustained). */
   invocationAlarmThreshold?: number;
   /** Clock used to validate the key expiry. For tests. */
@@ -53,6 +53,12 @@ export interface FloodLensProps extends cdk.StackProps {
 
 /** Longest allowed lifetime of the public map key, counted from synthesis. */
 export const MAX_KEY_LIFETIME_DAYS = 90;
+export const LOCAL_DEV_ORIGIN = "http://localhost:5173";
+export const DEFAULT_API_RATE_LIMIT = 10;
+export const DEFAULT_API_BURST_LIMIT = 20;
+/** Lambda timeout, and the API integration timeout above it so a Lambda timeout surfaces as the function's own error. */
+export const LAMBDA_TIMEOUT_SECONDS = 15;
+export const INTEGRATION_TIMEOUT_SECONDS = 20;
 
 /** Checks the map-key expiry (required, ISO-8601 with a time zone, in the future, within MAX_KEY_LIFETIME_DAYS). Returns it as UTC. */
 export function validateKeyExpiry(value: string | undefined, now: Date = new Date()): string {
@@ -89,14 +95,27 @@ export function validateAlarmEmail(value: string | undefined): string {
 }
 
 /**
- * Query parameters the API reads (every query parameter in the OpenAPI document; a Python test keeps
- * this list in step). The CloudFront cache policy forwards and keys on exactly these, so unknown
- * parameters cannot be used to defeat the cache.
+ * Checks the frontend origins: at least one, each a bare https origin (scheme + host, optional port; no path, query,
+ * wildcard or credentials). Returns them de-duplicated, lower-cased, in the given order.
  */
-export const API_QUERY_PARAMS = [
-  "bbox", "boundary", "end", "facility_type", "feature_type", "ids", "kind", "limit", "min_class",
-  "offset", "scenario", "start", "stream", "water_class", "zoom",
-];
+export function validateFrontendOrigins(values: string[] | undefined): string[] {
+  if (!values || values.length === 0) {
+    throw new Error("frontendOrigins is required (for example -c frontendOrigins=https://main.d1a2b3c4d5e6f7.amplifyapp.com): CORS and the map key must name the real frontend.");
+  }
+  const out: string[] = [];
+  for (const raw of values) {
+    const v = raw.trim();
+    if (v.includes("*")) throw new Error(`frontend origin "${v}" contains a wildcard; list each origin explicitly.`);
+    let u: URL;
+    try { u = new URL(v); } catch { throw new Error(`frontend origin "${v}" is not a valid URL.`); }
+    if (u.protocol !== "https:") throw new Error(`frontend origin "${v}" must be https.`);
+    if (u.username || u.password || u.search || u.hash || (u.pathname !== "/" && u.pathname !== "") || v.endsWith("/")) {
+      throw new Error(`frontend origin "${v}" must be a bare origin such as https://example.com (no path, query or trailing slash).`);
+    }
+    if (!out.includes(u.origin)) out.push(u.origin);
+  }
+  return out;
+}
 
 function requireDir(dir: string, hint: string): string {
   const abs = path.resolve(dir);
@@ -106,11 +125,16 @@ function requireDir(dir: string, hint: string): string {
   return abs;
 }
 
+function positiveInt(name: string, value: number | undefined, fallback: number): number {
+  const v = value ?? fallback;
+  if (!Number.isInteger(v) || v < 1) throw new Error(`${name} must be a positive integer, got ${String(value)}`);
+  return v;
+}
+
 /**
- * FloodLens: static React app (private S3 + CloudFront OAC), read-only FastAPI on Lambda reached only through
- * CloudFront (Lambda Function URL, AWS_IAM, CloudFront origin access control), Amazon Location map key,
- * CloudWatch alarms. No geospatial processing runs here: the API serves artifacts built offline and shipped
- * inside the Lambda package. There is no API Gateway.
+ * FloodLens backend: read-only FastAPI on Lambda behind an API Gateway HTTP API, plus the Amazon Location browser map
+ * key and CloudWatch alarms. The React app is NOT in this stack: AWS Amplify Hosting builds and serves it from GitHub.
+ * No geospatial processing runs here: the API serves artifacts built offline and shipped inside the Lambda package.
  */
 export class FloodLensStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: FloodLensProps) {
@@ -118,22 +142,14 @@ export class FloodLensStack extends cdk.Stack {
 
     const alarmEmail = validateAlarmEmail(props.alarmEmail);
     const keyExpiry = validateKeyExpiry(props.locationKeyExpireTime, props.now);
-    const webDist = requireDir(props.webDistDir, "Build it first: cd apps/web && npm run build");
+    const origins = validateFrontendOrigins(props.frontendOrigins);
     const lambdaDir = requireDir(props.lambdaDir, "Build it first: python scripts/package_lambda.py");
-    const mapStyle = props.mapStyle ?? "Monochrome";
+    const rate = positiveInt("apiRateLimit", props.apiRateLimit, DEFAULT_API_RATE_LIMIT);
+    const burst = positiveInt("apiBurstLimit", props.apiBurstLimit, DEFAULT_API_BURST_LIMIT);
+    if (burst < rate) throw new Error(`apiBurstLimit (${burst}) must be at least apiRateLimit (${rate}).`);
+    const corsOrigins = props.allowLocalDevCors ? [...origins, LOCAL_DEV_ORIGIN] : origins;
 
-    // ---- static site bucket: private, TLS only, never public --------------------------------------
-    const siteBucket = new s3.Bucket(this, "SiteBucket", {
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      enforceSSL: true,
-      objectOwnership: s3.ObjectOwnership.BUCKET_OWNER_ENFORCED,
-      versioned: true,
-      removalPolicy: cdk.RemovalPolicy.RETAIN, // never deleted by a stack update or destroy
-      lifecycleRules: [{ noncurrentVersionExpiration: cdk.Duration.days(30) }],
-    });
-
-    // ---- API: Lambda (FastAPI + Mangum) behind a Function URL that only CloudFront may call -------------
+    // ---- API: Lambda (FastAPI + Mangum) -------------------------------------------------------------------
     const fnLogs = new logs.LogGroup(this, "ApiFunctionLogs", {
       retention: logs.RetentionDays.ONE_MONTH, removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
@@ -144,149 +160,76 @@ export class FloodLensStack extends cdk.Stack {
       handler: "floodlens_api.lambda_handler.handler",
       code: lambda.Code.fromAsset(lambdaDir),
       memorySize: 1024, // artifact JSON is cached in memory; also scales CPU
-      timeout: cdk.Duration.seconds(15),
+      timeout: cdk.Duration.seconds(LAMBDA_TIMEOUT_SECONDS),
       logGroup: fnLogs,
       environment: { FLOODLENS_ARTIFACT_DIR: "/var/task/data/api" },
-      reservedConcurrentExecutions: props.reservedConcurrency,
+      // No reservedConcurrentExecutions: the owner accepted the shared account pool (quota 10, increase pending).
     });
     // The execution role is only the managed logging permissions CDK adds for logGroup: the function
     // reads files in its own package and calls no other AWS service.
 
-    // AWS_IAM: a request without a valid SigV4 signature from a principal the resource policy allows is
-    // rejected by the Lambda service before the function runs. No CORS block: the browser only talks to CloudFront.
-    const fnUrl = apiFn.addFunctionUrl({
-      authType: lambda.FunctionUrlAuthType.AWS_IAM,
-      invokeMode: lambda.InvokeMode.BUFFERED, // responses are complete documents/rasters under 6 MB
+    // ---- API Gateway HTTP API: GET and HEAD under /v1 only; CORS for the Amplify origin(s) ------------------
+    const accessLogs = new logs.LogGroup(this, "ApiAccessLogs", {
+      retention: logs.RetentionDays.ONE_MONTH, removalPolicy: cdk.RemovalPolicy.RETAIN,
     });
-
-    // ---- CloudFront: one origin for the app and the API (same-origin, no CORS) -------------------------
-    const spaRewrite = new cloudfront.Function(this, "SpaRewrite", {
-      comment: "Serve index.html for client-side routes (default behaviour only, so API 404s are untouched)",
-      runtime: cloudfront.FunctionRuntime.JS_2_0,
-      code: cloudfront.FunctionCode.fromInline(
-        "function handler(event) {\n  var r = event.request;\n  if (r.uri.indexOf('.') === -1) { r.uri = '/index.html'; }\n  return r;\n}\n"),
-    });
-    const apiCache = new cloudfront.CachePolicy(this, "ApiCachePolicy", {
-      comment: "FloodLens API: short cache, keyed by the API's own query parameters only",
-      minTtl: cdk.Duration.seconds(0), defaultTtl: cdk.Duration.minutes(5), maxTtl: cdk.Duration.hours(1),
-      queryStringBehavior: cloudfront.CacheQueryStringBehavior.allowList(...API_QUERY_PARAMS),
-      headerBehavior: cloudfront.CacheHeaderBehavior.none(),
-      cookieBehavior: cloudfront.CacheCookieBehavior.none(),
-      enableAcceptEncodingGzip: true, enableAcceptEncodingBrotli: true,
-    });
-    const mapsHost = `https://maps.geo.${REGION}.amazonaws.com`;
-    const security = new cloudfront.ResponseHeadersPolicy(this, "SecurityHeaders", {
-      comment: "FloodLens security headers",
-      securityHeadersBehavior: {
-        strictTransportSecurity: { accessControlMaxAge: cdk.Duration.days(365), includeSubdomains: true, override: true },
-        contentTypeOptions: { override: true },
-        frameOptions: { frameOption: cloudfront.HeadersFrameOption.DENY, override: true },
-        referrerPolicy: { referrerPolicy: cloudfront.HeadersReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN, override: true },
-        contentSecurityPolicy: {
-          override: true,
-          contentSecurityPolicy: [
-            "default-src 'self'", "script-src 'self'", "style-src 'self' 'unsafe-inline'",
-            "img-src 'self' data: blob:", `font-src 'self' data: ${mapsHost}`,
-            `connect-src 'self' ${mapsHost}`, "worker-src 'self' blob:", "child-src blob:",
-            "object-src 'none'", "base-uri 'self'", "frame-ancestors 'none'",
-          ].join("; "),
-        },
+    const httpApi = new apigwv2.HttpApi(this, "HttpApi", {
+      apiName: "FloodLensAmplifyApi",
+      description: "FloodLens read-only API (GET and HEAD under /v1)",
+      createDefaultStage: false, // the $default stage is created below so it can carry throttling and access logs
+      corsPreflight: {
+        allowOrigins: corsOrigins,
+        allowMethods: [apigwv2.CorsHttpMethod.GET, apigwv2.CorsHttpMethod.HEAD, apigwv2.CorsHttpMethod.OPTIONS],
+        allowHeaders: ["accept", "content-type", "x-request-id"],
+        exposeHeaders: ["x-request-id", "x-floodlens-schema-version", "x-content-sha256", "content-length"],
+        maxAge: cdk.Duration.days(1),
+        allowCredentials: false,
       },
     });
-    // CloudFront signs each origin request with SigV4 (OAC, signing behaviour "always"). CDK also adds the two
-    // Lambda resource-policy statements (InvokeFunctionUrl and InvokeFunction), each limited to this distribution's ARN.
-    // The viewer Host header is not forwarded (no origin request policy), which SigV4 to a Function URL requires.
-    const apiOrigin = origins.FunctionUrlOrigin.withOriginAccessControl(fnUrl, {
-      readTimeout: cdk.Duration.seconds(20), // above the 15 s function timeout so Lambda errors surface as the function's own response
+    const integration = new integrations.HttpLambdaIntegration("ApiIntegration", apiFn, {
+      payloadFormatVersion: apigwv2.PayloadFormatVersion.VERSION_2_0,
+      timeout: cdk.Duration.seconds(INTEGRATION_TIMEOUT_SECONDS), // above the Lambda timeout; HTTP API maximum is 30 s
     });
-    const noCache = { cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED, viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      responseHeadersPolicy: security, compress: true };
-    const siteOrigin = origins.S3BucketOrigin.withOriginAccessControl(siteBucket);
-    const distribution = new cloudfront.Distribution(this, "Distribution", {
-      comment: "FloodLens web app and API",
-      defaultRootObject: "index.html",
-      // minimumProtocolVersion is intentionally not set: CloudFront ignores it on the default *.cloudfront.net
-      // certificate. Enforcing TLS 1.2+ needs a custom domain and an ACM certificate (see docs/deployment).
-      httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
-      priceClass: cloudfront.PriceClass.PRICE_CLASS_200, // includes India edge locations
-      defaultBehavior: {
-        origin: siteOrigin,
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
-        responseHeadersPolicy: security,
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
-        compress: true,
-        functionAssociations: [{ function: spaRewrite, eventType: cloudfront.FunctionEventType.VIEWER_REQUEST }],
-      },
-      additionalBehaviors: {
-        "/v1/*": {
-          origin: apiOrigin,
-          viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-          cachePolicy: apiCache,
-          responseHeadersPolicy: security,
-          allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
-          compress: true,
-        },
-        // deploy-time configuration must never be served stale
-        "/config.json": { origin: siteOrigin, ...noCache },
+    httpApi.addRoutes({
+      path: "/v1/{proxy+}",
+      methods: [apigwv2.HttpMethod.GET, apigwv2.HttpMethod.HEAD],
+      integration,
+    });
+    // Nothing else is routed: /docs, /openapi.json and the bare /v1 root return the gateway's 404 and never reach Lambda.
+    // The query string is passed through untouched (payload format 2.0 rawQueryString); there is no cache and no allow-list.
+    new apigwv2.HttpStage(this, "DefaultStage", {
+      httpApi,
+      stageName: "$default",
+      autoDeploy: true,
+      throttle: { rateLimit: rate, burstLimit: burst },
+      accessLogSettings: {
+        destination: new apigwv2.LogGroupLogDestination(accessLogs),
+        // No client IP, user agent, headers or query string: access logs carry operational fields only.
+        format: apigw.AccessLogFormat.custom(JSON.stringify({
+          requestId: "$context.requestId", requestTime: "$context.requestTime", httpMethod: "$context.httpMethod",
+          routeKey: "$context.routeKey", path: "$context.path", status: "$context.status",
+          protocol: "$context.protocol", responseLength: "$context.responseLength",
+          responseLatency: "$context.responseLatency", integrationLatency: "$context.integrationLatency",
+          integrationStatus: "$context.integrationStatus", errorMessage: "$context.error.message",
+        })),
       },
     });
 
     // ---- Amazon Location: maps-only, referrer-bound browser key with a mandatory expiry -------------------
-    const referers = [`https://${distribution.distributionDomainName}/*`, ...(props.extraReferers ?? [])];
+    // CloudFormation does not return an API key's value. The owner reads it once after deployment
+    // (aws location describe-key) and enters it as the Amplify environment variable VITE_LOCATION_API_KEY. It is
+    // a public browser key by design (map actions only, bound to the frontend origin) and never appears in source.
+    const keySuffix = crypto.createHash("sha256").update(`${this.stackName}/MapsApiKey`).digest("hex").slice(0, 8);
     const mapKey = new location.CfnAPIKey(this, "MapsApiKey", {
-      keyName: `floodlens-web-maps-${cdk.Names.uniqueId(this).slice(-8).toLowerCase()}`,
-      description: "FloodLens browser basemap key: map actions only, restricted to the site origin, expires",
+      keyName: `floodlens-web-maps-${keySuffix}`,
+      description: "FloodLens browser basemap key: map actions only, restricted to the Amplify frontend origin, expires",
       restrictions: {
         allowActions: ["geo-maps:GetStyleDescriptor", "geo-maps:GetTile", "geo-maps:GetSprites", "geo-maps:GetGlyphs"],
         allowResources: [`arn:${cdk.Aws.PARTITION}:geo-maps:${REGION}::provider/default`],
-        allowReferers: referers,
+        allowReferers: origins.map((o) => `${o}/*`),
       },
       expireTime: keyExpiry,
       noExpiry: false,
     });
-
-    // CloudFormation does not return an API key's value, so read it back at deploy time. The caller may
-    // only describe this one key; response data is kept out of logs. The key is a public browser key by
-    // design (map actions, bound to the site origin), and it never appears in source or the JS bundle.
-    const helperLogs = (idn: string) => new logs.LogGroup(this, idn, {
-      retention: logs.RetentionDays.ONE_MONTH, removalPolicy: cdk.RemovalPolicy.DESTROY, // deploy-time helpers only
-    });
-    const keyValue = new cr.AwsCustomResource(this, "ReadMapsKey", {
-      installLatestAwsSdk: false,
-      logGroup: helperLogs("ReadMapsKeyLogs"),
-      onUpdate: {
-        logging: cr.Logging.withDataHidden(),
-        service: "Location", action: "describeKey", parameters: { KeyName: mapKey.keyName },
-        physicalResourceId: cr.PhysicalResourceId.of(`${mapKey.keyName}-value`),
-      },
-      policy: cr.AwsCustomResourcePolicy.fromStatements([new iam.PolicyStatement({
-        actions: ["geo:DescribeKey"], resources: [mapKey.attrKeyArn] })]),
-    });
-
-    // ---- site content and runtime config ---------------------------------------------------------------
-    const assets = new s3deploy.BucketDeployment(this, "DeploySite", {
-      sources: [s3deploy.Source.asset(webDist)],
-      destinationBucket: siteBucket,
-      logGroup: helperLogs("DeploySiteLogs"),
-      distribution, distributionPaths: ["/*"],
-      prune: false, // never delete objects from the bucket
-      cacheControl: [s3deploy.CacheControl.fromString("public, max-age=300")],
-    });
-    const config = new s3deploy.BucketDeployment(this, "DeployRuntimeConfig", {
-      sources: [s3deploy.Source.jsonData("config.json", {
-        VITE_LOCATION_API_KEY: keyValue.getResponseField("Key"),
-        VITE_LOCATION_REGION: REGION,
-        VITE_LOCATION_STYLE: mapStyle,
-        VITE_LOCATION_POLITICAL_VIEW: "IND",
-      })],
-      destinationBucket: siteBucket,
-      logGroup: helperLogs("DeployRuntimeConfigLogs"),
-      distribution, distributionPaths: ["/config.json"],
-      prune: false,
-      cacheControl: [s3deploy.CacheControl.noStore()],
-    });
-    config.node.addDependency(assets);
 
     // ---- observability -----------------------------------------------------------------------------------
     const topic = new sns.Topic(this, "AlarmTopic", { displayName: "FloodLens alarms" });
@@ -304,18 +247,21 @@ export class FloodLensStack extends cdk.Stack {
     alarm("LambdaErrors", apiFn.metricErrors({ period: five }), 1, "API Lambda raised an error");
     alarm("LambdaThrottles", apiFn.metricThrottles({ period: five }), 1, "API Lambda was throttled");
     alarm("LambdaSlow", apiFn.metricDuration({ period: five, statistic: "p95" }), 10_000, "API p95 duration above 10 s");
-    // Replaces the API Gateway throttle as the early warning for abuse of the API path (alarm only; it does not block traffic).
+    // Early warning for abuse or a traffic surge (alarm only; the stage throttle is what limits the request rate).
     alarm("LambdaTrafficSpike", apiFn.metricInvocations({ period: five }), props.invocationAlarmThreshold ?? 3000,
       "API Lambda invocations in 5 minutes are unusually high");
+    alarm("Api5xx", httpApi.metricServerError({ period: five }), 1, "API Gateway returned a 5xx response");
 
     new cloudwatch.Dashboard(this, "Dashboard", {
-      dashboardName: "FloodLens",
+      dashboardName: "FloodLensAmplify",
       widgets: [[
         new cloudwatch.GraphWidget({ title: "Lambda invocations, errors, throttles", width: 12, left: [
           apiFn.metricInvocations({ period: five }), apiFn.metricErrors({ period: five }), apiFn.metricThrottles({ period: five })] }),
         new cloudwatch.GraphWidget({ title: "Lambda duration (p50/p95)", width: 12, left: [
           apiFn.metricDuration({ period: five, statistic: "p50" }), apiFn.metricDuration({ period: five, statistic: "p95" })] }),
       ], [
+        new cloudwatch.GraphWidget({ title: "API requests, 4xx, 5xx", width: 12, left: [
+          httpApi.metricCount({ period: five }), httpApi.metricClientError({ period: five }), httpApi.metricServerError({ period: five })] }),
         new cloudwatch.GraphWidget({ title: "Lambda concurrent executions (max)", width: 12, left: [
           apiFn.metric("ConcurrentExecutions", { period: five, statistic: "Maximum" })] }),
       ]],
@@ -324,12 +270,12 @@ export class FloodLensStack extends cdk.Stack {
     cdk.Tags.of(this).add("Project", "FloodLens");
     cdk.Tags.of(this).add("ManagedBy", "cdk");
 
-    new cdk.CfnOutput(this, "SiteUrl", { value: `https://${distribution.distributionDomainName}` });
-    new cdk.CfnOutput(this, "ApiFunctionUrl", {
-      value: fnUrl.url,
-      description: "Not a public entry point: unsigned requests are rejected (AWS_IAM). Used only to confirm that.",
+    new cdk.CfnOutput(this, "ApiBaseUrl", {
+      value: httpApi.apiEndpoint,
+      description: "Set as the Amplify environment variable VITE_API_BASE_URL (no trailing slash).",
     });
-    new cdk.CfnOutput(this, "SiteBucketName", { value: siteBucket.bucketName });
+    new cdk.CfnOutput(this, "MapsApiKeyName", { value: mapKey.keyName });
     new cdk.CfnOutput(this, "MapsApiKeyArn", { value: mapKey.attrKeyArn }); // the key value is never an output
+    new cdk.CfnOutput(this, "MapStyle", { value: props.mapStyle ?? "Monochrome", description: "Value for VITE_LOCATION_STYLE." });
   }
 }
